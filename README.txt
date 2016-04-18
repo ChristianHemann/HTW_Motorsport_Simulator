@@ -1,1 +1,5 @@
-Softwareentwicklungsprojekt SS16 Ingenieurinformatik HTW Berlin
+Softwareentwicklungsprojekt SS16 
+Ingenieurinformatik 
+HTW Berlin
+
+Project: HTW Motorsport
