@@ -1,26 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using MathNet.Numerics.Interpolation;
+using Simulator;
 
-public class Calculation : MonoBehaviour {
+public class Calculation : MonoBehaviour
+{
+    private Simulator.CalculationController controller;
 
-	// Use this for initialization
+	// Initialisation
 	void Start () {
-	
-	}
+        controller = new CalculationController();
+        controller.Initialize();
+    }
+
+    //called periodically
+    void FixedUpdate()
+    {
+        controller.Calculate();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        Simulator.CalculationController.test();
+        
     }
 
-    public static double test()
+    //quitting
+    void OnApplicationQuit()
     {
-        //test the Library
-        double[] x = new double[] { 0.0, 1.0 };
-        double[] y = new double[] { 2.0, 5.0 };
-        CubicSpline spline = CubicSpline.InterpolateNaturalInplace(x, y);
-        return spline.Interpolate(0.5);
+        controller.Terminate();
     }
 }

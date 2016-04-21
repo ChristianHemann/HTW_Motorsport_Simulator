@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Simulator;
 
 namespace UnitTests
 {
@@ -9,7 +10,7 @@ namespace UnitTests
         [TestMethod]
         public void TestMethod1()
         {
-            double value = Calculation.test();
+            double value = CalculationController.test();
             Assert.IsTrue(value == 3.5);
         }
     }

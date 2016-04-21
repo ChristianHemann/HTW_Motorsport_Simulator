@@ -1,20 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using MathNet.Numerics.Interpolation;
+using System.Threading;
 
 namespace Simulator
 {
     public class CalculationController
     {
-        public static double test()
+        private readonly Thread workerThread;
+        private volatile bool _runThread = true;
+        private volatile bool _isCalculating = false;
+        private volatile EventWaitHandle _ewh;
+
+        public CalculationController()
         {
-            //test the Library
-            double[] x = new double[] { 0.0, 1.0 };
-            double[] y = new double[] { 2.0, 5.0 };
-            CubicSpline spline = CubicSpline.InterpolateNaturalInplace(x, y);
-            return spline.Interpolate(0.5);
+            if (_ewh == null)
+                _ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
+            workerThread = new Thread(this.WorkerFunction);
+        }
+
+        public void Initialize()
+        {
+            _runThread = true;
+            workerThread.Start();
+        }
+
+        public void Calculate()
+        {
+            if (!_isCalculating)
+                _ewh.Set();
+        }
+
+        public void Terminate()
+        {
+            _runThread = false;
+        }
+
+        private void WorkerFunction()
+        {
+            int i = 0;
+            int time = 0;
+            Stopwatch performanceWatch = new Stopwatch();
+            while (_runThread)
+            {
+                _ewh.WaitOne(); //wait until it is signaled
+                _isCalculating = true;
+
+                //Performance mesurement
+                performanceWatch.Start();
+                i++; //Calculation Number
+
+                DoWork(); //simulate some work
+
+                //performance mesurement
+                time = performanceWatch.Elapsed.Milliseconds;
+                performanceWatch.Reset();
+                //wirting in the Console of Unity
+                UnityEngine.Debug.Log("#Calculation: "+i.ToString()+" Time: "+time.ToString()+"ms");
+                _isCalculating = false;
+            }
+        }
+
+        void DoWork()
+        {
+            Thread.Sleep(10);
         }
     }
 }
