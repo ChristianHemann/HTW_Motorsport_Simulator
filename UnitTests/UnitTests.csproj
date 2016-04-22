@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LinearInterpolationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HTW_Motorsport_Simulator.CSharp.csproj">

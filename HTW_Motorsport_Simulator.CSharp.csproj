@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.2f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -97,6 +99,7 @@
     <Compile Include="Assets\Scripts\ImportantClasses\LinearInterpolation.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\MathHelper.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Spline.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Xml.cs" />
     <Compile Include="Assets\Scripts\Output\AeroOutput.cs" />
     <Compile Include="Assets\Scripts\Output\BrakeOutput.cs" />
     <Compile Include="Assets\Scripts\Output\CarOutput.cs" />
