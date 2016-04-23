@@ -55,7 +55,7 @@ namespace ImportantClasses
         }
 
         /// <summary>
-        /// creats a new function which interpolates piecewise between the points
+        /// creats a new function which interpolates linear piecewise between the points
         /// </summary>
         public LinearInterpolation(double[] x, double[] y)
         {

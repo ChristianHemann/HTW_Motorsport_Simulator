@@ -58,7 +58,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="SplineInterpolationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LinearInterpolationTest.cs" />
   </ItemGroup>
