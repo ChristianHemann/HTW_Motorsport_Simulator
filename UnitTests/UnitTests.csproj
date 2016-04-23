@@ -61,6 +61,7 @@
     <Compile Include="SplineInterpolationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LinearInterpolationTest.cs" />
+    <Compile Include="CharacteristicMapTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HTW_Motorsport_Simulator.CSharp.csproj">

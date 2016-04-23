@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 using MathNet.Numerics.Interpolation;
 
@@ -34,7 +32,7 @@ namespace ImportantClasses
                 if (_y == null) //this should only be entered when the Spline was created from xml
                 {
                     _y = value;
-                    spline = LinearSpline.InterpolateInplace(_x, _y);
+                    _spline = LinearSpline.InterpolateInplace(_x, _y);
                 }
             }
         }
@@ -44,7 +42,7 @@ namespace ImportantClasses
         [XmlIgnore]
         private double[] _y;
         [XmlIgnore]
-        private LinearSpline spline;
+        private LinearSpline _spline;
 
         /// <summary>
         /// this constructor is to provide Xml-Functions
@@ -95,7 +93,7 @@ namespace ImportantClasses
             }
             this._x = x;
             this._y = y;
-            spline = LinearSpline.InterpolateInplace(x, y);
+            _spline = LinearSpline.InterpolateInplace(x, y);
         }
 
         /// <summary>
@@ -105,7 +103,7 @@ namespace ImportantClasses
         /// <returns>the interpolated value</returns>
         public double Interpolate(double point)
         {
-            return spline.Interpolate(point);
+            return _spline.Interpolate(point);
         }
     }
 }
