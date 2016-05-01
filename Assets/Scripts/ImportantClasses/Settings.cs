@@ -44,18 +44,55 @@ namespace ImportantClasses
             return null;
         }
 
+        /// <summary>
+        /// saves all properties and fields which are marked as a setting to a file
+        /// </summary>
         public static void SaveSettings()
         {
-            foreach (object obj in Instance.settingList)
+            if (!Directory.Exists(settingsPath))
+                Directory.CreateDirectory(settingsPath);
+            foreach (ContainSettingObject obj in Instance.settingList)
             {
-                
-                Xml.WriteXml(settingsPath, obj);
+                Xml.WriteXml(Path.Combine(settingsPath, obj.Name + ".xml"), obj.Obj);
             }
         }
 
+        /// <summary>
+        /// load all properties and fields which are marked as a setting from a file
+        /// </summary>
         public static void LoadSettings()
         {
-            Instance.GetMenuItems(new[] {""});
+            if (!Directory.Exists(settingsPath))
+                return; //If the Directory doesn't exist no settings can be loaded
+            for (int i = 0; i < Instance.settingList.Count; i++)
+            {
+                ContainSettingObject actObj = Instance.settingList.ElementAt(i);
+                //search in fields
+                FieldInfo[] fieldInfos = actObj.ParentType.GetFields().ToArray();
+                foreach (FieldInfo fieldInfo in fieldInfos)
+                {
+                    if (((ContainSettingsAttribute) Attribute.GetCustomAttribute(fieldInfo, typeof(ContainSettingsAttribute))).Name == actObj.Name)
+                    {
+                        object obj = Xml.ReadXml(Path.Combine(settingsPath, actObj.Name + ".xml"), actObj.Obj.GetType());
+                        //update the reference to the object in the list and in the original class
+                        fieldInfo.SetValue(null, obj);
+                        actObj.Obj = obj;
+                    }
+                }
+
+                //search in properties
+                PropertyInfo[] propertyInfos = actObj.ParentType.GetProperties().ToArray();
+                foreach (PropertyInfo propertyInfo in propertyInfos)
+                {
+                    if (((ContainSettingsAttribute) Attribute.GetCustomAttribute(propertyInfo, typeof(ContainSettingsAttribute))).Name == actObj.Name)
+                    {
+                        object obj = Xml.ReadXml(Path.Combine(settingsPath, actObj.Name + ".xml"), actObj.Obj.GetType());
+                        //update the reference to the object in the list and in the original class
+                        propertyInfo.SetValue(null, obj, null);
+                        actObj.Obj = obj;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -78,7 +115,7 @@ namespace ImportantClasses
                         if (attrs.Length != 1)
                             throw new IndexOutOfRangeException("The field " + info.Name + " has more than one attribute of the Type ContainSettingsAttribute");
                         if (info.IsStatic)
-                            settingList.Add(new ContainSettingObject(attrs.First().Name, info.GetValue(null)));
+                            settingList.Add(new ContainSettingObject(attrs.First().Name, info.GetValue(null), type));
                     }
 
                     //Add all Properties to the List
@@ -90,7 +127,7 @@ namespace ImportantClasses
                         if (attrs.Length != 1)
                             throw new IndexOutOfRangeException("The property " + info.Name + " has more than one attribute of the Type ContainSettingsAttribute");
                         if (info.GetAccessors().First().IsStatic)
-                            settingList.Add(new ContainSettingObject(attrs.First().Name, info.GetValue(null, null)));
+                            settingList.Add(new ContainSettingObject(attrs.First().Name, info.GetValue(null, null), type));
                     }
                 }
             }
@@ -104,15 +141,17 @@ namespace ImportantClasses
     {
         public string Name;
         public object Obj;
+        public Type ParentType;
         public ContainSettingObject()
         {
             
         }
 
-        public ContainSettingObject(string name, object obj)
+        public ContainSettingObject(string name, object obj, Type parentType)
         {
             Name = name;
             Obj = obj;
+            ParentType = parentType;
         }
     }
 

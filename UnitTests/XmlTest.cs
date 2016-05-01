@@ -16,6 +16,7 @@ namespace UnitTests
         [TestMethod]
         public void TestObject()
         {
+            Settings.SaveSettings();
             Settings.LoadSettings();
         }
     }
@@ -28,6 +29,7 @@ namespace UnitTests
         public static Spline spl
         {
             get { return spline;}
+            set { spline = value; }
         }
         [ContainSettings("Spline2")]
         public static Spline spline = new Spline(new[] { 1.0, 2.0, 3.0 }, new[] { 1.0, 4.0, 9.0 });

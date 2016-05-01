@@ -27,5 +27,16 @@ namespace ImportantClasses
             stream.Close();
             return (T)obj;
         }
+
+        public static object ReadXml(string path, Type type)
+        {
+            if (!File.Exists(path))
+                throw new FileNotFoundException("Could not found the specified file: " + path);
+            FileStream stream = new FileStream(path, FileMode.Open);
+            XmlSerializer serializer = new XmlSerializer(type);
+            object obj = serializer.Deserialize(stream);
+            stream.Close();
+            return obj;
+        }
     }
 }
