@@ -98,7 +98,11 @@
     <Compile Include="Assets\Scripts\ImportantClasses\ICalculationComponent.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\LinearInterpolation.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\MathHelper.cs" />
-    <Compile Include="Assets\Scripts\ImportantClasses\Settings.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Settings\ContainSettingObject.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Settings\ContainSettingsAttribute.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Settings\SettingAttribute.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Settings\SettingMenuItemAttribute.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Settings\Settings.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Spline.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Xml.cs" />
     <Compile Include="Assets\Scripts\Output\AeroOutput.cs" />
