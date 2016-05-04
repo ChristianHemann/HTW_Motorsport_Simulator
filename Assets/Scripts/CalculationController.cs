@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using MathNet.Numerics.Interpolation;
 using System.Threading;
+using CalculationComponents;
+using ImportantClasses;
 
 namespace Simulator
 {
@@ -16,7 +18,27 @@ namespace Simulator
         private volatile bool _isCalculating = false;
         private volatile EventWaitHandle _ewh;
 
-        public CalculationController()
+        public static CalculationController Instance
+        {
+            get
+            {
+                if(_instance == null)
+                    _instance = new CalculationController();
+                return _instance;
+            }
+        }
+        
+        [ContainSettings("Car")]
+        private static CalculationController _instance;
+
+        [SettingMenuItem("Engine")]
+        private Engine engine;
+
+        //just to show the attribute
+        [Setting("maximum Engine Torque", 100, 0, 1000, 5)]
+        private int torque;
+
+        private CalculationController()
         {
             if (_ewh == null)
                 _ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
