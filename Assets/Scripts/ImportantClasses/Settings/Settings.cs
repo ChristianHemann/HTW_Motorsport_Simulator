@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,9 +17,11 @@ namespace ImportantClasses
     /// </summary>
     public static class Settings
     {
-        private static bool _isInitialized = false;
-        private static readonly List<ContainSettingObject> settingList = new List<ContainSettingObject>();
-        private static string settingsPath = @"D:\Studium\SWE\";
+        private static bool _isInitialized = false; //says if the Method Initialize was called
+        private static readonly List<ContainSettingObject> settingList = new List<ContainSettingObject>(); //Contains all objects with the ContainSettingsAttribute
+        private static string settingsPath = ""; //The Default Settings Path
+        private static Dictionary<string, object> namesHierachy; //saves all the MenuItems and Settings to accelerate the finding of a specific name
+        private static Dictionary<string[], object> changeBufferDictionary;
 
         /// <summary>
         /// Initialize the class. Without Initialization the class cannot work.
@@ -27,7 +30,12 @@ namespace ImportantClasses
         {
             if (!_isInitialized)
             {
+                //Path in Windows: C:\Programm Data\Simulator
+                settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Simulator");
+                namesHierachy = new Dictionary<string, object>();
+                changeBufferDictionary = new Dictionary<string[], object>();
                 SearchForContainSettingsAttribute();
+                SearchForSettingMenuItemAttribute();
                 _isInitialized = true;
             }
         }
@@ -39,69 +47,181 @@ namespace ImportantClasses
         /// <returns>the List of Menu Items</returns>
         public static List<string> GetMenuItems(string[] names)
         {
-            List<string> children = new List<string>();
-            object parent = null;
-            if (0 == names.Length) //root; return the Names of the ContainSettingsObjects
+            Dictionary<string, object> actDictionary = namesHierachy;
+            for (int i = 0; i < names.Length; i++) //go to the destinated dictionary
             {
-                foreach (ContainSettingObject obj in settingList)
+                object obj;
+                if (actDictionary.TryGetValue(names[i], out obj))
                 {
-                    children.Add(obj.Name);
-                }
-                return children;
-            }
-
-            foreach (ContainSettingObject obj in settingList) //find the first child
-            {
-                if (names[0] == obj.Name)
-                {
-                    parent = obj.Obj;
-                    break;
-                }
-            }
-
-            for (int i = 0; i < names.Length; i++)
-            {
-                if (parent == null) //this should not happen
-                    return children;
-
-                IEnumerable<FieldInfo> infos = parent.GetType()
-                    .GetFields()
-                    .Where(prop => prop.IsDefined(typeof(SettingMenuItemAttribute), false));
-                if (i == names.Length - 1) //when the destinated level is reached
-                {
-                    foreach (FieldInfo info in infos)
-                    {
-                        children.Add(((SettingMenuItemAttribute)
-                            info.GetCustomAttributes(typeof(SettingMenuItemAttribute), false).First()).Name);
-                    }
-                    return children;
+                    if (obj is Dictionary<string, object>)
+                        actDictionary = (Dictionary < string, object> )obj;
+                    else
+                        return null; //the object is not a menuItem
                 }
                 else
                 {
-                    foreach (FieldInfo info in infos)
+                    return null; //no object was found
+                }
+            }
+            List<string> list = new List<string>();
+            foreach (KeyValuePair<string, object> keyValuePair in actDictionary)
+            {
+                if (keyValuePair.Value is Dictionary<string, object>) //add just if it is a menuItem
+                list.Add(keyValuePair.Key);
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// searches for all Settings in the given Path
+        /// </summary>
+        /// <param name="names">the path to search for settings. each entry in the array represents the next level. i.e: names[0] = car, names[1] = suspension</param>
+        /// <returns>return the values with the names</returns>
+        public static Dictionary<string, object> GetMenuSettings(string[] names)
+        {
+            Dictionary<string, object> actDictionary = namesHierachy;
+            for (int i = 0; i < names.Length; i++) //go to the destinated dictionary
+            {
+                object obj;
+                if (actDictionary.TryGetValue(names[i], out obj))
+                {
+                    if (obj is Dictionary<string, object>)
+                        actDictionary = (Dictionary<string, object>)obj;
+                    else
+                        return null; //The object is not a MenuItem
+                }
+                else
+                {
+                    return null; //no object was found
+                }
+            }
+            Dictionary<string, object> settingsDictionary = new Dictionary<string, object>();
+            foreach (KeyValuePair<string, object> keyValuePair in actDictionary)
+            {
+                List<string> changeName = names.ToList();
+                changeName.Add(keyValuePair.Key);
+                if (changeBufferDictionary.ContainsKey(changeName.ToArray())) //If the value was changed: show the changed value
+                {
+                    object value;
+                    changeBufferDictionary.TryGetValue(changeName.ToArray(), out value);
+                    settingsDictionary.Add(keyValuePair.Key, value);
+                }
+                else if (!(keyValuePair.Value is Dictionary<string, object>)) //add just if it is a setting
+                    settingsDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+            }
+            return settingsDictionary;
+        }
+
+        /// <summary>
+        /// change the value of a setting in a temporary buffer; it is adopt when the function SaveTemporaryChanges() is called
+        /// </summary>
+        /// <param name="names">the name and path to the object which was changed</param>
+        /// <param name="value">the value of the changed object</param>
+        public static void ChangeSettingTomporary(string[] names, object value)
+        {
+            if (changeBufferDictionary.ContainsKey(names)) //make sure that a key do not appear twice
+            {
+                changeBufferDictionary.Remove(names);
+            }
+            changeBufferDictionary.Add(names, value);
+        }
+
+        /// <summary>
+        /// Saves all Settings which were changed temporary
+        /// </summary>
+        public static void SaveTemporaryChanges()
+        {
+            if (changeBufferDictionary.Count == 0)
+                return;
+            foreach (KeyValuePair<string[], object> keyValuePair in changeBufferDictionary)
+            {
+                object parent = null;
+                foreach (ContainSettingObject containSettingObject in settingList)
+                {
+                    if (containSettingObject.Name == keyValuePair.Key.First())
                     {
-                        if (((SettingMenuItemAttribute)
-                            info.GetCustomAttributes(typeof(SettingMenuItemAttribute), false).First()).Name == names[i])
+                        parent = containSettingObject.Obj;
+                        break;
+                    }
+                }
+                if (parent == null)
+                    return;
+                for (int i = 1; i < keyValuePair.Key.Length-1; i++)
+                {
+                    bool parentFound = false;
+                    IEnumerable<FieldInfo> fieldInfos = 
+                        parent.GetType().GetFields().Where(prop => prop.IsDefined(typeof(SettingMenuItemAttribute), false));
+                    foreach (FieldInfo fieldInfo in fieldInfos)
+                    {
+                        SettingMenuItemAttribute attr =
+                            (SettingMenuItemAttribute)
+                                fieldInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false).First();
+                        if (attr.Name == keyValuePair.Key[i])
                         {
-                            parent = info.GetValue(parent); //go one level deeper
+                            parent = fieldInfo.GetValue(parent);
+                            parentFound = true;
+                            break;
+                        }
+                    }
+                    if (!parentFound)
+                    {
+                        IEnumerable<PropertyInfo> propertyInfos =
+                            parent.GetType()
+                                .GetProperties()
+                                .Where(prop => prop.IsDefined(typeof(SettingMenuItemAttribute), false));
+                        foreach (PropertyInfo propertyInfo in propertyInfos)
+                        {
+                            SettingMenuItemAttribute attr =
+                                (SettingMenuItemAttribute)
+                                    propertyInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false).First();
+                            if (attr.Name == keyValuePair.Key[i])
+                            {
+                                parent = propertyInfo.GetValue(parent, null);
+                                break;
+                            }
+                        }
+                    }
+                } 
+                //parent found; get value
+
+                bool valueSet = false;
+                IEnumerable<FieldInfo> fieldInfos2 = parent.GetType().GetFields().Where(prop => prop.IsDefined(typeof(SettingAttribute), false));
+                foreach (FieldInfo fieldInfo in fieldInfos2)
+                {
+                    SettingAttribute attr = (SettingAttribute)fieldInfo.GetCustomAttributes(typeof(SettingAttribute), false).First();
+                    if (attr.Name == keyValuePair.Key.Last())
+                    {
+                        fieldInfo.SetValue(parent, keyValuePair.Value);
+                        valueSet = true;
+                        break;
+                    }
+                }
+                if (!valueSet)
+                {
+                    IEnumerable<PropertyInfo> propertyInfos2 =
+                        parent.GetType().GetProperties().Where(prop => prop.IsDefined(typeof(SettingAttribute), false));
+                    foreach (PropertyInfo propertyInfo in propertyInfos2)
+                    {
+                        SettingAttribute attr =
+                            (SettingAttribute) propertyInfo.GetCustomAttributes(typeof(SettingAttribute), false).First();
+                        if (attr.Name == keyValuePair.Key.Last())
+                        {
+                            propertyInfo.SetValue(parent, keyValuePair.Value, null);
                             break;
                         }
                     }
                 }
             }
-
-
-            return null;
+            changeBufferDictionary.Clear();
+            SaveAllSettings();
         }
 
-        public static List<object> GetMenuSettings(string[] names)
+        /// <summary>
+        /// discards the Changes in the Settings
+        /// </summary>
+        public static void DiscardTemporaryChanges()
         {
-            
-        }
-
-        public static void WriteSettingsFromMenu()
-        {
-            
+            changeBufferDictionary.Clear();
         }
 
         /// <summary>
@@ -191,7 +311,6 @@ namespace ImportantClasses
                         //relevant when one class contains more than one object marked with ContainSettingsAttribute
                         if (((ContainSettingsAttribute) Attribute.GetCustomAttribute(fieldInfo, typeof(ContainSettingsAttribute))).Name == actObj.Name)
                         {
-
                             object obj = Xml.ReadXml(Path.Combine(settingsPath, actObj.Name + ".xml"),
                                 actObj.Obj.GetType());
                             //update the reference to the object in the list and in the original class
@@ -259,5 +378,76 @@ namespace ImportantClasses
                 }
             }
         }
+
+        /// <summary>
+        /// Search in the List of all ContainSettingAttributes for all Attributes with the SettingMenuItemAttribute an SettingAttribute
+        /// </summary>
+        private static void SearchForSettingMenuItemAttribute()
+        {
+            foreach (ContainSettingObject obj in settingList)
+            {
+                SearchForSettingMenuItemAttribute(obj.Obj, namesHierachy);
+                SearchForSettingAttribute(obj.Obj, namesHierachy);
+            }
+        }
+
+        /// <summary>
+        /// Search for all Attributes with the SettingMenuItemAttribute and SettingAttribute at the given object
+        /// </summary>
+        /// <param name="parent">the parent object to search for attributes</param>
+        /// <param name="parentDictionary">the dictionary to add the found attributes</param>
+        private static void SearchForSettingMenuItemAttribute(object parent, Dictionary<string, object> parentDictionary)
+        {
+            IEnumerable<FieldInfo> fieldInfos = parent.GetType().GetFields().Where(prop => prop.IsDefined(typeof(SettingMenuItemAttribute), false));
+            foreach (FieldInfo fieldInfo in fieldInfos)
+            {
+                Dictionary<string, object> childDictionary = new Dictionary<string, object>();
+                SettingMenuItemAttribute[] attrs =
+                    (SettingMenuItemAttribute[]) fieldInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false);
+                parentDictionary.Add(attrs.First().Name, childDictionary);
+                SearchForSettingMenuItemAttribute(fieldInfo.GetValue(parent), childDictionary);
+                SearchForSettingAttribute(fieldInfo.GetValue(parent), childDictionary);
+            }
+
+            IEnumerable<PropertyInfo> propertyInfos =
+                parent.GetType().GetProperties().Where(prop => prop.IsDefined(typeof(SettingMenuItemAttribute), false));
+            foreach (PropertyInfo propertyInfo in propertyInfos)
+            {
+                Dictionary<string, object> childDictionary = new Dictionary<string, object>();
+                SettingMenuItemAttribute[] attrs =
+                    (SettingMenuItemAttribute[])
+                        propertyInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false);
+                parentDictionary.Add(attrs.First().Name, childDictionary);
+                SearchForSettingMenuItemAttribute(propertyInfo.GetValue(parent, null), childDictionary);
+                SearchForSettingAttribute(propertyInfo.GetValue(parent, null), childDictionary);
+            }
+        }
+
+        /// <summary>
+        /// Search for all SettingAttribute at the given object
+        /// </summary>
+        /// <param name="parent">the parent object to search for attributes</param>
+        /// <param name="parentDictionary">the dictionary to add the found attributes</param>
+        private static void SearchForSettingAttribute(object parent, Dictionary<string, object> parentDictionary)
+        {
+            IEnumerable<FieldInfo> fieldInfos =
+                parent.GetType().GetFields().Where(prop => prop.IsDefined(typeof(SettingAttribute), false));
+            foreach (FieldInfo fieldInfo in fieldInfos)
+            {
+                SettingAttribute[] attrs =
+                    (SettingAttribute[]) fieldInfo.GetCustomAttributes(typeof(SettingAttribute), false);
+                parentDictionary.Add(attrs.First().Name, fieldInfo.GetValue(parent));
+            }
+
+            IEnumerable<PropertyInfo> propertyInfos =
+                parent.GetType().GetProperties().Where(prop => prop.IsDefined(typeof(SettingAttribute), false));
+            foreach (PropertyInfo propertyInfo in propertyInfos)
+            {
+                SettingAttribute[] attrs =
+                    (SettingAttribute[]) propertyInfo.GetCustomAttributes(typeof(SettingAttribute), false);
+                parentDictionary.Add(attrs.First().Name, propertyInfo.GetValue(parent, null));
+            }
+        }
     }
 }
+
