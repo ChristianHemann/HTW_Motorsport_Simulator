@@ -18,6 +18,7 @@ namespace Simulator
         private volatile bool _isCalculating = false;
         private volatile EventWaitHandle _ewh;
 
+        [ContainSettings("Car")]
         public static CalculationController Instance
         {
             get
@@ -28,21 +29,21 @@ namespace Simulator
             }
         }
         
-        [ContainSettings("Car")]
         private static CalculationController _instance;
 
         [SettingMenuItem("Engine")]
-        private Engine engine;
+        public Engine engine;
 
         //just to show the attribute
         [Setting("maximum Engine Torque", 100, 0, 1000, 5)]
-        private int torque;
+        public int torque;
 
         private CalculationController()
         {
             if (_ewh == null)
                 _ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
             workerThread = new Thread(this.WorkerFunction);
+            engine = new Engine();
         }
 
         public void Initialize()

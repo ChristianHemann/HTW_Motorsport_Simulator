@@ -386,8 +386,10 @@ namespace ImportantClasses
         {
             foreach (ContainSettingObject obj in settingList)
             {
-                SearchForSettingMenuItemAttribute(obj.Obj, namesHierachy);
-                SearchForSettingAttribute(obj.Obj, namesHierachy);
+                Dictionary<string, object> actDictionary = new Dictionary<string, object>();
+                namesHierachy.Add(obj.Name, actDictionary);
+                SearchForSettingMenuItemAttribute(obj.Obj, actDictionary);
+                SearchForSettingAttribute(obj.Obj, actDictionary);
             }
         }
 
