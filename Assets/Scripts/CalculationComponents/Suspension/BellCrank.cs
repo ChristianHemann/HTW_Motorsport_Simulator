@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CalculationComponents.SuspensionComponents
 {
-    class BellCrank
+    public class BellCrank
     {
     }
 }

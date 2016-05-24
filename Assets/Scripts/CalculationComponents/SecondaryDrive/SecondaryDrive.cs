@@ -6,7 +6,7 @@ using ImportantClasses;
 
 namespace CalculationComponents
 {
-    class SecondaryDrive : ICalculationComponent
+    public class SecondaryDrive : ICalculationComponent
     {
         public void Calculate()
         {

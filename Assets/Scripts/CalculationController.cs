@@ -34,6 +34,9 @@ namespace Simulator
         [SettingMenuItem("Engine")]
         public Engine engine;
 
+        [SettingMenuItem("GearBox")]
+        public GearBox gearBox;
+
         //just to show the attribute
         [Setting("maximum Engine Torque", 100, 0, 1000, 5)]
         public int torque;
@@ -44,6 +47,8 @@ namespace Simulator
                 _ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
             workerThread = new Thread(this.WorkerFunction);
             engine = new Engine();
+            gearBox = new GearBox();
+            torque = 100;
         }
 
         public void Initialize()

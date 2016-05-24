@@ -7,7 +7,7 @@ using ImportantClasses;
 
 namespace CalculationComponents
 {
-    class Suspension : ICalculationComponent
+    public class Suspension : ICalculationComponent
     {
         public void Calculate()
         {

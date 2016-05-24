@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CalculationComponents.SuspensionComponents
 {
-    class WheelHub
+    public class WheelHub
     {
     }
 }

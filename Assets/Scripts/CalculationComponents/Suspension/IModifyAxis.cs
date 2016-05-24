@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CalculationComponents.SuspensionComponents
 {
-    interface IModifyAxis
+    public interface IModifyAxis
     {
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CalculationComponents.SuspensionComponents
 {
-    class Stabilisator
+    public class Stabilisator
     {
     }
 }
