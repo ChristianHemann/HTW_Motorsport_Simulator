@@ -5,26 +5,24 @@ using System.Text;
 using CalculationComponents;
 namespace Output
 {
-   public class EngineOutput
+    class EngineOutput
     {
-        //private CalculationComponents.Engine engine;
+        private CalculationComponents.Engine engine;
 
-        ////constructor AeroOutput
-        //public EngineOutput()
-        //{
-        //}
-        ////initialisierung
-        //private void init()
-        //{
-        //    engine = new Engine();
-        //    engine.Calculate();
-        //}
-        //// output 
-        //private void outp()
-        //{
-        //    engine.StoreResult();
-        //}
-        public float torque { get; set; }
-        public float power { get; set; }
+        //constructor AeroOutput
+        public EngineOutput()
+        {
+        }
+        //initialisierung
+        private void init()
+        {
+            engine = new Engine();
+            engine.Calculate();
+        }
+        // output 
+        private void outp()
+        {
+            engine.StoreResult();
+        }
     }
 }
