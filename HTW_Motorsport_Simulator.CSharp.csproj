@@ -63,15 +63,14 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Threading">
-      <HintPath>Assets\Libs\net35\TaskParallelLibrary\System.Threading.dll</HintPath>
-    </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>Assets\Libs\net35\MathNet.Numerics\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>Assets\Libs\net35\TaskParallelLibrary\System.Threading.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Calculation.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Aerodynamics\Aerodynamic.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Brake\Brake.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Engine\Engine.cs" />
@@ -115,11 +114,18 @@
     <Compile Include="Assets\Scripts\Output\SuspensionOutput.cs" />
     <Compile Include="Assets\Scripts\Output\TrackOutput.cs" />
     <Compile Include="Assets\Scripts\Output\WheelOutput.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\Calculation.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\Menu.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\SettingTemplates\BoolSettingTemplate.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\SettingTemplates\ISettingTemplate.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\SettingTemplates\SettingTemplate.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\SettingTemplates\StringSettingTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Libs\net35\MathNet.Numerics\MathNet.Numerics.xml" />
     <None Include="Assets\Libs\net35\TaskParallelLibrary\System.Threading.xml" />
     <None Include="Assets\Libs\net35\TaskParallelLibrary\redist.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
