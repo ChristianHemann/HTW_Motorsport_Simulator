@@ -10,7 +10,6 @@ namespace ImportantClasses
     /// Interpolates linear piecewise between the given points
     /// this class is a wrapper to provide .NET XML Functions to the MathDotNet Library
     /// </summary>
-    [Serializable]
     public class LinearInterpolation
     {
         [XmlArray]

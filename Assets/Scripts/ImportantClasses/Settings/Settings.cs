@@ -119,10 +119,21 @@ namespace ImportantClasses
         /// <param name="value">the value of the changed object</param>
         public static void ChangeSettingTomporary(string[] names, object value)
         {
-            if (changeBufferDictionary.ContainsKey(names)) //make sure that a key do not appear twice
+            foreach (KeyValuePair<string[], object> keyValuePair in changeBufferDictionary)
             {
-                changeBufferDictionary.Remove(names);
+                bool allValuesFound = true;
+                for (int i = 0; i < keyValuePair.Key.Length && i < names.Length; ++i)
+                {
+                    if (keyValuePair.Key[i] != names[i])
+                    {
+                        allValuesFound = false;
+                        break;
+                    }
+                }
+                if (allValuesFound)
+                    changeBufferDictionary.Remove(keyValuePair.Key);
             }
+
             changeBufferDictionary.Add(names, value);
         }
 

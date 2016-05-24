@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using UnityInterface.SettingTemplates;
 using ImportantClasses;
 using UnityEngine;
 
@@ -29,6 +30,7 @@ namespace UnityInterface
         {
             _namesList = new List<string>();
             Settings.Initialize();
+            SettingTemplate.Initialize();
             CalculateSize();
         }
 
@@ -129,8 +131,17 @@ namespace UnityInterface
         private void DrawSettings()
         {
             Dictionary<string,object> namesDictionary = Settings.GetMenuSettings(_namesList.ToArray());
-
-            GUI.Button(new Rect(0, 0, 200, 200), "test"); //test
+            foreach (KeyValuePair<string, object> keyValuePair in namesDictionary)
+            {
+                float height ;
+                if(SettingTemplate.heightDictionary.TryGetValue(keyValuePair.Value.GetType(), out height))
+                    height *= contentHeight;
+                else
+                    height = 20f;
+                object newValue = SettingTemplate.Draw(keyValuePair.Value, keyValuePair.Key, height, menuSettingWidth);
+                if (!newValue.Equals(keyValuePair.Value))
+                    Settings.ChangeSettingTomporary(_namesList.ToArray(),newValue);
+            }
         }
     }
 }

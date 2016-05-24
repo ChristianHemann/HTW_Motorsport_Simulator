@@ -6,7 +6,6 @@ namespace ImportantClasses
     /// <summary>
     /// linear Interpolation in 3D
     /// </summary>
-    [Serializable]
     public class CharacteristicMap
     {
         [XmlArray]
