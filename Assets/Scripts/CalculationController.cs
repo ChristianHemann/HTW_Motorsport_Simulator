@@ -34,6 +34,36 @@ namespace Simulator
         [SettingMenuItem("Engine")]
         private Engine engine;
 
+        [SettingMenuItem("Brake")]
+        private Brake brake;
+
+        [SettingMenuItem("Aerodynamic")]
+        private Aerodynamic aerodynamics;
+
+        [SettingMenuItem("GearBox")]
+        private GearBox gearbox;
+
+        [SettingMenuItem("OverallCar")]
+        private OverallCar overallcar;
+
+        [SettingMenuItem("Aerodynamic")]
+        private Aerodynamic aerodynamic;
+
+        [SettingMenuItem("SecondaryDrive")]
+        private SecondaryDrive secondarydrive;
+
+        [SettingMenuItem("Steering")]
+        private Steering steering;
+
+        [SettingMenuItem("Suspension")]
+        private Suspension suspension;
+
+        [SettingMenuItem("Track")]
+        private Track track;
+
+        [SettingMenuItem("Wheel")]
+        private Wheel wheel;
+
         //just to show the attribute
         [Setting("maximum Engine Torque", 100, 0, 1000, 5)]
         private int torque;

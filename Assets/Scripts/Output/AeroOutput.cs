@@ -6,25 +6,28 @@ using CalculationComponents;
 
 namespace Output
 {
-    class AeroOutput
+   public class AeroOutput
     {
-        private CalculationComponents.Aerodynamic aerodynamic;
+        //private CalculationComponents.Aerodynamic aerodynamic;
 
-        //constructor AeroOutput
-        public AeroOutput ()
-        {
-        }
-        //initialisierung
-        private void init()
-        {
-            aerodynamic = new Aerodynamic();
-            aerodynamic.Calculate();
-        }
-        // output 
-        private void outp()
-        {
-            aerodynamic.StoreResult();
-        }
+        ////constructor AeroOutput
+        //public AeroOutput ()
+        //{
+        //}
+        ////initialisierung
+        //private void init()
+        //{
+        //    aerodynamic = new Aerodynamic();
+        //    aerodynamic.Calculate();
+        //}
+        //// output 
+        //private void outp()
+        //{
+        //    aerodynamic.StoreResult();
+        //}
+        public float downforce { get; set; }
+        public float drag { get; set; }
+
     }
 
 }

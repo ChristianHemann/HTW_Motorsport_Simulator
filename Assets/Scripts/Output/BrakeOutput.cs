@@ -6,24 +6,25 @@ using CalculationComponents;
 
 namespace Output
 {
-    class BrakeOutput
+    public class BrakeOutput
     {
-        private CalculationComponents.Brake brake;
+        //private CalculationComponents.Brake brake;
 
-        //constructor AeroOutput
-        public BrakeOutput()
-        {
-        }
-        //initialisierung
-        private void init()
-        {
-            brake = new Brake();
-            brake.Calculate();
-        }
-        // output 
-        private void outp()
-        {
-            brake.StoreResult();
-        }
+        ////constructor AeroOutput
+        //public BrakeOutput()
+        //{
+        //}
+        ////initialisierung
+        //private void init()
+        //{
+        //    brake = new Brake();
+        //    brake.Calculate();
+        //}
+        //// output 
+        //private void outp()
+        //{
+        //    brake.StoreResult();
+        //}
+        public float brake { get; set; }
     }
 }

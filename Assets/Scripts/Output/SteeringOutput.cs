@@ -5,23 +5,25 @@ using System.Text;
 using CalculationComponents;
 namespace Output
 {
-    class SteeringOutput
+  public  class SteeringOutput
     {
-        private CalculationComponents.Steering steering;
-        //constructor AeroOutput
-        public SteeringOutput()
-        {
-        }
-        //initialisierung
-        private void init()
-        {
-            steering = new Steering();
-            steering.Calculate();
-        }
-        // output 
-        private void outp()
-        {
-            steering.StoreResult();
-        }
+        //private CalculationComponents.Steering steering;
+        ////constructor AeroOutput
+        //public SteeringOutput()
+        //{
+        //}
+        ////initialisierung
+        //private void init()
+        //{
+        //    steering = new Steering();
+        //    steering.Calculate();
+        //}
+        //// output 
+        //private void outp()
+        //{
+        //    steering.StoreResult();
+        //}
+        public int displ { get; set; }
+        public int draglin { get; set; }
     }
 }
