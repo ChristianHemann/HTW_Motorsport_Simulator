@@ -18,7 +18,7 @@ namespace Assets.Scripts.UnityInterface.SettingTemplates
 
         }
 
-        public static T Draw<T>(T value, string name, float height, float width)
+        /*public static T Draw<T>(T value, string name, float height, float width)
         {
             if (heightDictionary.ContainsKey(typeof(T)))
             {
@@ -28,13 +28,13 @@ namespace Assets.Scripts.UnityInterface.SettingTemplates
 
                 }
             }
-            else //ifif there is no 
+            else //if there is no Control defined
             {
                 GUI.TextField(new Rect(0, 0, width, height), "For the Type " + typeof(T).Name + " is no Control Defined");
             }
 
             return null;
-        }
+        }*/
 
         public static bool Draw(bool value)
         {
