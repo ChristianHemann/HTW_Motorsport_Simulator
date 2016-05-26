@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.SymbolStore;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +21,6 @@ namespace ImportantClasses
         private static bool _isInitialized = false; //says if the Method Initialize was called
         private static readonly List<ContainSettingObject> settingList = new List<ContainSettingObject>(); //Contains all objects with the ContainSettingsAttribute
         private static string settingsPath = ""; //The Default Settings Path
-        private static Dictionary<string, object> namesHierachy; //saves all the MenuItems and Settings to accelerate the finding of a specific name
         private static Dictionary<string[], object> changeBufferDictionary;
 
         /// <summary>
@@ -32,7 +32,6 @@ namespace ImportantClasses
             {
                 //Path in Windows: C:\Programm Data\Simulator
                 settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Simulator");
-                namesHierachy = new Dictionary<string, object>();
                 changeBufferDictionary = new Dictionary<string[], object>();
                 SearchForContainSettingsAttribute();
                 SearchForSettingMenuItemAttribute();
@@ -47,8 +46,30 @@ namespace ImportantClasses
         /// <returns>the List of Menu Items</returns>
         public static List<string> GetMenuItems(string[] names)
         {
-            Dictionary<string, object> actDictionary = namesHierachy;
-            for (int i = 0; i < names.Length; i++) //go to the destinated dictionary
+            Dictionary<string, object> actDictionary = null;
+            if (names.Length == 0) //if no name: get all objects out of settingList; create the Dictionary
+            {
+                actDictionary = new Dictionary<string, object>();
+                foreach (ContainSettingObject containSettingObject in settingList)
+                {
+                    actDictionary.Add(containSettingObject.Name, containSettingObject.namesHierachy);
+                }
+            }
+            else
+            {
+                foreach (ContainSettingObject containSettingObject in settingList)
+                {
+                    if (containSettingObject.Name == names.First())
+                    {
+                        actDictionary = containSettingObject.namesHierachy;
+                        break;
+                    }
+                }
+            }
+            if(actDictionary == null)
+                return null;
+
+            for (int i = 1; i < names.Length; i++) //go to the destinated dictionary
             {
                 object obj;
                 if (actDictionary.TryGetValue(names[i], out obj))
@@ -79,35 +100,114 @@ namespace ImportantClasses
         /// <returns>return the values with the names</returns>
         public static Dictionary<string, object> GetMenuSettings(string[] names)
         {
-            Dictionary<string, object> actDictionary = namesHierachy;
-            for (int i = 0; i < names.Length; i++) //go to the destinated dictionary
-            {
-                object obj;
-                if (actDictionary.TryGetValue(names[i], out obj))
-                {
-                    if (obj is Dictionary<string, object>)
-                        actDictionary = (Dictionary<string, object>)obj;
-                    else
-                        return null; //The object is not a MenuItem
-                }
-                else
-                {
-                    return null; //no object was found
-                }
-            }
+            //namesHierachy cannot be used, because of problems in getting the right Instance
             Dictionary<string, object> settingsDictionary = new Dictionary<string, object>();
-            foreach (KeyValuePair<string, object> keyValuePair in actDictionary)
+
+            if (names.Length == 0) //if no name there cannot be any setting
+                return settingsDictionary;
+
+            int i = 0; //find when to stop the iteration of the parents ans get the settings
+            foreach (ContainSettingObject obj in settingList)
             {
-                List<string> changeName = names.ToList();
-                changeName.Add(keyValuePair.Key);
-                if (changeBufferDictionary.ContainsKey(changeName.ToArray())) //If the value was changed: show the changed value
+                if (obj.Name == names.First())
                 {
-                    object value;
-                    changeBufferDictionary.TryGetValue(changeName.ToArray(), out value);
-                    settingsDictionary.Add(keyValuePair.Key, value);
+                    object parent = obj.Obj;
+                    foreach (string name in names)
+                    {
+                        if (++i == names.Length) //get settings
+                        {
+                            IEnumerable<FieldInfo> fieldInfos =
+                                parent.GetType()
+                                    .GetFields()
+                                    .Where(field => field.IsDefined(typeof(SettingAttribute), false));
+                            foreach (FieldInfo fieldInfo in fieldInfos)
+                            {
+                                string settingName = ((SettingAttribute)
+                                    fieldInfo.GetCustomAttributes(typeof(SettingAttribute), false).First()).Name;
+                                List<string> changeName = names.ToList(); //here the name (key) of the changed Control will be generated for comparision
+                                changeName.Add(settingName);
+                                string[] changeNameArray = changeName.ToArray(); //Convert the List into an Array
+                                bool containsKey = false; //saves whether the key was found
+                                foreach (KeyValuePair<string[], object> valuePair in changeBufferDictionary) //If the value was changed: show the changed value
+                                {
+                                    if (Helper.ArrayValueEqual<string>(valuePair.Key, changeNameArray)) //The Method changeBufferDictionary.ContainsKey() is not suitable, because it return false if the array is not the same but has the same content
+                                    {
+                                        containsKey = true;
+                                        //If the value was changed: show the changed value
+                                        object value;
+                                        changeBufferDictionary.TryGetValue(valuePair.Key, out value);
+                                        settingsDictionary.Add(settingName, value);
+                                        break;
+                                    }
+                                }
+                                if (!containsKey) //add just if it was not changed
+                                    settingsDictionary.Add(settingName, fieldInfo.GetValue(parent));
+                            }
+                            IEnumerable<PropertyInfo> propertyInfos =
+                                parent.GetType()
+                                    .GetProperties()
+                                    .Where(prop => prop.IsDefined(typeof(SettingAttribute), false));
+                            foreach (PropertyInfo propertyInfo in propertyInfos)
+                            {
+                                string settingName = ((SettingAttribute)
+                                    propertyInfo.GetCustomAttributes(typeof(SettingAttribute), false).First()).Name;
+                                List<string> changeName = names.ToList(); //here the name (key) of the changed Control will be generated for comparision
+                                changeName.Add(settingName);
+                                string[] changeNameArray = changeName.ToArray(); //Convert the List into an Array
+                                bool containsKey = false; //saves whether the key was found
+                                foreach (KeyValuePair<string[], object> valuePair in changeBufferDictionary) //If the value was changed: show the changed value
+                                {
+                                    if (Helper.ArrayValueEqual<string>(valuePair.Key, changeNameArray)) //The Method changeBufferDictionary.ContainsKey() is not suitable, because it return false if the array is not the same but has the same content
+                                    {
+                                        containsKey = true;
+                                        //If the value was changed: show the changed value
+                                        object value;
+                                        changeBufferDictionary.TryGetValue(valuePair.Key, out value);
+                                        settingsDictionary.Add(settingName, value);
+                                        break;
+                                    }
+                                }
+                                if (!containsKey) //add just if it was not changed
+                                    settingsDictionary.Add(settingName, propertyInfo.GetValue(parent, null));
+                            }
+                            return settingsDictionary;
+                        }
+                        else //iterate through parents
+                        {
+                            bool parentFound = false;
+                            IEnumerable<FieldInfo> fieldInfos =
+                                parent.GetType().GetFields().Where(field => field.IsDefined(typeof(SettingMenuItemAttribute), false));
+                            foreach (FieldInfo fieldInfo in fieldInfos)
+                            {
+                                if (((SettingMenuItemAttribute)
+                                        fieldInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false).First()).Name == name)
+                                {
+                                    parent = fieldInfo.GetValue(parent);
+                                    parentFound = true;
+                                    break;
+                                }
+                            }
+                            if (!parentFound)
+                            {
+                                IEnumerable<PropertyInfo> propertyInfos =
+                                    parent.GetType()
+                                        .GetProperties()
+                                        .Where(prop => prop.IsDefined(typeof(SettingMenuItemAttribute), false));
+                                foreach (PropertyInfo propertyInfo in propertyInfos)
+                                {
+                                    if (
+                                        ((SettingMenuItemAttribute)
+                                            propertyInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false)
+                                                .First()).Name == name)
+                                    {
+                                        parent = propertyInfo.GetValue(parent, null);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
                 }
-                else if (!(keyValuePair.Value is Dictionary<string, object>)) //add just if it is a setting
-                    settingsDictionary.Add(keyValuePair.Key, keyValuePair.Value);
             }
             return settingsDictionary;
         }
@@ -119,20 +219,28 @@ namespace ImportantClasses
         /// <param name="value">the value of the changed object</param>
         public static void ChangeSettingTomporary(string[] names, object value)
         {
+            string[] key = null;
             foreach (KeyValuePair<string[], object> keyValuePair in changeBufferDictionary)
             {
-                bool allValuesFound = true;
-                for (int i = 0; i < keyValuePair.Key.Length && i < names.Length; ++i)
+                if (Helper.ArrayValueEqual<string>(keyValuePair.Key, names)) //The Method changeBufferDictionary.ContainsKey() is not suitable, because it return false if the array is not the same but has the same content
                 {
-                    if (keyValuePair.Key[i] != names[i])
-                    {
-                        allValuesFound = false;
-                        break;
-                    }
+                    key = keyValuePair.Key;
+                    break;
                 }
-                if (allValuesFound)
-                    changeBufferDictionary.Remove(keyValuePair.Key);
+                //bool allValuesFound = true;
+                //for (int i = 0; i < keyValuePair.Key.Length && i < names.Length; ++i)
+                //{
+                //    if (keyValuePair.Key[i] != names[i])
+                //    {
+                //        allValuesFound = false;
+                //        break;
+                //    }
+                //}
+                //if (allValuesFound)
+                //    key = keyValuePair.Key;
             }
+            if(key != null)
+                changeBufferDictionary.Remove(key);
 
             changeBufferDictionary.Add(names, value);
         }
@@ -140,12 +248,15 @@ namespace ImportantClasses
         /// <summary>
         /// Saves all Settings which were changed temporary
         /// </summary>
-        public static void SaveTemporaryChanges()
+        public static void SaveTemporaryChanges(string only = "")
         {
             if (changeBufferDictionary.Count == 0)
                 return;
             foreach (KeyValuePair<string[], object> keyValuePair in changeBufferDictionary)
             {
+                if (only.Length != 0 && keyValuePair.Key.First() != only)
+                    continue;
+
                 object parent = null;
                 foreach (ContainSettingObject containSettingObject in settingList)
                 {
@@ -224,7 +335,6 @@ namespace ImportantClasses
                 }
             }
             changeBufferDictionary.Clear();
-            SaveAllSettings();
         }
 
         /// <summary>
@@ -313,10 +423,12 @@ namespace ImportantClasses
             {
                 if(actObj.Name != name) //Find the correct object
                     continue;
-                try
-                {
+                //try
+                //{
                     //search in fields
-                    FieldInfo[] fieldInfos = actObj.ParentType.GetFields();
+                IEnumerable<FieldInfo> fieldInfos =
+                    actObj.ParentType.GetFields()
+                        .Where(field => field.IsDefined(typeof(ContainSettingsAttribute), false));
                     foreach (FieldInfo fieldInfo in fieldInfos)
                     {
                         //relevant when one class contains more than one object marked with ContainSettingsAttribute
@@ -330,7 +442,9 @@ namespace ImportantClasses
                         }
                     }
                     //search in properties
-                    PropertyInfo[] propertyInfos = actObj.ParentType.GetProperties();
+                IEnumerable<PropertyInfo> propertyInfos =
+                    actObj.ParentType.GetProperties()
+                        .Where(prop => prop.IsDefined(typeof(ContainSettingsAttribute), false));
                     foreach (PropertyInfo propertyInfo in propertyInfos)
                     {
                         if (((ContainSettingsAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(ContainSettingsAttribute))).Name == actObj.Name)
@@ -341,13 +455,13 @@ namespace ImportantClasses
                             actObj.Obj = obj;
                         }
                     }
-                }
-                catch
-                {
-                    EditorUtility.DisplayDialog("error while loading File " + name,
-                        "The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type",
-                        "Ok");
-                }
+                //}
+                //catch
+                //{
+                //    EditorUtility.DisplayDialog("error while loading File " + name,
+                //        "The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type",
+                //        "Ok");
+                //}
 
             }
         }
@@ -397,10 +511,10 @@ namespace ImportantClasses
         {
             foreach (ContainSettingObject obj in settingList)
             {
-                Dictionary<string, object> actDictionary = new Dictionary<string, object>();
-                namesHierachy.Add(obj.Name, actDictionary);
-                SearchForSettingMenuItemAttribute(obj.Obj, actDictionary);
-                SearchForSettingAttribute(obj.Obj, actDictionary);
+                //Dictionary<string, object> actDictionary = new Dictionary<string, object>();
+                //obj.   namesHierachy.Add(obj.Name, actDictionary);
+                SearchForSettingMenuItemAttribute(obj.Obj, obj.namesHierachy);
+                //SearchForSettingAttribute(obj.Obj, obj.namesHierachy);
             }
         }
 

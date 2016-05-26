@@ -131,6 +131,7 @@ namespace UnityInterface
         private void DrawSettings()
         {
             Dictionary<string,object> namesDictionary = Settings.GetMenuSettings(_namesList.ToArray());
+            float posY = 0;
             foreach (KeyValuePair<string, object> keyValuePair in namesDictionary)
             {
                 float height ;
@@ -138,9 +139,41 @@ namespace UnityInterface
                     height *= contentHeight;
                 else
                     height = 20f;
-                object newValue = SettingTemplate.Draw(keyValuePair.Value, keyValuePair.Key, height, menuSettingWidth);
-                if (!newValue.Equals(keyValuePair.Value))
-                    Settings.ChangeSettingTomporary(_namesList.ToArray(),newValue);
+                object newValue = SettingTemplate.Draw(keyValuePair.Value, keyValuePair.Key,
+                    new Rect(0, posY, menuSettingWidth, height));
+                //object newValue = SettingTemplate.Draw(keyValuePair.Value, keyValuePair.Key, height, menuSettingWidth);
+                if (newValue != null && !newValue.Equals(keyValuePair.Value)) //if the value was changed: store it temporary
+                {
+                    List<string> tempList = new List<string>(_namesList); //this list is to add a Value temporary
+                    tempList.Add(keyValuePair.Key);
+                    Settings.ChangeSettingTomporary(tempList.ToArray(), newValue);
+                }
+                posY += height + padding/2;
+            }
+            if (GUI.Button(new Rect(0, posY, menuSettingWidth * 0.24f, contentHeight * 0.2f), "Discard changes"))
+                Settings.DiscardTemporaryChanges();
+
+            if (GUI.Button(new Rect(menuSettingWidth*0.25f, posY, menuSettingWidth*0.25f, contentHeight*0.2f),
+                "overwrite Settings"))
+            {
+                Settings.SaveTemporaryChanges();
+                Settings.SaveAllSettings();
+            }
+
+            if (_namesList.Count != 0) //Show just the selected parent MenuItem
+            {
+                if (GUI.Button(new Rect(menuSettingWidth*0.51f, posY, menuSettingWidth*0.24f, contentHeight*0.2f),
+                    "Save "+_namesList.First()))
+                {
+                    Settings.SaveTemporaryChanges(_namesList.First());
+                    Settings.SaveSetting(_namesList.First());
+                }
+
+                if (GUI.Button(new Rect(menuSettingWidth*0.76f, posY, menuSettingWidth*0.24f, contentHeight*0.2f),
+                    "Load " + _namesList.First()))
+                {
+                    Settings.LoadSettings(_namesList.First());
+                }
             }
         }
     }

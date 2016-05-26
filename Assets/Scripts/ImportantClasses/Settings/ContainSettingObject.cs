@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ImportantClasses
 {
@@ -11,6 +12,7 @@ namespace ImportantClasses
         public object Obj;
         public Type ParentType;
         public string Path;
+        public Dictionary<string, object> namesHierachy; //saves all the MenuItems and Settings to accelerate the finding of a specific name
 
         public ContainSettingObject()
         {
@@ -23,6 +25,7 @@ namespace ImportantClasses
             Obj = obj;
             ParentType = parentType;
             Path = path;
+            namesHierachy = new Dictionary<string, object>();
         }
     }
 }

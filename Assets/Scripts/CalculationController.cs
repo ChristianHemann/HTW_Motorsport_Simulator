@@ -27,6 +27,7 @@ namespace Simulator
                     _instance = new CalculationController();
                 return _instance;
             }
+            set { return; } //The setter is just to load a value via reflection
         }
         
         private static CalculationController _instance;
@@ -71,6 +72,9 @@ namespace Simulator
         [Setting("maximum Engine Torque", 100, 0, 1000, 5)]
         public int torque;
 
+        [Setting("test")]
+        public int test { get; set; }
+
         private CalculationController()
         {
             if (_ewh == null)
@@ -79,6 +83,7 @@ namespace Simulator
             engine = new Engine();
             gearBox = new GearBox();
             torque = 100;
+            test = 25;
         }
 
         public void Initialize()

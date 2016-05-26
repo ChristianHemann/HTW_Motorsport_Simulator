@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\CalculationComponents\Wheel\Wheel.cs" />
     <Compile Include="Assets\Scripts\CalculationController.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\CharacteristicMap.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Helper.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\ICalculationComponent.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\LinearInterpolation.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\MathHelper.cs" />
@@ -116,16 +117,12 @@
     <Compile Include="Assets\Scripts\Output\WheelOutput.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Calculation.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Menu.cs" />
-    <Compile Include="Assets\Scripts\UnityInterface\SettingTemplates\BoolSettingTemplate.cs" />
-    <Compile Include="Assets\Scripts\UnityInterface\SettingTemplates\ISettingTemplate.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\SettingTemplates\SettingTemplate.cs" />
-    <Compile Include="Assets\Scripts\UnityInterface\SettingTemplates\StringSettingTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Libs\net35\MathNet.Numerics\MathNet.Numerics.xml" />
     <None Include="Assets\Libs\net35\TaskParallelLibrary\System.Threading.xml" />
     <None Include="Assets\Libs\net35\TaskParallelLibrary\redist.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

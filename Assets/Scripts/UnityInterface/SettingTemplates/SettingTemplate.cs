@@ -22,51 +22,58 @@ namespace UnityInterface.SettingTemplates
             heightDictionary.Add(typeof(bool), 0.2f);
         }
 
-        public static object Draw(object oldValue, string name, float height, float width)
+        public static object Draw(object oldValue, string name, Rect position)
         {
             //searcch for functions in this class with the same return parameter Type as the values type
             MethodInfo info = typeof(SettingTemplate).GetMethod("Draw",
-                new Type[] { oldValue.GetType(), typeof(string), typeof(float), typeof(float) });
+                new Type[] { oldValue.GetType(), typeof(string), typeof(Rect) });
             if (info != null)
             {
-                object[] parameter = new[] {oldValue, name, height, width};
+                object[] parameter = new[] {oldValue, name, position};
                 return info.Invoke(_instance, parameter);
             }
 
             //if there is no function defined for that Type
-            GUI.TextField(new Rect(0, 0, width, height), "For the Type " + oldValue.GetType().Name + " is no Control Defined");
+            GUI.TextField(position, "For the Type " + oldValue.GetType().Name + " is no Control Defined");
             return null;
         }
 
-        public bool Draw(bool oldValue, string name, float height, float width)
+        public bool Draw(bool oldValue, string name, Rect position)
         {
-            return GUI.Toggle(new Rect(0, 0, width, height), oldValue, name);
+            GUI.Label(new Rect(position.x, position.y, position.width*0.3f, position.height), name);
+            return
+                GUI.Toggle(
+                    new Rect(position.x + position.width*0.3f, position.y, position.width*0.7f, position.height),
+                    oldValue, name);
         }
 
-        public string Draw(string oldValue, string name, float height, float width)
+        public string Draw(string oldValue, string name, Rect position)
         {
-            return GUI.TextField(new Rect(0, 0, width, height), oldValue);
+            GUI.Label(new Rect(position.x, position.y, position.width * 0.3f, position.height), name);
+            return GUI.TextField(new Rect(position.x + position.width * 0.3f, position.y, position.width * 0.7f, position.height), oldValue);
         }
 
-        public int Draw(int oldValue, string name, float height, float width)
+        public int Draw(int oldValue, string name, Rect position)
         {
+            GUI.Label(new Rect(position.x, position.y, position.width * 0.3f, position.height), name);
             int val;
-            string s = GUI.TextField(new Rect(0, 0, width, height), oldValue.ToString());
+            string s = GUI.TextField(new Rect(position.x + position.width * 0.3f, position.y, position.width * 0.7f, position.height), oldValue.ToString());
             if (int.TryParse(s, out val))
                 return val;
             else
                 return oldValue;
         }
 
-        public float Draw(float oldValue, string name, float height, float width)
+        public float Draw(float oldValue, string name, Rect position)
         {
-            return (float)Draw((double)oldValue, name, height, width);
+            return (float)Draw((double)oldValue, name, position);
         }
 
-        public double Draw(double oldValue, string name, float height, float width)
+        public double Draw(double oldValue, string name, Rect position)
         {
+            GUI.Label(new Rect(position.x, position.y, position.width * 0.3f, position.height), name);
             double val;
-            string s = GUI.TextField(new Rect(0, 0, width, height), oldValue.ToString());
+            string s = GUI.TextField(new Rect(position.x + position.width * 0.3f, position.y, position.width * 0.7f, position.height), oldValue.ToString());
             if (double.TryParse(s, out val))
                 return val;
             else
