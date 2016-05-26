@@ -533,7 +533,7 @@ namespace ImportantClasses
                     (SettingMenuItemAttribute[]) fieldInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false);
                 parentDictionary.Add(attrs.First().Name, childDictionary);
                 SearchForSettingMenuItemAttribute(fieldInfo.GetValue(parent), childDictionary);
-                SearchForSettingAttribute(fieldInfo.GetValue(parent), childDictionary);
+                //SearchForSettingAttribute(fieldInfo.GetValue(parent), childDictionary);
             }
 
             IEnumerable<PropertyInfo> propertyInfos =
@@ -546,7 +546,7 @@ namespace ImportantClasses
                         propertyInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false);
                 parentDictionary.Add(attrs.First().Name, childDictionary);
                 SearchForSettingMenuItemAttribute(propertyInfo.GetValue(parent, null), childDictionary);
-                SearchForSettingAttribute(propertyInfo.GetValue(parent, null), childDictionary);
+                //SearchForSettingAttribute(propertyInfo.GetValue(parent, null), childDictionary);
             }
         }
 

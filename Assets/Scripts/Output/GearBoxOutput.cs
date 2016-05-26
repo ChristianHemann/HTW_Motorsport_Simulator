@@ -6,26 +6,22 @@ using CalculationComponents;
 
 namespace Output
 {
-   public class GearBoxOutput
+    public class GearBoxOutput
     {
-        //private CalculationComponents.GearBox gearbox;
+        public static GearBoxOutput _lastCalculation;
 
-        ////constructor AeroOutput
-        //public GearBoxOutput()
-        //{
-        //}
-        ////initialisierung
-        //private void init()
-        //{
-        //    gearbox = new GearBox();
-        //    gearbox.Calculate();
-        //}
-        //// output 
-        //private void outp()
-        //{
-        //    gearbox.StoreResult();
-        //}
+        public static GearBoxOutput LastCalculation
+        {
+            get
+            {
+                if(_lastCalculation == null)
+                    _lastCalculation = new GearBoxOutput();
+                return _lastCalculation;
+            }
+            set { _lastCalculation = value; }
+        }
+
         public float torque { get; set; }
-        public float power { get; set; }
+        public float rpm { get; set; } //rounds per minute
     }
 }

@@ -38,6 +38,8 @@ namespace ImportantClasses
                 }
             }
         }
+        public string NameX { get; set; }
+        public string NameY { get; set; }
 
         [XmlIgnore]
         private double[] _x;
