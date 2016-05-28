@@ -6,7 +6,8 @@ using System.Text;
 namespace ImportantClasses
 {
     /// <summary>
-    /// Defines a Property to be shown as a Menu Item in the Menu
+    /// Attribute to make a field or property shown in the menu as a Menu Item which can contain Settings or other menuItem. The object must be public to be found.
+    /// The fields or properties parent object must contain a ContainSettingsAttribute or SettingMenuItemAttribute too.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class SettingMenuItemAttribute : Attribute
@@ -14,7 +15,8 @@ namespace ImportantClasses
         public readonly string Name;
 
         /// <summary>
-        /// Defines a Property to be shown as a Menu Item in the Menu
+        /// Attribute to make a field or property shown in the menu as a Menu Item which can contain Settings or other menuItem. The object must be public to be found.
+        /// The fields or properties parent object must contain a ContainSettingsAttribute or SettingMenuItemAttribute too.
         /// </summary>
         /// <param name="name">The Name which will be shown in the Menu</param>
         public SettingMenuItemAttribute(string name)

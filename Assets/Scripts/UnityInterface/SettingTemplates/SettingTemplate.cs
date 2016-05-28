@@ -1,22 +1,35 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using UnityEngine;
 
 namespace UnityInterface.SettingTemplates
 {
+    /// <summary>
+    /// provides Type specific Draw Functions for the GUI and defindes their height
+    /// </summary>
     public class SettingTemplate
     {
-        public static readonly Dictionary<Type, float> heightDictionary = new Dictionary<Type, float>(); //defines the percentage height for each Types control
-        private static SettingTemplate _instance; //just to make sure, that the static Draw method won't find itself.
+        private static readonly Dictionary<Type, float> heightDictionary = new Dictionary<Type, float>(); //defines the percentage height for each Types control
+        private static SettingTemplate _instance; //just to make sure, that the static Draw method won't find itself, but all the other methods
 
+        private static SettingTemplate Instance
+        {
+            get
+            {
+                if(_instance ==null)
+                    Initialize();
+                return _instance;
+            }
+        }
+
+        //singleton
         private SettingTemplate() { }
 
-        public static void Initialize()
+        /// <summary>
+        /// set the instance and the height for each Type
+        /// </summary>
+        private static void Initialize()
         {
             _instance = new SettingTemplate();
             heightDictionary.Add(typeof(string), 0.2f);
@@ -29,49 +42,86 @@ namespace UnityInterface.SettingTemplates
             heightDictionary.Add(typeof(double), 0.2f);
         }
 
+        /// <summary>
+        /// calculates the relative height of a control of a specific Type. normally its factor 0.2
+        /// </summary>
+        /// <param name="type">The Type of the value of which the height is asked</param>
+        /// <returns>The relative height of the control</returns>
+        public static float GetRelativeHeight(Type type)
+        {
+            float height = 0;
+            if (heightDictionary.TryGetValue(type, out height))
+                return height;
+            else
+                return 0.2f;
+        }
+
+        /// <summary>
+        /// Draw a control for the given object to be able to edit its value
+        /// </summary>
+        /// <param name="oldValue">the parameter which shall be shown</param>
+        /// <param name="name">the name of the parameter which stands beneath the input field</param>
+        /// <param name="position">the position of the control</param>
+        /// <returns>the new value of the parameter</returns>
         public static object Draw(object oldValue, string name, Rect position)
         {
-            if (oldValue.GetType().IsArray)
+            //search for functions in this class with the same return parameter Type as the oldValues type
+            //calling Draw directly will not work -> reflection is used
+            MethodInfo info = typeof(SettingTemplate).GetMethod("Draw", 
+                new Type[] { oldValue.GetType(), typeof(string), typeof(Rect) });
+            if (info != null && !info.IsStatic) //no static function so that this function do not call itself
             {
-                object[] values = ((IEnumerable) oldValue).Cast<object>().Select(x => x).ToArray(); //the direct conversation (values = object[] oldValue) is not possible
-                float height;
-                if (SettingTemplate.heightDictionary.TryGetValue(values[0].GetType(), out height))
-                    height *= position.height;
-                else
-                    height = 20f;
-
-                GUI.BeginGroup(position);
-                GUI.Label(new Rect(position.x, position.y, position.width, 20f), name);
-
-                for (int i = 0; i<values.Length;i++)
-                {
-                    SettingTemplate.Draw(values[i], i.ToString(),
-                        new Rect(position.x + 20, 22 + position.y + (height + 2)*i, position.width - 20, height));
-                }
-                GUI.EndGroup();
+                object[] parameter = new[] { oldValue, name, position };
+                return info.Invoke(Instance, parameter); //calling the method
             }
-            else
-            {
-                //searcch for functions in this class with the same return parameter Type as the values type
-                MethodInfo info = typeof(SettingTemplate).GetMethod("Draw",
-                    new Type[] {oldValue.GetType(), typeof(string), typeof(Rect)});
-                if (info != null && !info.IsStatic) //no static function so that this function do not call itself
-                {
-                    object[] parameter = new[] {oldValue, name, position};
-                    return info.Invoke(_instance, parameter);
-                }
-            }
-            //if there is no function defined for that Type
+
+            //if there is no function defined for that Type: show a Text
             GUI.Label(position, "For the Type " + oldValue.GetType().Name + " is no Control Defined");
             return null;
         }
 
+        /// <summary>
+        /// Draw a control for the given object array to be able to edit its value
+        /// </summary>
+        /// <param name="oldValue">the parameter which shall be shown</param>
+        /// <param name="name">the name of the parameter which stands beneath the input field</param>
+        /// <param name="position">the position of the control</param>
+        /// <returns>the new value of the parameter</returns>
+        public static object DrawArray(object[] oldValue, string name, Rect position)
+        {
+            if(oldValue.Length == 0)
+                return oldValue;
+
+            float height = GetRelativeHeight(oldValue[0].GetType())*position.height;
+
+            GUI.BeginGroup(position); //Group all the controls
+            GUI.Label(new Rect(0, 0, position.width, 20f), name);
+
+            List<object> newValues = new List<object>();//save the values in case that they are changed
+            for (int i = 0; i < oldValue.Length; i++)
+            {
+                object value = Draw(oldValue[i], (i+1).ToString(),
+                    new Rect(0, 22 + (height + 2) * i, position.width - 20, height));
+                newValues.Add(value);
+            }
+            GUI.EndGroup();
+
+            if (!ImportantClasses.Helper.ArrayValueEqual(oldValue,newValues.ToArray())) //test if a value were changed
+                return newValues.ToArray();
+            else
+                return oldValue; //the old Value must be returned when it was not changed because otherwise the normal equal function will return the wrong result
+        }
+
+ #region Type-specific drawing functions
+        //the functions must be public to be found
+        //the Type of the oldValue and the return value must be the same
+
         public bool Draw(bool oldValue, string name, Rect position)
         {
-            GUI.Label(new Rect(position.x, position.y, position.width*0.3f, position.height), name);
+            GUI.Label(new Rect(position.x, position.y, position.width * 0.3f, position.height), name);
             return
                 GUI.Toggle(
-                    new Rect(position.x + position.width*0.3f, position.y, position.width*0.7f, position.height),
+                    new Rect(position.x + position.width * 0.3f, position.y, position.width * 0.7f, position.height),
                     oldValue, name);
         }
 
@@ -94,9 +144,9 @@ namespace UnityInterface.SettingTemplates
 
         public sbyte Draw(sbyte oldValue, string name, Rect position)
         {
-            return (sbyte) Draw((int) oldValue, name, position);
+            return (sbyte)Draw((int)oldValue, name, position);
         }
-        
+
         public byte Draw(byte oldValue, string name, Rect position)
         {
             return (byte)Draw((int)oldValue, name, position);
@@ -117,5 +167,6 @@ namespace UnityInterface.SettingTemplates
             else
                 return oldValue;
         }
+ #endregion
     }
 }

@@ -6,23 +6,25 @@ using System.Text;
 namespace ImportantClasses
 {
     /// <summary>
-    /// Defines an Entrance-Point for the Settings-functions to search
-    /// It is only allowed to static objects. Otherwise the objects cannot be found.
-    /// To save the object a [XmlElement]-Attribute is also needed
+    /// Attribute to make a field or property shown in the menu as a Menu Item on the lowest level. 
+    /// When saving a file will be crated for this object.
+    /// Defines an Entrance-Point for the Settings-functions to search.
+    /// It is only allowed to public static objects. Otherwise the objects will not be found.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class ContainSettingsAttribute : Attribute
     {
-        public readonly string Name;
-        public readonly bool ShowAsMenuItem;
+        public readonly string Name; //The Name which will be shown in the Menu
+        public readonly bool ShowAsMenuItem; //Defines if this object will be shown as a menuItem; is not implemented at the moment
 
         /// <summary>
-        /// Defines an Entrance-Point for the Settings-functions to search
-        /// It is only allowed to static objects. Otherwise the objects cannot be found.
-        /// To save the object a [XmlElement]-Attribute is also needed
+        /// Attribute to make a field or property shown in the menu as a Menu Item on the lowest level. 
+        /// When saving a file will be crated for this object.
+        /// Defines an Entrance-Point for the Settings-functions to search.
+        /// It is only allowed to public static objects. Otherwise the objects will not be found.
         /// </summary>
         /// <param name="name">The Name which will be shown in the Menu</param>
-        /// <param name="showAsMenuItem">Defines wheather this object will be shown as a Menu Item. If the Value is set to false, the objects children are still visible. The DefualtValue is true.</param>
+        /// <param name="showAsMenuItem">Defines wheather this object will be shown as a Menu Item. If the Value is set to false, the objects children are still visible. The DefualtValue is true; is not implemented at the moment</param>
         public ContainSettingsAttribute(string name, bool showAsMenuItem = true)
         {
             this.Name = name;

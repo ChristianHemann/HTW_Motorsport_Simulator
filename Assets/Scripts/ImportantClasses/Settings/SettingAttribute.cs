@@ -6,7 +6,8 @@ using System.Text;
 namespace ImportantClasses
 {
     /// <summary>
-    /// Defines a Property to be shown as a Setting in the Menu
+    /// Attribute to make a field or property shown in the menu as a setting. The object must be public to be found.
+    /// The fields or properties parent object must contain a ContainSettingsAttribute or SettingMenuItemAttribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class SettingAttribute : Attribute
@@ -17,7 +18,8 @@ namespace ImportantClasses
         public readonly sbyte DecimalPlaces;
 
         /// <summary>
-        /// Defines a Property to be shown as a Setting in the Menu
+        /// Attribute to make a field or property shown in the menu as a setting. The object must be public to be found.
+        /// The fields or properties parent object must contain a ContainSettingsAttribute or SettingMenuItemAttribute.
         /// </summary>
         /// <param name="name">The Name which will be shown in the Menu</param>
         /// <param name="defaultValue">The defaultValue for this property. If it is not given the DefaultValue will be null</param>

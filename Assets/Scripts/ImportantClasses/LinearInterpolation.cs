@@ -52,8 +52,11 @@ namespace ImportantClasses
         }
 
         /// <summary>
-        /// creats a new function which interpolates linear piecewise between the points
+        /// Interpolates linear piecewise between the given points
+        /// this class is a wrapper to provide .NET XML Functions to the MathDotNet Library
         /// </summary>
+        /// <param name="x">there are the supporting points</param>
+        /// <param name="y">the value at each supporting point. Must have the same length as the x-values</param>
         public LinearInterpolation(double[] x, double[] y)
         {
             //sort the values ascending

@@ -1,48 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ImportantClasses;
+﻿using ImportantClasses;
 using Output;
 
 namespace CalculationComponents
 {
+    /// <summary>
+    /// calculates an engine
+    /// </summary>
     public class Engine : ICalculationComponent
     {
         [Setting("Characteristic Line")]
-        public Spline characteristicLine { get; set; }
+        public Spline CharacteristicLine { get; set; }
 
         [Setting("max. rpm")]
-        public int maxRpm { get; set; }
+        public int MaxRpm { get; set; }
 
-        private EngineOutput actualCalculation;
+        private EngineOutput actualCalculation; //the result of the actual done calculation
+
+        /// <summary>
+        /// calculates an engine. Will be initialized with the standard values
+        /// </summary>
         public Engine()
         {
-            characteristicLine = new Spline(new[] {0.0, 10000.0}, new[] {0.0, 100.0});
-            characteristicLine.NameX = "rounds per minute";
-            characteristicLine.NameY = "torque";
+            CharacteristicLine = new Spline(new[] {0.0, 10000.0}, new[] {0.0, 100.0});
+            CharacteristicLine.NameX = "rounds per minute";
+            CharacteristicLine.NameY = "torque";
             actualCalculation = new EngineOutput();
         }
 
+        /// <summary>
+        /// calculate the engineOutputs with the actual inputs
+        /// </summary>
         public void Calculate()
         {
-            actualCalculation.torque = (float) characteristicLine.Interpolate(EngineOutput.LastCalculation.rpm);
+            actualCalculation.torque = (float) CharacteristicLine.Interpolate(EngineOutput.LastCalculation.rpm);
             if(OnCalculationReady != null)
                 OnCalculationReady();
         }
 
+        /// <summary>
+        /// stops the calculation if it necessary to abort it
+        /// </summary>
         public void StopCalculation()
         {
             //the function is so small, that it makes no sense
-            return; 
         }
 
+        /// <summary>
+        /// stores the result of the calculation to the EngineOutput class
+        /// </summary>
         public void StoreResult()
         {
             EngineOutput.LastCalculation.torque = actualCalculation.torque;
             //the rpm will be calculated by the car when its speed is known
         }
 
+        /// <summary>
+        /// will be triggered when the calculation is done
+        /// </summary>
         public event CalculationReadyDelegate OnCalculationReady;
     }
 }

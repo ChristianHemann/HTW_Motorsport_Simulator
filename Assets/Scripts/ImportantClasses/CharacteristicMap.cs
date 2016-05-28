@@ -48,7 +48,7 @@ namespace ImportantClasses
         }
 
         /// <summary>
-        /// creates a new CharacteristicsMap
+        /// linear Interpolation in 3D
         /// </summary>
         /// <param name="x">the points in x-Direction</param>
         /// <param name="y">the points in y-Direction</param>

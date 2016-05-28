@@ -69,7 +69,7 @@ namespace Simulator
         private Wheel wheel;
 
         //just to show the attribute
-        [Setting("maximum Engine Torque", 100, 0, 1000, 5)]
+        [Setting("(just for testing)", 100, 0, 1000, 5)]
         public int torque;
 
         [Setting("test")]

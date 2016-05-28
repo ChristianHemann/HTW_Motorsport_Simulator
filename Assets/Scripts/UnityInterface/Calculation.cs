@@ -9,7 +9,7 @@ namespace UnityInterface
     {
         private Simulator.CalculationController controller;
 
-        // Initialisation
+        // Initialization
         void Start()
         {
             //controller = new CalculationController();

@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace CalculationComponents
 {
+    /// <summary>
+    /// calculates an gearBox. Will be initialized with the standard values
+    /// </summary>
     public class GearBox : ICalculationComponent
     {
         //Settings
@@ -34,8 +37,11 @@ namespace CalculationComponents
 
         private byte _gears;
 
-        private GearBoxOutput actualCalculation;
+        private GearBoxOutput actualCalculation; //the result of the actual done calculation
 
+        /// <summary>
+        /// calculates an gearBox. Will be initialized with the standard values
+        /// </summary>
         public GearBox()
         {
             gears = 4;
@@ -44,6 +50,9 @@ namespace CalculationComponents
             transmissions = new float[gears];
         }
 
+        /// <summary>
+        /// calculate the GearBoxOutputs with the actual inputs
+        /// </summary>
         public void Calculate()
         {
             if (Gear == 0)
@@ -55,17 +64,26 @@ namespace CalculationComponents
                 OnCalculationReady();
         }
 
+        /// <summary>
+        /// stops the calculation if it necessary to abort it
+        /// </summary>
         public void StopCalculation()
         {
             //the function is so small, that it makes no sense
             return;
         }
 
+        /// <summary>
+        /// stores the result of the calculation to the GearBoxOutput class
+        /// </summary>
         public void StoreResult()
         {
             GearBoxOutput.LastCalculation.torque = actualCalculation.torque;
         }
 
+        /// <summary>
+        /// will be triggered when the calculation is done
+        /// </summary>
         public event CalculationReadyDelegate OnCalculationReady;
     }
 }

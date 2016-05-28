@@ -6,7 +6,7 @@ using System.Text;
 namespace ImportantClasses
 {
     /// <summary>
-    /// Mathematic Functions which creates no objects
+    /// Provides mathematic functions which are often needed
     /// </summary>
     class MathHelper
     {
