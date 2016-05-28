@@ -67,7 +67,7 @@ namespace UnityInterface
             padding = (Screen.width + Screen.height) / 200f; //1% padding to the edge of the screen
             contentWidth = Screen.width - (2 * padding); //width of the Screeen minus the padding
             contentHeight = Screen.height - (2 * padding); //height of the Screen minus the padding
-            topBarHeight = Screen.height / 100 * 10; //10% Height for the Bar on the Top
+            topBarHeight = Screen.height / 100 * 12; //12% Height for the Bar on the Top
             buttonHeight = topBarHeight - padding;
             topBarButtonWidth = contentWidth / 8;
             menuItemWidth = contentWidth / 5; //20% of the width for the MenuItems;
@@ -150,10 +150,10 @@ namespace UnityInterface
                 }
                 posY += height + padding/2;
             }
-            if (GUI.Button(new Rect(0, posY, menuSettingWidth * 0.24f, contentHeight * 0.2f), "Discard changes"))
+            if (GUI.Button(new Rect(0, posY, menuSettingWidth * 0.24f, buttonHeight), "Discard changes"))
                 Settings.DiscardTemporaryChanges();
 
-            if (GUI.Button(new Rect(menuSettingWidth*0.25f, posY, menuSettingWidth*0.25f, contentHeight*0.2f),
+            if (GUI.Button(new Rect(menuSettingWidth*0.25f, posY, menuSettingWidth*0.25f, buttonHeight),
                 "overwrite Settings"))
             {
                 Settings.SaveTemporaryChanges();
@@ -162,14 +162,14 @@ namespace UnityInterface
 
             if (_namesList.Count != 0) //Show just the selected parent MenuItem
             {
-                if (GUI.Button(new Rect(menuSettingWidth*0.51f, posY, menuSettingWidth*0.24f, contentHeight*0.2f),
+                if (GUI.Button(new Rect(menuSettingWidth*0.51f, posY, menuSettingWidth*0.24f, buttonHeight),
                     "Save "+_namesList.First()))
                 {
                     Settings.SaveTemporaryChanges(_namesList.First());
                     Settings.SaveSetting(_namesList.First());
                 }
 
-                if (GUI.Button(new Rect(menuSettingWidth*0.76f, posY, menuSettingWidth*0.24f, contentHeight*0.2f),
+                if (GUI.Button(new Rect(menuSettingWidth*0.76f, posY, menuSettingWidth*0.24f, buttonHeight),
                     "Load " + _namesList.First()))
                 {
                     Settings.LoadSettings(_namesList.First());

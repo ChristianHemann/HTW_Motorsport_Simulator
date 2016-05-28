@@ -15,7 +15,7 @@ namespace CalculationComponents
         public float efficency;
 
         [Setting("Number of Gears", 4)]
-        public sbyte gears {
+        public byte gears {
             get { return _gears; }
             set
             {
@@ -32,7 +32,7 @@ namespace CalculationComponents
         /// </summary>
         public sbyte Gear { get; set; }
 
-        private sbyte _gears;
+        private byte _gears;
 
         private GearBoxOutput actualCalculation;
 

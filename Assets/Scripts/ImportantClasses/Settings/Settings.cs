@@ -106,15 +106,16 @@ namespace ImportantClasses
             if (names.Length == 0) //if no name there cannot be any setting
                 return settingsDictionary;
 
-            int i = 0; //find when to stop the iteration of the parents ans get the settings
-            foreach (ContainSettingObject obj in settingList)
+            //int i = 0; //find when to stop the iteration of the parents ans get the settings
+            foreach (ContainSettingObject obj in settingList) //go to the correct parent in settingsList
             {
                 if (obj.Name == names.First())
                 {
                     object parent = obj.Obj;
-                    foreach (string name in names)
+                    for(int i = 1;i<=names.Length;i++)
+                    //foreach (string name in names)
                     {
-                        if (++i == names.Length) //get settings
+                        if (i == names.Length) //get settings
                         {
                             IEnumerable<FieldInfo> fieldInfos =
                                 parent.GetType()
@@ -180,7 +181,7 @@ namespace ImportantClasses
                             foreach (FieldInfo fieldInfo in fieldInfos)
                             {
                                 if (((SettingMenuItemAttribute)
-                                        fieldInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false).First()).Name == name)
+                                        fieldInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false).First()).Name == names[i])
                                 {
                                     parent = fieldInfo.GetValue(parent);
                                     parentFound = true;
@@ -198,7 +199,7 @@ namespace ImportantClasses
                                     if (
                                         ((SettingMenuItemAttribute)
                                             propertyInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false)
-                                                .First()).Name == name)
+                                                .First()).Name == names[i])
                                     {
                                         parent = propertyInfo.GetValue(parent, null);
                                     }
@@ -511,10 +512,7 @@ namespace ImportantClasses
         {
             foreach (ContainSettingObject obj in settingList)
             {
-                //Dictionary<string, object> actDictionary = new Dictionary<string, object>();
-                //obj.   namesHierachy.Add(obj.Name, actDictionary);
                 SearchForSettingMenuItemAttribute(obj.Obj, obj.namesHierachy);
-                //SearchForSettingAttribute(obj.Obj, obj.namesHierachy);
             }
         }
 
@@ -533,7 +531,6 @@ namespace ImportantClasses
                     (SettingMenuItemAttribute[]) fieldInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false);
                 parentDictionary.Add(attrs.First().Name, childDictionary);
                 SearchForSettingMenuItemAttribute(fieldInfo.GetValue(parent), childDictionary);
-                //SearchForSettingAttribute(fieldInfo.GetValue(parent), childDictionary);
             }
 
             IEnumerable<PropertyInfo> propertyInfos =
@@ -546,33 +543,6 @@ namespace ImportantClasses
                         propertyInfo.GetCustomAttributes(typeof(SettingMenuItemAttribute), false);
                 parentDictionary.Add(attrs.First().Name, childDictionary);
                 SearchForSettingMenuItemAttribute(propertyInfo.GetValue(parent, null), childDictionary);
-                //SearchForSettingAttribute(propertyInfo.GetValue(parent, null), childDictionary);
-            }
-        }
-
-        /// <summary>
-        /// Search for all SettingAttribute at the given object
-        /// </summary>
-        /// <param name="parent">the parent object to search for attributes</param>
-        /// <param name="parentDictionary">the dictionary to add the found attributes</param>
-        private static void SearchForSettingAttribute(object parent, Dictionary<string, object> parentDictionary)
-        {
-            IEnumerable<FieldInfo> fieldInfos =
-                parent.GetType().GetFields().Where(prop => prop.IsDefined(typeof(SettingAttribute), false));
-            foreach (FieldInfo fieldInfo in fieldInfos)
-            {
-                SettingAttribute[] attrs =
-                    (SettingAttribute[]) fieldInfo.GetCustomAttributes(typeof(SettingAttribute), false);
-                parentDictionary.Add(attrs.First().Name, fieldInfo.GetValue(parent));
-            }
-
-            IEnumerable<PropertyInfo> propertyInfos =
-                parent.GetType().GetProperties().Where(prop => prop.IsDefined(typeof(SettingAttribute), false));
-            foreach (PropertyInfo propertyInfo in propertyInfos)
-            {
-                SettingAttribute[] attrs =
-                    (SettingAttribute[]) propertyInfo.GetCustomAttributes(typeof(SettingAttribute), false);
-                parentDictionary.Add(attrs.First().Name, propertyInfo.GetValue(parent, null));
             }
         }
     }
