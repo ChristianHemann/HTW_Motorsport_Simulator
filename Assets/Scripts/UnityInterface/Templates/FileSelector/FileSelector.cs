@@ -382,8 +382,8 @@ public class FileSelector : MonoBehaviour
 		
 		GUILayout.EndHorizontal();
 		
-		if(File.Exists(path+@"\"+file) && Path.GetExtension(path+@"\"+file) == extension)
-		{
+		//if(File.Exists(path+@"\"+file) && Path.GetExtension(path+@"\"+file) == extension)
+		//{
 			if(GUILayout.Button("Select"))
 			{
 				if(Callback != null) Callback(Status.Successful, path+@"\"+file);
@@ -391,7 +391,7 @@ public class FileSelector : MonoBehaviour
 				
 				if(destroyOnClose) Destroy(this);
 			}
-		}
+		//}
 		
 		if(GUILayout.Button("Cancel"))
 		{
