@@ -1,13 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityInterface.SettingTemplates;
 using ImportantClasses;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityInterface.Templates;
 
 namespace UnityInterface
 {
@@ -18,6 +18,12 @@ namespace UnityInterface
         private Vector2 _settingScrollPosition; //the scroll position for the settings
         private Vector2 _topBarScrollPosition; //the scroll position of the bar on the top
         private bool _showSettings = false; //false = Main Menu; true = settings;
+        private bool _showOverwriteFileDialog = false; //when set to true the user is asked if he wants to overwrite the last used file or create a new file
+        private readonly List<string> _outstandingObjectsToSave = new List<string>(); //the objects where the user shall be asked for a path for saving
+        private readonly List<string> _outstandingObjectsToLoad = new List<string>(); //the objects where the user shall be asked for a path for loading
+        private bool _fileSelectorIsShowed; //says whether the FileSelector is open
+        private string _lastUsedDirectory; //saves the directory which was last used by the FileSelector
+        private DateTime _lastMessageTime; //the Time of the last Message; The last message will be visible for x seconds
 
         //setting lists
         private List<string> _menuItems;
@@ -44,6 +50,7 @@ namespace UnityInterface
             _itemScrollPosition = new Vector2(0, 0);
             _settingScrollPosition = new Vector2(0, 0);
             _topBarScrollPosition = new Vector2(0, 0);
+            Message.OnNewMessage += ShowMessage;
         }
         
         /// <summary>
@@ -97,6 +104,13 @@ namespace UnityInterface
                         _contentHeight - _topBarHeight), _settingScrollPosition, new Rect(0, 0, _menuSettingWidth, settingContentHeight));
                 DrawSettings();
                 GUI.EndScrollView();//End Settings
+
+                //Message
+                if (DateTime.Now - _lastMessageTime < TimeSpan.FromSeconds(5))
+                {
+                    GUI.Label(new Rect(0, _contentHeight - 25, _contentWidth, 25),
+                        Message.Messages.Last().MessageText);
+                }
 
                 GUI.EndGroup(); //End Content
             }
@@ -250,10 +264,7 @@ namespace UnityInterface
                 if (GUI.Button(new Rect(0, posY, _menuSettingWidth*0.24f, _buttonHeight),
                     "save all Settings"))
                 {
-                    Settings.SaveTemporaryChanges();
-                    Settings.SaveAllSettings(
-                        EditorUtility.DisplayDialog("create new Files?",
-                        "Do you want to crate new Files or do you want to overwrite the last-used files", "new Files", "overwrite"));
+                    _showOverwriteFileDialog = true;
                 }
 
                 //Draw the Discard changes Button just if there are changes
@@ -268,17 +279,90 @@ namespace UnityInterface
                     "Save " + _namesList.First() + " under"))
                 {
                     Settings.SaveTemporaryChanges(_namesList.First());
-                    Settings.SaveSetting(_namesList.First());
+                    _outstandingObjectsToSave.Add(_namesList.First());
                 }
 
                 //load button
                 if (GUI.Button(new Rect(_menuSettingWidth * 0.76f, posY, _menuSettingWidth * 0.24f, _buttonHeight),
                     "Load " + _namesList.First()))
                 {
-                    Settings.LoadSettings(_namesList.First());
+                    _outstandingObjectsToLoad.Add(_namesList.First());
                 }
             }
 
+            //before saving all Files
+            if (_showOverwriteFileDialog)
+            {
+                DialogBoxResult result = DialogBox.Show("create new Files?",
+                    "Do you want to crate new Files or do you want to overwrite the last-used files", "new Files",
+                    "overwrite"); 
+                if (result == DialogBoxResult.Cancel) //Cancel = overwrite
+                {
+                    Settings.SaveTemporaryChanges();
+                    Settings.SaveAllSettings();
+                    _showOverwriteFileDialog = false;
+                }
+                else if (result == DialogBoxResult.Ok) //Ok = new Files
+                {
+                    Settings.SaveTemporaryChanges();
+                    _outstandingObjectsToSave.AddRange(Settings.GetMenuItems(new string[0]));
+                    _showOverwriteFileDialog = false;
+                }
+            }
+
+            //show a FileSelector for each object that shall be saved
+            if (_outstandingObjectsToSave.Count != 0 && !_fileSelectorIsShowed)
+            {
+                _fileSelectorIsShowed = true;
+                if (String.IsNullOrEmpty(_lastUsedDirectory))
+                    FileSelector.GetFile(GotFileToSave, ".xml");
+                else
+                    FileSelector.GetFile(_lastUsedDirectory, GotFileToSave, ".xml");
+            }
+
+            //show a FileSelector for each object that shall be loaded
+            if (_outstandingObjectsToLoad.Count != 0 && !_fileSelectorIsShowed)
+            {
+                _fileSelectorIsShowed = true;
+                if (String.IsNullOrEmpty(_lastUsedDirectory))
+                    FileSelector.GetFile(GotFileToLoad, ".xml");
+                else
+                    FileSelector.GetFile(_lastUsedDirectory, GotFileToLoad, ".xml");
+            }
+        }
+
+        private void GotFileToSave(FileSelector.Status status, string path)
+        {
+            if (status == FileSelector.Status.Cancelled)
+            {
+                _outstandingObjectsToSave.Remove(_outstandingObjectsToSave.First());
+            }else if (status == FileSelector.Status.Successful)
+            {
+                _lastUsedDirectory = Path.GetDirectoryName(path);
+                Settings.SaveSetting(_outstandingObjectsToSave.First(), path);
+                _outstandingObjectsToSave.Remove(_outstandingObjectsToSave.First());
+            }
+            _fileSelectorIsShowed = false;
+        }
+
+        private void GotFileToLoad(FileSelector.Status status, string path)
+        {
+            if (status == FileSelector.Status.Cancelled)
+            {
+                _outstandingObjectsToLoad.Remove(_outstandingObjectsToLoad.First());
+            }
+            else if (status == FileSelector.Status.Successful)
+            {
+                _lastUsedDirectory = Path.GetDirectoryName(path);
+                Settings.LoadSettings(_outstandingObjectsToLoad.First(), path);
+                _outstandingObjectsToLoad.Remove(_outstandingObjectsToLoad.First());
+            }
+            _fileSelectorIsShowed = false;
+        }
+
+        private void ShowMessage(Message message)
+        {
+            _lastMessageTime = DateTime.Now;
         }
     }
 }

@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace ImportantClasses
 {
@@ -251,6 +248,7 @@ namespace ImportantClasses
         /// <summary>
         /// Saves all Settings which were changed temporary
         /// </summary>
+        /// <param name="only">the name of the containSettingsAttribute which shall be saved</param>
         public static void SaveTemporaryChanges(string only = "")
         {
             if (_changeBufferDictionary.Count == 0)
@@ -385,14 +383,13 @@ namespace ImportantClasses
         }
 
         /// <summary>
-        /// saves all current setting to the file which is used last for each object. If no file is specified for an object or the parameter is set to true a saveFilePanel will appear
+        /// saves all current setting to the file which is used last for each object. If no file is specified for an object the object will not be saved
         /// </summary>
-        /// <param name="createNewFiles">decides if the old files shall be overwritten or a saveFilePanel will appear</param>
-        public static void SaveAllSettings(bool createNewFiles = false)
+        public static void SaveAllSettings()
         {
             foreach (ContainSettingObject obj in SettingList)
             {
-                SaveSetting(obj.Name, createNewFiles ? "" : obj.Path);
+                SaveSetting(obj.Name, obj.Path);
             }
         }
 
@@ -400,16 +397,14 @@ namespace ImportantClasses
         /// saves the current setting of the specified object
         /// </summary>
         /// <param name="name">the name which is specified in the ContainSettingsAttribute of the object which shall be saved</param>
-        /// <param name="path">The path to the file. If empty or "" a saveFilePanel will appear</param>
-        public static void SaveSetting(string name, string path = "")
+        /// <param name="path">The path to the file</param>
+        public static void SaveSetting(string name, string path)
         {
             try
             {
-                if (path.Length == 0)
+                if (String.IsNullOrEmpty(path))
                 {
-                    path = EditorUtility.SaveFilePanel("Save Setting " + name, _settingsPath, name + ".xml", "xml");
-                    if (path.Length == 0) //no file selected
-                        return;
+                    Message.Send("There is no valid file selected for saving " + name, Message.MessageCode.Warning);
                 }
                 if (!Directory.Exists(Path.GetDirectoryName(path)))
                     Directory.CreateDirectory(path);
@@ -425,7 +420,7 @@ namespace ImportantClasses
             }
             catch
             {
-                EditorUtility.DisplayDialog("error while saving", "An error occured during saving the file", "Ok");
+                Message.Send("An error occured during saving the file",Message.MessageCode.Error);
             }
         }
 
@@ -444,18 +439,12 @@ namespace ImportantClasses
         /// Load an object which is marked with the ContainSettingsAttribute
         /// </summary>
         /// <param name="name">The Name which is defined in the ContainSettingsAttribute of the object</param>
-        /// <param name="path">If the path of the file is allready known it can be placed here. If empty or "" an OpenFilePanel will appear</param>
-        public static void LoadSettings(string name, string path = "")
+        /// <param name="path">The path to the file to be loaded</param>
+        public static void LoadSettings(string name, string path)
         {
-            if (path.Length == 0)
+            if (String.IsNullOrEmpty(path) || !File.Exists(path))
             {
-                path = EditorUtility.OpenFilePanel("Open File " + name, _settingsPath, "xml");
-                if (path.Length == 0) //if no file was specified
-                    return;
-            }
-            if (!Directory.Exists(Path.GetDirectoryName(path))) //If a wrong path was selected or the path were deleted 
-            {
-                EditorUtility.DisplayDialog("File not found", "The specified file could not be found. Path: " + path, "Ok");
+                Message.Send("There is no valid File selected to open " + name, Message.MessageCode.Warning);
                 return;
             }
 
@@ -499,9 +488,7 @@ namespace ImportantClasses
                 }
                 catch
                 {
-                    EditorUtility.DisplayDialog("error while loading File" + name,
-                        "The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type",
-                        "Ok");
+                    Message.Send("The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type",Message.MessageCode.Warning);
                 }
 
             }
