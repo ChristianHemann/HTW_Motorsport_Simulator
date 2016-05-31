@@ -20,7 +20,7 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
-
+        
         public float torque { get; set; }
         public float rpm { get; set; } //rounds per minute
     }
