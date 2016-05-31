@@ -126,6 +126,7 @@
     <Compile Include="Assets\Scripts\UnityInterface\Templates\FileSelector\FileSelector.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Templates\FileSelector\FileSelectorStyles.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Templates\SettingTemplate.cs" />
+    <Compile Include="Assets\Scripts\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Libs\net35\MathNet.Numerics\MathNet.Numerics.xml" />
