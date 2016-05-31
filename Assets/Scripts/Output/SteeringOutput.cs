@@ -7,22 +7,7 @@ namespace Output
 {
   public  class SteeringOutput
     {
-        //private CalculationComponents.Steering steering;
-        ////constructor AeroOutput
-        //public SteeringOutput()
-        //{
-        //}
-        ////initialisierung
-        //private void init()
-        //{
-        //    steering = new Steering();
-        //    steering.Calculate();
-        //}
-        //// output 
-        //private void outp()
-        //{
-        //    steering.StoreResult();
-        //}
+       
         public int displ { get; set; }
         public int draglin { get; set; }
     }

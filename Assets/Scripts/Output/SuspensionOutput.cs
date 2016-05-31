@@ -7,22 +7,7 @@ namespace Output
 {
     public class SuspensionOutput
     {
-        //private CalculationComponents.Suspension suspension;
-        ////constructor AeroOutput
-        //public SuspensionOutput()
-        //{
-        //}
-        ////initialisierung
-        //private void init()
-        //{
-        //    suspension = new Suspension();
-        //    suspension.Calculate();
-        //}
-        //// output 
-        //private void outp()
-        //{
-        //    suspension.StoreResult();
-        //}
+       
         public float torq { get; set; }
         public float wheelload { get; set; }
         public float wheelangle {get; set;}
