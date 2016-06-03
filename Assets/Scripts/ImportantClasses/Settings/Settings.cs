@@ -15,6 +15,17 @@ namespace ImportantClasses
     /// </summary>
     public static class Settings
     {
+        /// <summary>
+        /// The Default Path to store Settings or other Files of which the Path should not change
+        /// </summary>
+        public static string SettingsPath {
+            get
+            {
+                if (string.IsNullOrEmpty(_settingsPath))
+                Initialize();
+                return _settingsPath;
+            }
+        }
         private static bool _isInitialized = false; //says if the Method Initialize was called
         private static readonly List<ContainSettingObject> SettingList = new List<ContainSettingObject>(); //Contains all objects with the ContainSettingsAttribute
         private static string _settingsPath = ""; //The Default Settings Path
