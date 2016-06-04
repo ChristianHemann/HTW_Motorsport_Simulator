@@ -32,7 +32,7 @@ namespace CalculationComponents
         /// </summary>
         public void Calculate()
         {
-            actualCalculation.torque = (float) CharacteristicLine.Interpolate(EngineOutput.LastCalculation.rpm);
+            actualCalculation.torque = (float) CharacteristicLine.Interpolate(EngineOutput.LastCalculation.rpm) * InputData.UsedInputData.AccelerationPedal;
             if(OnCalculationReady != null)
                 OnCalculationReady();
         }

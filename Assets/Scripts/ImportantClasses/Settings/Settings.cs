@@ -18,11 +18,12 @@ namespace ImportantClasses
         /// <summary>
         /// The Default Path to store Settings or other Files of which the Path should not change
         /// </summary>
-        public static string SettingsPath {
+        public static string SettingsPath
+        {
             get
             {
                 if (string.IsNullOrEmpty(_settingsPath))
-                Initialize();
+                    Initialize();
                 return _settingsPath;
             }
         }
@@ -317,7 +318,7 @@ namespace ImportantClasses
                     }
                 }
                 //parent found; get value
-                
+
                 bool valueSet = false;
                 IEnumerable<FieldInfo> fieldInfos2 = parent.GetType().GetFields().Where(prop => prop.IsDefined(typeof(SettingAttribute), false));
                 foreach (FieldInfo fieldInfo in fieldInfos2)
@@ -328,7 +329,7 @@ namespace ImportantClasses
                         object value;
                         if (keyValuePair.Value.GetType().IsArray)
                         {
-                            object[] values = ((IEnumerable) keyValuePair.Value).Cast<object>().ToArray(); //cannot cast directly from object to object[]
+                            object[] values = ((IEnumerable)keyValuePair.Value).Cast<object>().ToArray(); //cannot cast directly from object to object[]
                             //convert object[] to an array of the correct type to avoid contravariance
                             System.Type type = fieldInfo.FieldType.GetElementType();
                             Array typeSpecificArray = Array.CreateInstance(type, values.Length);
@@ -353,7 +354,7 @@ namespace ImportantClasses
                         object value;
                         if (keyValuePair.Value.GetType().IsArray)
                         {
-                            object[] values = ((IEnumerable) keyValuePair.Value).Cast<object>().ToArray(); //cannot cast directly from object to object[]
+                            object[] values = ((IEnumerable)keyValuePair.Value).Cast<object>().ToArray(); //cannot cast directly from object to object[]
                             //convert object[] to an array of the correct type to avoid contravariance
                             System.Type type = propertyInfo.PropertyType.GetElementType();
                             Array typeSpecificArray = Array.CreateInstance(type, values.Length);
@@ -431,7 +432,7 @@ namespace ImportantClasses
             }
             catch
             {
-                Message.Send("An error occured during saving the file",Message.MessageCode.Error);
+                Message.Send("An error occured during saving the file", Message.MessageCode.Error);
             }
         }
 
@@ -499,10 +500,40 @@ namespace ImportantClasses
                 }
                 catch
                 {
-                    Message.Send("The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type",Message.MessageCode.Warning);
+                    Message.Send("The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type", Message.MessageCode.Warning);
                 }
 
             }
+        }
+
+        /// <summary>
+        /// gets the SettingAttribute of a property or field
+        /// </summary>
+        /// <param name="parentClass">the Type of the class which contains the object with the attribute</param>
+        /// <param name="attributeName">the name which is defined in the Attribute definition</param>
+        /// <returns>The SettingAttribute of the object. null if the atttribute was not found</returns>
+        public static SettingAttribute GetAttribute(Type parentClass, string attributeName)
+        {
+            IEnumerable<FieldInfo> fieldInfos =
+                parentClass.GetFields().Where(field => field.IsDefined(typeof(SettingAttribute), false));
+            foreach (FieldInfo fieldInfo in fieldInfos)
+            {
+                SettingAttribute attr =
+                    (SettingAttribute)fieldInfo.GetCustomAttributes(typeof(SettingAttribute), false).First();
+                if (attr.Name == attributeName)
+                    return attr;
+            }
+
+            IEnumerable<PropertyInfo> propertyInfos =
+                parentClass.GetProperties().Where(prop => prop.IsDefined(typeof(SettingAttribute), false));
+            foreach (PropertyInfo propertyInfo in propertyInfos)
+            {
+                SettingAttribute attr =
+                    (SettingAttribute)propertyInfo.GetCustomAttributes(typeof(SettingAttribute), false).First();
+                if (attr.Name == attributeName)
+                    return attr;
+            }
+            return null;
         }
 
         /// <summary>

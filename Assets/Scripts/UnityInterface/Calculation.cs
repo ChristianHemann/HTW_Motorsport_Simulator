@@ -1,37 +1,49 @@
 ﻿using UnityEngine;
 using System.Collections;
-using MathNet.Numerics.Interpolation;
+using ImportantClasses;
 using Simulator;
 
 namespace UnityInterface
 {
     public class Calculation : MonoBehaviour
     {
-        private Simulator.CalculationController controller;
 
         // Initialization
-        void Start()
+        private void Start()
         {
-            //controller = new CalculationController();
-            //controller.Initialize();
+            CalculationController.Initialize();
         }
 
         //called periodically
-        void FixedUpdate()
+        private void FixedUpdate()
         {
-            //controller.Calculate();
+            // Get Input Data
+            lock (InputData.ActualInputData)
+            {
+                InputData.ActualInputData = new InputData(Input.GetAxis("AccelerationPedal"),
+                    Input.GetAxis("BrakePedal"), Input.GetAxis("Steering"), InputData.ActualInputData.Gear);
+            }
+            CalculationController.Calculate();
         }
 
-        // Update is called once per frame
-        void Update()
+        //called once per frame
+        private void Update()
         {
-
+            //the gear must be read in the Update function
+            lock (InputData.ActualInputData)
+            {
+                if (Input.GetButtonDown("ShiftUp") &&
+                    InputData.ActualInputData.Gear < CalculationController.Instance.GearBox.gears)
+                    InputData.ActualInputData.Gear++;
+                if (Input.GetButtonDown("ShiftDown") && InputData.ActualInputData.Gear > 0)
+                    InputData.ActualInputData.Gear--;
+            }
         }
 
         //quitting
-        void OnApplicationQuit()
+        private void OnApplicationQuit()
         {
-            //controller.Terminate();
+            CalculationController.Terminate();
         }
     }
 }

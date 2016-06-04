@@ -102,6 +102,7 @@
     <Compile Include="Assets\Scripts\ImportantClasses\CharacteristicMap.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Helper.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\ICalculationComponent.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\InputData.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\LinearInterpolation.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Logging.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\MathHelper.cs" />

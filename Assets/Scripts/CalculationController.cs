@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using MathNet.Numerics.Interpolation;
 using System.Threading;
-using CalculationComponents;
 using ImportantClasses;
+using CalculationComponents;
 
 namespace Simulator
 {
     public class CalculationController
     {
-        private readonly Thread workerThread;
-        private volatile bool _runThread = true;
-        private volatile bool _isCalculating = false;
-        private volatile EventWaitHandle _ewh;
+        private readonly Thread _workerThread; //The Thread which is calculating the behavior of the car
+        private volatile bool _runThread = false; //determines wheather the workerThread shall continue running
+        private volatile bool _isCalculating = false; //says wheather the workerThread is working
+        private volatile EventWaitHandle _ewh; //says the workerThread when to calculate
+        
+        public InputData InputDataBuffer { get; set; } 
 
         [ContainSettings("Car")]
         public static CalculationController Instance
@@ -27,80 +25,78 @@ namespace Simulator
                     _instance = new CalculationController();
                 return _instance;
             }
-            set { return; } //The setter is just to load a value via reflection
+            set { } //The setter is just to load a value via reflection
         }
         
         private static CalculationController _instance;
 
-        [SettingMenuItem("Engine")]
-        public Engine engine;
+        [Setting("Log performance")]
+        public bool LogPerformance = false;
 
-        [SettingMenuItem("GearBox")]
-        public GearBox gearBox;
+        [SettingMenuItem("Aerodynamic")]
+        public Aerodynamic Aerodynamic;
 
         [SettingMenuItem("Brake")]
-        private Brake brake;
+        public Brake Brake;
 
-        [SettingMenuItem("Aerodynamic")]
-        private Aerodynamic aerodynamics;
+        [SettingMenuItem("Engine")]
+        public Engine Engine;
 
-        [SettingMenuItem("GearBox")]
-        private GearBox gearbox;
+        [SettingMenuItem("Gearbox")]
+        public GearBox GearBox;
 
-        [SettingMenuItem("OverallCar")]
-        private OverallCar overallcar;
+        [SettingMenuItem("Chassis")]
+        public OverallCar OverallCar;
 
-        [SettingMenuItem("Aerodynamic")]
-        private Aerodynamic aerodynamic;
-
-        [SettingMenuItem("SecondaryDrive")]
-        private SecondaryDrive secondarydrive;
+        [SettingMenuItem("Secondary Drive")]
+        public SecondaryDrive SecondaryDrive;
 
         [SettingMenuItem("Steering")]
-        private Steering steering;
+        public Steering Steering;
 
         [SettingMenuItem("Suspension")]
-        private Suspension suspension;
+        public Suspension Suspension;
 
         [SettingMenuItem("Track")]
-        private Track track;
+        public Track Track;
 
         [SettingMenuItem("Wheel")]
-        private Wheel wheel;
-
-        //just to show the attribute
-        [Setting("(just for testing)", 100, 0, 1000, 5)]
-        public int torque;
-
-        [Setting("test")]
-        public int test { get; set; }
+        public Wheel Wheel;
 
         private CalculationController()
         {
-            if (_ewh == null)
-                _ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
-            workerThread = new Thread(this.WorkerFunction);
-            engine = new Engine();
-            gearBox = new GearBox();
-            torque = 100;
-            test = 25;
+            _ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _workerThread = new Thread(WorkerFunction);
+            Aerodynamic = new Aerodynamic();
+            Brake = new Brake();
+            Engine = new Engine();
+            GearBox = new GearBox();
+            OverallCar = new OverallCar();
+            SecondaryDrive = new SecondaryDrive();
+            Steering = new Steering();
+            Suspension = new Suspension();
+            Track = new Track();
+            Wheel = new Wheel();
         }
 
-        public void Initialize()
+        public static void Initialize()
         {
-            _runThread = true;
-            workerThread.Start();
+            Instance._runThread = true;
+            Instance._workerThread.Start();
         }
 
-        public void Calculate()
+        public static void Calculate()
         {
-            if (!_isCalculating)
-                _ewh.Set();
+            if (!Instance._isCalculating)
+            {
+                InputData.UsedInputData = InputData.ActualInputData; //Use the actual InputData in the next calculation step
+                Instance._ewh.Set();
+            }
         }
 
-        public void Terminate()
+        public static void Terminate()
         {
-            _runThread = false;
+            Instance._runThread = false;
         }
 
         private void WorkerFunction()
@@ -116,21 +112,37 @@ namespace Simulator
                 //Performance mesurement
                 performanceWatch.Start();
                 i++; //Calculation Number
+                try
+                {
+                    Aerodynamic.Calculate();
+                    Brake.Calculate();
+                    Engine.Calculate();
+                    GearBox.Calculate();
+                    SecondaryDrive.Calculate();
+                    Steering.Calculate();
 
-                DoWork(); //simulate some work
-
+                    DoIterativeWork();
+                }
+                catch (NotImplementedException ex)
+                {
+                    Logging.Log("Not implemented Exception: "+ex.Message,Logging.Classification.CalculationResult);
+                }
                 //performance mesurement
                 time = performanceWatch.Elapsed.Milliseconds;
                 performanceWatch.Reset();
-                //wirting in the Console of Unity
-                UnityEngine.Debug.Log("#Calculation: "+i.ToString()+" Time: "+time.ToString()+"ms");
+                if(LogPerformance)
+                    Logging.Log("Iteration: "+i.ToString()+" Time: "+time.ToString()+"ms",Logging.Classification.CalculationResult);
                 _isCalculating = false;
             }
         }
 
-        void DoWork()
+        private void DoIterativeWork()
         {
-            Thread.Sleep(10);
+            //iterate as long as the result is not exact enough
+            Track.Calculate();
+            Wheel.Calculate();
+            OverallCar.Calculate();
+            Suspension.Calculate();
         }
     }
 }
