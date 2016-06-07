@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿
+using MathNet.Numerics.LinearAlgebra;
 
 namespace CalculationComponents.TrackComponents
 {
@@ -12,12 +9,12 @@ namespace CalculationComponents.TrackComponents
 
         public float TrackWidthStart { get; set; }
         public float TrackWidthEnd { get; set; }
-        public virtual Vector2 EndDirection { get { return _endDirection; } }
-        public Vector2 EndPoint { get; set; }
+        public virtual Vector<float> EndDirection { get { return _endDirection; } }
+        public Vector<float> EndPoint { get; set; }
 
-        protected Vector2 _endDirection;
+        protected Vector<float> _endDirection;
 
-        protected TrackSegment(TrackSegment previousTrackSegment, float trackWidthStart, float trackWidthEnd, Vector2 endPoint, Vector2 endDirection)
+        protected TrackSegment(TrackSegment previousTrackSegment, float trackWidthStart, float trackWidthEnd, Vector<float> endPoint, Vector<float> endDirection)
         {
             PreviousTrackSegment = previousTrackSegment;
             TrackWidthEnd = trackWidthEnd;
@@ -26,7 +23,18 @@ namespace CalculationComponents.TrackComponents
             EndPoint = endPoint;
         }
 
-        protected virtual void ReCalculate()
+        /// <summary>
+        /// calculates values which are defined in the classes which inherits from TrackSegment according to the properties defined in TrackSegment
+        /// </summary>
+        protected virtual void CalculateDerivedValues()
+        {
+            
+        }
+
+        /// <summary>
+        /// calculates properties which are defined in TrackSegment according to the values in a class which inherits from TrackSegment
+        /// </summary>
+        protected virtual void CalculateBaseValues()
         {
             
         }

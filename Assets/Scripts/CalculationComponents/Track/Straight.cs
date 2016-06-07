@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿
+using ImportantClasses;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace CalculationComponents.TrackComponents
 {
-    public class Straight : TrackSegment
+    public sealed class Straight : TrackSegment
     {
         public float Length
         {
@@ -14,26 +12,31 @@ namespace CalculationComponents.TrackComponents
             set
             {
                 _lenght = value;
-                ReCalculate();
+                CalculateDerivedValues();
             }
         }
 
-        public override Vector2 EndDirection
+        public override Vector<float> EndDirection
         {
             get { return PreviousTrackSegment.EndDirection; }
         }
 
         private float _lenght;
 
-        public Straight(TrackSegment previousTrackSegment, float trackWidthStart, float trackWidthEnd, Vector2 endPoint, Vector2 endDirection)
+        public Straight(TrackSegment previousTrackSegment, float trackWidthStart, float trackWidthEnd, Vector<float> endPoint, Vector<float> endDirection)
             : base(previousTrackSegment, trackWidthStart, trackWidthEnd, endPoint, endDirection)
         {
-            _lenght = (endPoint - previousTrackSegment.EndPoint).magnitude;
+            CalculateDerivedValues();
         }
 
-        protected override void ReCalculate()
+        protected override void CalculateDerivedValues()
         {
-            EndPoint = PreviousTrackSegment.EndPoint + _lenght*EndDirection;
+            _lenght = (EndPoint - PreviousTrackSegment.EndPoint).GetMagnitude();
+        }
+
+        protected override void CalculateBaseValues()
+        {
+            EndPoint = PreviousTrackSegment.EndPoint + _lenght * EndDirection;
         }
     }
 }

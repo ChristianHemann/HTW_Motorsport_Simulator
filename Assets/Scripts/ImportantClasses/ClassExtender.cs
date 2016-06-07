@@ -1,6 +1,6 @@
 ﻿
 using System;
-using UnityEngine;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace ImportantClasses
 {
@@ -10,19 +10,21 @@ namespace ImportantClasses
     public static class ClassExtender
     {
         /// <summary>
-        /// gets an orthogonal Vector of the original Vector
+        /// gets an orthogonal Vector of the original 2-dimensional Vector
         /// </summary>
         /// <param name="v">the original Vector</param>
         /// <returns></returns>
-        public static Vector2 Normal(this Vector2 v)
+        public static Vector<float> Normal(this Vector<float> v)
         {
-            Vector2 normal;
-            if (v.y.Equals(0f))
-                normal = new Vector2(0, 1);
-            else if (v.x.Equals(0f))
-                normal = new Vector2(1, 0);
+            if (v.Count == 0)
+                return null;
+            Vector<float> normal;
+            if (v.At(1).Equals(0f))
+                normal = Vector<float>.Build.DenseOfArray(new[] {0f, 1f});
+            else if (v.At(0).Equals(0f))
+                normal = Vector<float>.Build.DenseOfArray(new[] { 1f, 0f });
             else
-                normal = new Vector2(1, v.x / v.y);
+                normal = Vector<float>.Build.DenseOfArray(new[] { 1f, v.At(0)/v.At(1) });
 
             return normal;
         }
@@ -33,28 +35,40 @@ namespace ImportantClasses
         /// <param name="v1">the direction vector of the first straight</param>
         /// <param name="v2">the direction vector of the second straight</param>
         /// <param name="p2">the starting point of the second straight</param>
-        /// <param name="p1">the starting point of the first straight. By default its (0|0)</param>
+        /// <param name="p1">the starting point of the first straight. if no value is given it is (0|0)</param>
         /// <returns>the intersection point of the two straights</returns>
-        public static Vector2 IntersectionPoint(this Vector2 v1, Vector2 v2,
-            Vector2 p2, Vector2 p1 = default(Vector2))
+        public static Vector<float> IntersectionPoint(this Vector<float> v1, Vector<float> v2,
+            Vector<float> p2, Vector<float> p1 = null)
         {
+            if (p1 == null)
+                p1 = Vector<float>.Build.Dense(2);
             //p1 + v1 * k = p2 + v2 * j
             //rearragne equation to j and calculate it
-            float j = ((p1.x - p2.x)/v2.x + (v1.x/v2.x)*((p2.y - p1.y)/v1.y))/
-                      (1 - (v1.x*v2.y/(v2.x*v1.y)));
+            float j = ((p1.At(0) - p2.At(0))/v2.At(0) + (v1.At(0)/v2.At(0))*((p2.At(1) - p1.At(1))/v1.At(1)))/
+                      (1 - (v1.At(0)*v2.At(1)/(v2.At(0)*v1.At(1))));
             //intersection point = p2 + v2 * j
-            return new Vector2(p2.x + v2.x*j, p2.y + v2.y*j);
+            return Vector<float>.Build.DenseOfArray(new[] {p2.At(0) + v2.At(0)*j, p2.At(1) + v2.At(1)*j});
         }
 
         /// <summary>
-        /// calculates the angle between two vectors
+        /// calculates the angle between two 2-dimensional vectors
         /// </summary>
-        /// <param name="v1"></param>
-        /// <param name="v2"></param>
-        /// <returns></returns>
-        public static float GetAngle(this Vector2 v1, Vector2 v2)
+        /// <param name="v1">the first vector</param>
+        /// <param name="v2">the second vector</param>
+        /// <returns>the angle between the vectors</returns>
+        public static float GetAngle(this Vector<float> v1, Vector<float> v2)
         {
-            return (float) Math.Acos((v1.x*v2.x + v1.y + v2.y)/v1.magnitude*v2.magnitude);
+            return (float) Math.Acos((v1.At(0)*v2.At(0) + v1.At(1) + v2.At(1))/(v1.GetMagnitude()*v2.GetMagnitude()));
+        }
+
+        /// <summary>
+        /// get the lenght of the vector
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static float GetMagnitude(this Vector<float> v)
+        {
+            return Convert.ToSingle(v.L2Norm());
         }
     }
 }

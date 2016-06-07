@@ -11,6 +11,12 @@ namespace CalculationComponents
         [Setting("Distance between cones")]
         public float ConeDistance { get; set; }
 
+        [Setting("Name")]
+        public string Name { get; set; }
+
+        public TimeSpan BestRoundTime { get; set; }
+        public TimeSpan LastRoundTime { get; set; }
+
         public void Calculate()
         {
             throw new NotImplementedException();
