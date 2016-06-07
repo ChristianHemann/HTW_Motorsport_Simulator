@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Assets.Scripts.ImportantClasses;
 using ImportantClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

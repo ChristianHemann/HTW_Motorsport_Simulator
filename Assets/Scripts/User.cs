@@ -12,25 +12,32 @@ namespace Assets.Scripts
 {
     class User
     {
-        private void Ca()
+        public string Name
         {
-           
+            get;
+            set;
         }
-        private void Carload()
+        public string Forname
         {
+            get;
+            set;
         }
+        public Dictionary<string, TimeSpan> Lastroundtime;
+       public Dictionary<string, TimeSpan> Best_round_times
+        { get; set; }
 
-        private void TrackIntput()
+        private void Best_round_time()
         {
-           
-        }
+            TimeSpan span = new TimeSpan();
+            Best_round_times.Add("", new TimeSpan(0, 0, 1, 12, 23));
 
-        private void trackload()
-        {
-        }
+            Best_round_times.TryGetValue("", out span);
+         /*   if (span < Best_round_times)
+            {
+                TimeSpan span = new Lastroundtime   
+                    
+            }*/
 
-        private void CarIntpunt()
-        {
         }
     }
 

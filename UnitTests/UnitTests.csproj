@@ -65,6 +65,7 @@
     <Compile Include="CharacteristicMapTest.cs" />
     <Compile Include="SettingsTest.cs" />
     <Compile Include="LoggingTest.cs" />
+    <Compile Include="test_user.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HTW_Motorsport_Simulator.CSharp.csproj">
