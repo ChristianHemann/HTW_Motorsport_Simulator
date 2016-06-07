@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using ImportantClasses;
 using Simulator;
 
@@ -12,6 +11,7 @@ namespace UnityInterface
         private void Start()
         {
             CalculationController.Initialize();
+            InputData.ActualInputData = new InputData(0, 0, 0, 0);
         }
 
         //called periodically
@@ -33,7 +33,7 @@ namespace UnityInterface
             lock (InputData.ActualInputData)
             {
                 if (Input.GetButtonDown("ShiftUp") &&
-                    InputData.ActualInputData.Gear < CalculationController.Instance.GearBox.gears)
+                    InputData.ActualInputData.Gear < CalculationController.Instance.GearBox.Gears)
                     InputData.ActualInputData.Gear++;
                 if (Input.GetButtonDown("ShiftDown") && InputData.ActualInputData.Gear > 0)
                     InputData.ActualInputData.Gear--;

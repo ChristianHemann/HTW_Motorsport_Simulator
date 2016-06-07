@@ -8,6 +8,9 @@ namespace CalculationComponents
 {
     public class Track : ICalculationComponent
     {
+        [Setting("Distance between cones")]
+        public float ConeDistance { get; set; }
+
         public void Calculate()
         {
             throw new NotImplementedException();

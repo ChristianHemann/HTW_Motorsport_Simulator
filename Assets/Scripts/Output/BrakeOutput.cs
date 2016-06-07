@@ -1,14 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CalculationComponents;
-
+﻿
 namespace Output
 {
     public class BrakeOutput
     {
-       
-        public float brake { get; set; }
+        private static BrakeOutput _lastCalculation;
+
+        public static BrakeOutput LastCalculation
+        {
+            get
+            {
+                if (_lastCalculation == null)
+                    _lastCalculation = new BrakeOutput();
+                return _lastCalculation;
+            }
+            set { _lastCalculation = value; }
+        }
+
+        public float BrakeMomentFront { get; set; }
+        public float BrakeMomentRear { get; set; }
     }
 }

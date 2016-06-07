@@ -60,12 +60,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -96,10 +90,15 @@
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\WheelHub.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\WheelSuspension.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\Wishbone.cs" />
+    <Compile Include="Assets\Scripts\CalculationComponents\Track\Curve.cs" />
+    <Compile Include="Assets\Scripts\CalculationComponents\Track\SplineSegment.cs" />
+    <Compile Include="Assets\Scripts\CalculationComponents\Track\Straight.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Track\Track.cs" />
+    <Compile Include="Assets\Scripts\CalculationComponents\Track\TrackSegment.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Wheel\Wheel.cs" />
     <Compile Include="Assets\Scripts\CalculationController.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\CharacteristicMap.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\ClassExtender.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Helper.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\ICalculationComponent.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\InputData.cs" />

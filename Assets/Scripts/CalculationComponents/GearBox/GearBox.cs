@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
 using ImportantClasses;
 using Output;
-using UnityEngine;
 
 namespace CalculationComponents
 {
@@ -15,10 +11,10 @@ namespace CalculationComponents
     {
         //Settings
         [Setting("Efficency", 0.9, 0.0, 1.0, 3)]
-        public float efficency;
+        public float Efficency { get; set; }
 
         [Setting("Number of Gears", 4)]
-        public byte gears {
+        public byte Gears {
             get { return _gears; }
             set
             {
@@ -28,7 +24,7 @@ namespace CalculationComponents
         }
 
         [Setting("Transmission for each gear (rpmIn/rpmOut)")]
-        public float[] transmissions;
+        public float[] Transmissions { get; set; }
 
         /// <summary>
         /// sets the gear in which the car is
@@ -44,10 +40,10 @@ namespace CalculationComponents
         /// </summary>
         public GearBox()
         {
-            gears = 4;
-            efficency = 0.9f;
+            Gears = 4;
+            Efficency = 0.9f;
             actualCalculation = new GearBoxOutput();
-            transmissions = new float[gears];
+            Transmissions = new float[Gears];
         }
 
         /// <summary>
@@ -58,7 +54,7 @@ namespace CalculationComponents
             if (Gear == 0)
                 actualCalculation.torque = 0;
             else
-                actualCalculation.torque = EngineOutput.LastCalculation.torque*efficency*transmissions[Gear-1];
+                actualCalculation.torque = EngineOutput.LastCalculation.torque*Efficency*Transmissions[Gear-1];
 
             if (OnCalculationReady != null)
                 OnCalculationReady();
@@ -70,7 +66,6 @@ namespace CalculationComponents
         public void StopCalculation()
         {
             //the function is so small, that it makes no sense
-            return;
         }
 
         /// <summary>
