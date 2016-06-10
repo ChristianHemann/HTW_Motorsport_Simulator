@@ -5,8 +5,8 @@ using System.Text;
 
 namespace CalculationComponents.TrackComponents
 {
-    public class SplineSegment : TrackSegment
-    {
+    //public class SplineSegment : TrackSegment
+    //{
 
-    }
+    //}
 }

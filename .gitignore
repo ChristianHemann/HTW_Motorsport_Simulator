@@ -57,7 +57,7 @@ build/
 *_i.c
 *_p.c
 *.ilk
-*.meta
+#*.meta #ignoring meta files cause unity to forget the the scripts referenced to a gameobject
 *.obj
 *.pch
 *.pdb

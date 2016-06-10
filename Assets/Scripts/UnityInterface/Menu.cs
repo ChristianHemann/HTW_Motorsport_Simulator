@@ -168,7 +168,7 @@ namespace UnityInterface
         private void DrawTopBar()
         {
             //back to the main menu
-            if (GUI.Button(new Rect(0, 0, _topBarButtonWidth, _buttonHeight), "main"))
+            if (GUI.Button(new Rect(0, 0, _topBarButtonWidth, _buttonHeight), "Main"))
             {
                 _namesList.Clear();
                 _showSettings = false;
@@ -176,11 +176,11 @@ namespace UnityInterface
 
             //back to the settings start page
             //show just if the page is actually not showed
-            if(_namesList.Count > 0 && GUI.Button(new Rect(_topBarButtonWidth + _padding, 0,_topBarButtonWidth, _buttonHeight),"settings"))
+            if(_namesList.Count > 0 && GUI.Button(new Rect(_topBarButtonWidth + _padding, 0,_topBarButtonWidth, _buttonHeight), "Settings"))
                 _namesList.Clear();
 
             //back to a menuitem in the hierachy
-            for (int i = 0; i < _namesList.Count - 1; i++)
+            for (int i = 0; i < _namesList.Count; i++)
             {
                 if(GUI.Button(new Rect((i+2)*(_topBarButtonWidth+_padding), 0, _topBarButtonWidth, _buttonHeight),_namesList.ElementAt(i)))
                 {
