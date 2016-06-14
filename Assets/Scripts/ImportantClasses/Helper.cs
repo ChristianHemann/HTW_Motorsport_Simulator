@@ -29,5 +29,22 @@ namespace ImportantClasses
             }
             return true;
         }
+
+        private static bool _isUnitTest = false;
+        private static bool _checkedForUnitTest = false;
+        /// <summary>
+        /// Checks if the application is running as a unittest
+        /// </summary>
+        /// <returns>true if a unittest is running</returns>
+        public static bool isUnitTest()
+        {
+            if (!_checkedForUnitTest)
+            {
+                string name = "Microsoft.VisualStudio.QualityTools.UnitTestFramework";
+                _isUnitTest = AppDomain.CurrentDomain.GetAssemblies().Any(a => a.FullName.StartsWith(name));
+                _checkedForUnitTest = true;
+            }
+            return _isUnitTest;
+        }
     }
 }

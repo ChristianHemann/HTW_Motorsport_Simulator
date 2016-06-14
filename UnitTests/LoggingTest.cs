@@ -12,7 +12,7 @@ namespace UnitTests
         [TestMethod]
         public void WriteStringLog()
         {
-            Logging.Log("some text to log",Logging.Classification.Message,Message.MessageCode.Notification);
+            Logging.Log("some text to log",Logging.Classification.Message);
             //the Result of the stored data cannot be checked automatically, because the exacly name of the file is not clear in this class
         }
 

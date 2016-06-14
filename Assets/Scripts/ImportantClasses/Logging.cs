@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using UnityEngine;
 
 namespace ImportantClasses
 {
@@ -65,7 +66,8 @@ namespace ImportantClasses
             if (OnNewLog != null)
                 OnNewLog(log);
 #if UNITY_EDITOR
-            UnityEngine.Debug.Log(log.ToString()); //Show in Console when in Unity Editor
+            if (!Helper.isUnitTest())
+                UnityEngine.Debug.Log(log.ToString()); //Show in Console when in Unity Editor
 #endif
         }
 

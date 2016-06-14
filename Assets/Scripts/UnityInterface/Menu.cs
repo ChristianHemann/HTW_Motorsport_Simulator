@@ -175,8 +175,7 @@ namespace UnityInterface
             }
 
             //back to the settings start page
-            //show just if the page is actually not showed
-            if(_namesList.Count > 0 && GUI.Button(new Rect(_topBarButtonWidth + _padding, 0,_topBarButtonWidth, _buttonHeight), "Settings"))
+            if(GUI.Button(new Rect(_topBarButtonWidth + _padding, 0,_topBarButtonWidth, _buttonHeight), "Settings"))
                 _namesList.Clear();
 
             //back to a menuitem in the hierachy

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ImportantClasses;
 
@@ -26,6 +27,7 @@ namespace UnitTests
         [TestMethod]
         public void TestWriteReadXml()
         {
+            string path = Path.GetTempFileName();
             double[] x = new[] { 1.0, 2.0, 3.0 };
             double[] y = new[] { 1.0, 2.0, 3.0 };
             double[][] values = new[]
@@ -35,8 +37,8 @@ namespace UnitTests
                 new[] {3.0, 4.0, 5.0}
             };
             CharacteristicMap map = new CharacteristicMap(x, y, values);
-            Xml.WriteXml(@"D:\Studium\SWE\bla.xml",map);
-            CharacteristicMap map2 = Xml.ReadXml<CharacteristicMap>(@"D:\Studium\SWE\bla.xml");
+            Xml.WriteXml(path,map);
+            CharacteristicMap map2 = Xml.ReadXml<CharacteristicMap>(path);
             Assert.AreEqual(2.0,map2.Interpolate(1.5, 1.5));
         }
 

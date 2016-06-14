@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ImportantClasses;
 
@@ -49,9 +50,10 @@ namespace UnitTests
         [TestMethod]
         public void TestWriteReadXml()
         {
+            string filePath = Path.GetTempFileName();
             Spline interpolation = new Spline(new[] { 2.0, 1.0, 3.0, 1.5 }, new[] { 2.0, 1.0, 3.0, 1.5 });
-            Xml.WriteXml(@"D:\Studium\SWE\bla.xml", interpolation);
-            Spline interpolation2 = Xml.ReadXml<Spline>(@"D:\Studium\SWE\bla.xml");
+            Xml.WriteXml(filePath, interpolation);
+            Spline interpolation2 = Xml.ReadXml<Spline>(filePath);
             double value = interpolation2.Interpolate(2.5);
             Assert.AreEqual(2.5, value);
         }
