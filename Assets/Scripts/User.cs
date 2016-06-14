@@ -8,37 +8,63 @@ using CalculationComponents;
 using ImportantClasses;
 
 
-namespace Assets.Scripts
+namespace Simulator
 {
-    class User
+    public class User
     {
+        private User()
+        {
+
+        }
+        [ContainSettings("User")]
+
+        public static User Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new User();
+                return _instance;
+            }
+
+        }
+        private static User _instance;
+        [Setting("Name")]
         public string Name
         {
             get;
             set;
         }
+        [Setting("Forname")]
         public string Forname
         {
             get;
             set;
         }
-        public Dictionary<string, TimeSpan> Lastroundtime;
-       public Dictionary<string, TimeSpan> Best_round_times
+        public Dictionary<string, TimeSpan> Best_round_times
         { get; set; }
 
-        private void Best_round_time()
+        public void set_Round_time(string name, TimeSpan time)
+
         {
-            TimeSpan span = new TimeSpan();
-            Best_round_times.Add("", new TimeSpan(0, 0, 1, 12, 23));
-
-            Best_round_times.TryGetValue("", out span);
-         /*   if (span < Best_round_times)
+            TimeSpan best_time;
+            if (Best_round_times.TryGetValue(name, out best_time))
             {
-                TimeSpan span = new Lastroundtime   
-                    
-            }*/
+                if (best_time > time)
+                {
 
+                    Best_round_times[name] = time;
+                }
+
+            }
+            else
+            {
+                Best_round_times.Add(name, time);
+            }
         }
+
+
+
     }
 
 }
