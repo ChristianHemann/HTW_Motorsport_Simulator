@@ -15,6 +15,8 @@ namespace Simulator
         private User()
         {
             Best_round_times = new Dictionary<string, TimeSpan>();
+            Name = "";
+            Forname = "";
         }
         [ContainSettings("User")]
 
