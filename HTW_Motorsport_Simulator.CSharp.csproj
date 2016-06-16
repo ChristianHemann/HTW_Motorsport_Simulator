@@ -92,6 +92,7 @@
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\Wishbone.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Track\Curve.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Track\SplineSegment.cs" />
+    <Compile Include="Assets\Scripts\CalculationComponents\Track\StartLine.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Track\Straight.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Track\Track.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Track\TrackSegment.cs" />
@@ -124,11 +125,13 @@
     <Compile Include="Assets\Scripts\Output\TrackOutput.cs" />
     <Compile Include="Assets\Scripts\Output\WheelOutput.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Calculation.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\Cone.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Menu.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Templates\DialogBox.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Templates\FileSelector\FileSelector.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Templates\FileSelector\FileSelectorStyles.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Templates\SettingTemplate.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\TrackDrawer.cs" />
     <Compile Include="Assets\Scripts\User.cs" />
   </ItemGroup>
   <ItemGroup>

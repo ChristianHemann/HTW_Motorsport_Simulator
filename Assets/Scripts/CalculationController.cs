@@ -57,9 +57,6 @@ namespace Simulator
         [SettingMenuItem("Suspension")]
         public Suspension Suspension;
 
-        [SettingMenuItem("Track")]
-        public Track Track;
-
         [SettingMenuItem("Wheel")]
         public Wheel Wheel;
 
@@ -75,7 +72,6 @@ namespace Simulator
             SecondaryDrive = new SecondaryDrive();
             Steering = new Steering();
             Suspension = new Suspension();
-            Track = new Track();
             Wheel = new Wheel();
         }
 
@@ -139,7 +135,7 @@ namespace Simulator
         private void DoIterativeWork()
         {
             //iterate as long as the result is not exact enough
-            Track.Calculate();
+            Track.Instance.Calculate();
             Wheel.Calculate();
             OverallCar.Calculate();
             Suspension.Calculate();

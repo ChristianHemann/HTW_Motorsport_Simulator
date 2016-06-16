@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics, Version=3.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assets\Libs\net35\MathNet.Numerics\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -66,6 +70,10 @@
     <Compile Include="SettingsTest.cs" />
     <Compile Include="LoggingTest.cs" />
     <Compile Include="test_user.cs" />
+    <Compile Include="CurveTest.cs" />
+    <Compile Include="StraightTest.cs" />
+    <Compile Include="TrackTest.cs" />
+    <Compile Include="VectorExtensionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HTW_Motorsport_Simulator.CSharp.csproj">
