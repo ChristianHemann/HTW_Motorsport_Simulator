@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Runtime.CompilerServices;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace ImportantClasses
@@ -82,6 +83,25 @@ namespace ImportantClasses
         public static float GetMagnitude(this Vector<float> v)
         {
             return Convert.ToSingle(v.L2Norm());
+        }
+
+        /// <summary>
+        /// test if two vectors are the same
+        /// </summary>
+        /// <param name="v1">the first vector</param>
+        /// <param name="v2">the secoond vector</param>
+        /// <param name="delta">the maximum difference between one value of v1 and v2</param>
+        /// <returns>true if the vectors have the same values within the given delta</returns>
+        public static bool AreEqual(this Vector<float> v1, Vector<float> v2, float delta = 0f)
+        {
+            if (v1.Count != v2.Count)
+                return false;
+            for (int i = 0; i < v1.Count; i++)
+            {
+                if (v1.At(i) > v2.At(i) + delta || v1.At(i) < v2.At(i) - delta)
+                    return false;
+            }
+            return true;
         }
     }
 }

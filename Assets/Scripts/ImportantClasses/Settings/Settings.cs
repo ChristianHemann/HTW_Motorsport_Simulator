@@ -430,7 +430,7 @@ namespace ImportantClasses
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 Message.Send("An error occured during saving the file", Message.MessageCode.Error);
             }
@@ -464,8 +464,8 @@ namespace ImportantClasses
             {
                 if (actObj.Name != name) //Find the correct object
                     continue;
-                try
-                {
+                //try
+                //{
                     //search in fields
                     IEnumerable<FieldInfo> fieldInfos =
                         actObj.ParentType.GetFields()
@@ -497,11 +497,12 @@ namespace ImportantClasses
                             actObj.Path = path;
                         }
                     }
-                }
-                catch
-                {
-                    Message.Send("The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type", Message.MessageCode.Warning);
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Message.Send("The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type", Message.MessageCode.Warning);
+                //    throw new Exception("could not load the file", ex);
+                //}
 
             }
         }

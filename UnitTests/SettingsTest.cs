@@ -31,7 +31,7 @@ namespace UnitTests
             //The Length oh the returned List can change, so that you have to count all the attributes manually for comparision
             Settings.Initialize();
             int len = Settings.GetMenuItems(new string[0]).Count;
-            Assert.AreEqual(len, 3); //this value is hardCoded. it can change when changing the number of attributes in the code
+            Assert.AreEqual(len, 5); //this value is hardCoded. it can change when changing the number of attributes in the code
         }
     }
     

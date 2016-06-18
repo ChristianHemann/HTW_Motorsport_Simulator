@@ -113,6 +113,7 @@
     <Compile Include="Assets\Scripts\ImportantClasses\Settings\SettingMenuItemAttribute.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Settings\Settings.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Spline.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Vector2.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Xml.cs" />
     <Compile Include="Assets\Scripts\Output\AeroOutput.cs" />
     <Compile Include="Assets\Scripts\Output\BrakeOutput.cs" />

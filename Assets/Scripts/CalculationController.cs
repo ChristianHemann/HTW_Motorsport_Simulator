@@ -25,7 +25,7 @@ namespace Simulator
                     _instance = new CalculationController();
                 return _instance;
             }
-            set { } //The setter is just to load a value via reflection
+            set { _instance = value; } //The setter is just to load a value via reflection
         }
         
         private static CalculationController _instance;

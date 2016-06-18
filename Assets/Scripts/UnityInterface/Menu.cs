@@ -14,9 +14,9 @@ namespace UnityInterface
     internal class Menu : MonoBehaviour
     {
         private List<string> _namesList; //saves place in menu which is actually shown
-        private Vector2 _itemScrollPosition; //the scroll Position for the Menuitems
-        private Vector2 _settingScrollPosition; //the scroll position for the settings
-        private Vector2 _topBarScrollPosition; //the scroll position of the bar on the top
+        private UnityEngine.Vector2 _itemScrollPosition; //the scroll Position for the Menuitems
+        private UnityEngine.Vector2 _settingScrollPosition; //the scroll position for the settings
+        private UnityEngine.Vector2 _topBarScrollPosition; //the scroll position of the bar on the top
         private bool _showSettings = false; //false = Main Menu; true = settings;
         private bool _showOverwriteFileDialog = false; //when set to true the user is asked if he wants to overwrite the last used file or create a new file
         private readonly List<string> _outstandingObjectsToSave = new List<string>(); //the objects where the user shall be asked for a path for saving
@@ -47,9 +47,9 @@ namespace UnityInterface
             _namesList = new List<string>();
             Settings.Initialize();
             CalculateSize();
-            _itemScrollPosition = new Vector2(0, 0);
-            _settingScrollPosition = new Vector2(0, 0);
-            _topBarScrollPosition = new Vector2(0, 0);
+            _itemScrollPosition = new UnityEngine.Vector2(0, 0);
+            _settingScrollPosition = new UnityEngine.Vector2(0, 0);
+            _topBarScrollPosition = new UnityEngine.Vector2(0, 0);
             Message.OnNewMessage += ShowMessage;
         }
         

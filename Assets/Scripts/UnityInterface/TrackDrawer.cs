@@ -10,15 +10,15 @@ namespace UnityInterface
 {
     public class TrackDrawer : MonoBehaviour
     {
-        private Vector<float>[] _positions;
+        private ImportantClasses.Vector2[] _positions;
         public GameObject cone;
 
         void Start()
         {
             _positions = Track.Instance.GetConePositions();
-            foreach (Vector<float> position in _positions)
+            foreach (ImportantClasses.Vector2 position in _positions)
             {
-                GameObject.Instantiate(cone, new Vector3(position.At(0), 0f, position.At(1)), new Quaternion(0, 0, 0, 0));
+                GameObject.Instantiate(cone, new Vector3(position.X, 0f, position.Y), new Quaternion(0, 0, 0, 0));
             }
         }
     }

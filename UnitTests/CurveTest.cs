@@ -1,5 +1,6 @@
 ﻿using System;
 using CalculationComponents.TrackComponents;
+using ImportantClasses;
 using MathNet.Numerics.LinearAlgebra;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,11 +9,11 @@ namespace UnitTests
     [TestClass]
     public class CurveTest
     {
-        private static Vector<float> p0 = Vector<float>.Build.Dense(2);
-        private static Vector<float> p1 = Vector<float>.Build.DenseOfArray(new[] {0, 1f});
-        private static Vector<float> v1 = Vector<float>.Build.DenseOfArray(new[] { 1f, 0f });
-        private static Vector<float> v2 = Vector<float>.Build.DenseOfArray(new[] { 1f, 1f });
-        private static Vector<float> v3 = Vector<float>.Build.DenseOfArray(new[] { 0f, 1f });
+        private static Vector2 p0 = new Vector2();
+        private static Vector2 p1 = new Vector2(0,1);
+        private static Vector2 v1 = new Vector2(1,0);
+        private static Vector2 v2 = new Vector2(1,1);
+        private static Vector2 v3 = new Vector2(0,1);
         private static StartLine previous = new StartLine(null, 5f, p0, v1);
 
         [TestMethod]
@@ -40,26 +41,42 @@ namespace UnitTests
         public void TestGetPoint()
         {
             Curve curve = new Curve(previous, 5f, v2);
-            Assert.AreEqual(
-                Vector<float>.Build.DenseOfArray(new[]
-                {Convert.ToSingle(Math.Cos(Math.PI/4)), Convert.ToSingle(Math.Sin(Math.PI*2*7/8) + 1f)}),
-                curve.GetPointAtAngle(Convert.ToSingle(Math.PI/4)));
+            Assert.IsTrue(new Vector2(
+            Convert.ToSingle(Math.Cos(Math.PI/4)), Convert.ToSingle(Math.Sin(Math.PI*2*7/8) + 1f))
+                .Equals(curve.GetPointAtAngle(Convert.ToSingle(Math.PI/4)), (float) 1E-5));
         }
 
         [TestMethod]
         public void TestCurveChangeAngle()
         {
             Curve curve = new Curve(previous, 5f, v2);
-            Assert.AreEqual(v2,curve.EndPoint);
             curve.Angle = (float) Math.PI;
-            Assert.AreEqual(Vector<float>.Build.DenseOfArray(new []{0,2f}),curve.EndPoint);
+            Assert.IsTrue(new Vector2(0,2).Equals(curve.EndPoint,(float)1E-5));
+        }
+
+        [TestMethod]
+        public void TestCurveChangeRadius()
+        {
+            Curve curve = new Curve(previous, 5f, v2);
+            curve.Radius = 10;
+            Assert.IsTrue(curve.EndPoint.Equals(new Vector2(10,10), (float)1E-5));
         }
 
         [TestMethod]
         public void TestCurveEndDirection()
         {
             Curve curve = new Curve(previous, 5f, v2);
-            Assert.AreEqual(v3,curve.EndDirection);
+            Assert.IsTrue(v3.Equals(curve.EndDirection, (float) 1E-5));
+        }
+
+        [TestMethod]
+        public void TestCurvePreviousTrackSegmentChanged()
+        {
+            Curve curve = new Curve(previous, 5f, v2);
+            previous.TrySetEndDirection(v3);
+            previous.EndPoint = p1;
+            Assert.IsTrue(curve.EndPoint.Equals(new Vector2(-1,2),(float)1E-5));
+            previous.TrySetEndDirection(v1);
         }
     }
 }
