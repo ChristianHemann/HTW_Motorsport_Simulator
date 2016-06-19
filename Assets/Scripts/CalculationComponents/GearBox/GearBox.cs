@@ -64,9 +64,9 @@ namespace CalculationComponents
         public void Calculate()
         {
             if (Gear == 0)
-                actualCalculation.torque = 0;
+                actualCalculation.Torque = 0;
             else
-                actualCalculation.torque = EngineOutput.LastCalculation.torque*Efficency*Transmissions[Gear-1];
+                actualCalculation.Torque = EngineOutput.LastCalculation.torque*Efficency*Transmissions[Gear-1];
 
             if (OnCalculationReady != null)
                 OnCalculationReady();
@@ -85,7 +85,7 @@ namespace CalculationComponents
         /// </summary>
         public void StoreResult()
         {
-            GearBoxOutput.LastCalculation.torque = actualCalculation.torque;
+            GearBoxOutput.LastCalculation.Torque = actualCalculation.Torque;
         }
 
         /// <summary>

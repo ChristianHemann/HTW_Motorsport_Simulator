@@ -8,7 +8,7 @@ namespace Output
 {
     public class GearBoxOutput
     {
-        public static GearBoxOutput _lastCalculation;
+        private static GearBoxOutput _lastCalculation;
 
         public static GearBoxOutput LastCalculation
         {
@@ -21,7 +21,7 @@ namespace Output
             set { _lastCalculation = value; }
         }
         
-        public float torque { get; set; }
-        public float rpm { get; set; } //rounds per minute
+        public float Torque { get; set; }
+        public float Rpm { get; set; } //rounds per minute
     }
 }
