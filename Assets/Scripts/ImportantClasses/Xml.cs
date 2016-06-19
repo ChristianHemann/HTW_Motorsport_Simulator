@@ -23,8 +23,6 @@ namespace ImportantClasses
             XmlSerializer serializer = new XmlSerializer(obj.GetType());
             serializer.Serialize(stream, obj);
             stream.Close();
-            if (FinishedWriting != null)
-                FinishedWriting(obj.GetType());
         }
 
         /// <summary>
@@ -41,8 +39,6 @@ namespace ImportantClasses
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             object obj = serializer.Deserialize(stream);
             stream.Close();
-            if (FinishedReading != null)
-                FinishedReading(typeof(T));
             return (T)obj;
         }
 
@@ -60,21 +56,7 @@ namespace ImportantClasses
             XmlSerializer serializer = new XmlSerializer(type);
             object obj = serializer.Deserialize(stream);
             stream.Close();
-            if (FinishedReading != null)
-                FinishedReading(type);
             return obj;
         }
-
-        public delegate void OnReadWriteFinished(Type objectType);
-
-        /// <summary>
-        /// invoked when a file is read
-        /// </summary>
-        public static event OnReadWriteFinished FinishedReading;
-
-        /// <summary>
-        /// invoked when a file is written
-        /// </summary>
-        public static event OnReadWriteFinished FinishedWriting;
     }
 }

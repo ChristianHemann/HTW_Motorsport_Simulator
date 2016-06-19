@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CalculationController xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LogPerformance>true</LogPerformance>
+  <Aerodynamic />
+  <Brake>
+    <NormalBrakeMoment>100</NormalBrakeMoment>
+    <BrakeBalance>
+      <FirstValue>0.66666666666666663</FirstValue>
+      <SecondValue>0.66666666666666663</SecondValue>
+    </BrakeBalance>
+  </Brake>
+  <Engine>
+    <CharacteristicLine>
+      <X>
+        <double>0</double>
+        <double>10000</double>
+      </X>
+      <Y>
+        <double>0</double>
+        <double>100</double>
+      </Y>
+      <NameX>rounds per minute</NameX>
+      <NameY>torque</NameY>
+    </CharacteristicLine>
+    <MaxRpm>0</MaxRpm>
+  </Engine>
+  <GearBox>
+    <Efficency>0.9</Efficency>
+    <Gears>4</Gears>
+    <Transmissions>
+      <float>0</float>
+      <float>0</float>
+      <float>0</float>
+      <float>0</float>
+    </Transmissions>
+  </GearBox>
+  <OverallCar />
+  <SecondaryDrive />
+  <Steering />
+  <Suspension />
+  <Wheel />
+</CalculationController>

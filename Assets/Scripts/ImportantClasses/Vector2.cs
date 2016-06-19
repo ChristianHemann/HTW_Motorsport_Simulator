@@ -7,28 +7,51 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace ImportantClasses
 {
+    /// <summary>
+    /// vector in two dimensional space
+    /// </summary>
     public class Vector2
     {
+        /// <summary>
+        /// the vector which is wrapped by this class
+        /// </summary>
         private Vector<float> _vector;
 
+        /// <summary>
+        /// the x-coordinate of the vector
+        /// </summary>
         public float X {
             get { return _vector[0]; }
             set { _vector[0] = value; }
         }
 
+        /// <summary>
+        /// the y-coordinate of the vector
+        /// </summary>
         public float Y
         {
             get { return _vector[1]; }
             set { _vector[1] = value; }
         }
 
+        /// <summary>
+        /// the lenght of the vector
+        /// </summary>
         public float Magnitude { get { return Convert.ToSingle(_vector.L2Norm()); } }
 
+        /// <summary>
+        /// vector in two dimensional space
+        /// </summary>
+        /// <param name="x">the x-coordinate of the vector</param>
+        /// <param name="y">the y-coordinate of the vector</param>
         public Vector2(float x, float y)
         {
             _vector = Vector<float>.Build.DenseOfArray(new[] {x, y});
         }
 
+        /// <summary>
+        /// vector in two dimensional space with a length of 0
+        /// </summary>
         public Vector2() : this(0f, 0f) { }
 
         public override string ToString()
@@ -37,11 +60,22 @@ namespace ImportantClasses
                 new StringBuilder().Append("X: ").Append(X.ToString()).Append("\nY: ").Append(Y.ToString()).ToString();
         }
 
+        /// <summary>
+        /// checks if the this vector and the object are having the same values
+        /// </summary>
+        /// <param name="obj">the object to compare this vector with</param>
+        /// <returns>true if the object is a vector with the same coordinated</returns>
         public override bool Equals(object obj)
         {
             return Equals(obj, 0f);
         }
 
+        /// <summary>
+        /// checks if the this vector and the object are having the same values
+        /// </summary>
+        /// <param name="obj">>the object to compare this vector with</param>
+        /// <param name="delta">the maximum difference between the values of the vectors. A value around 1E-5 is appropriate</param>
+        /// <returns>true if the object is a vector with the same coordinated</returns>
         public bool Equals(object obj, float delta)
         {
             Vector<float> other;
@@ -57,6 +91,11 @@ namespace ImportantClasses
             return true;
         }
 
+        /// <summary>
+        /// calculates the angel between 2 vectors
+        /// </summary>
+        /// <param name="other">the other vector</param>
+        /// <returns>the angle between the 2 vectors in radiant</returns>
         public float GetEnclosedAngle(Vector2 other)
         {
             if (Magnitude.Equals(0) || other.Magnitude.Equals(0))
@@ -70,12 +109,27 @@ namespace ImportantClasses
             return Convert.ToSingle(Math.Acos(buffer));
         }
 
+        /// <summary>
+        /// Calculates the intersection point between 2 straights
+        /// </summary>
+        /// <param name="otherDirection">the direction vector of the second straight</param>
+        /// <param name="otherStartingPoint">the stationary vector of the second straight</param>
+        /// <param name="thisStartingPoint">the stationary vector of the first straight</param>
+        /// <returns>the intersection point of the two vectors or null if they have no intersection point</returns>
         public Vector2 GetIntersectionPoint(Vector2 otherDirection, Vector2 otherStartingPoint,
             Vector2 thisStartingPoint)
         {
             return GetIntersectionPoint(this, otherDirection, otherStartingPoint, thisStartingPoint);
         }
 
+        /// <summary>
+        /// Calculates the intersection point between 2 straights
+        /// </summary>
+        /// <param name="thisDirection">the direction vector of the first straight</param>
+        /// <param name="otherDirection">the direction vector of the second straight</param>
+        /// <param name="otherStartingPoint">the stationary vector of the second straight</param>
+        /// <param name="thisStartingPoint">the stationary vector of the first straight</param>
+        /// <returns>the intersection point of the two vectors or null if they have no intersection point</returns>
         public static Vector2 GetIntersectionPoint(Vector2 thisDirection, Vector2 otherDirection, Vector2 otherStartingPoint, Vector2 thisStartingPoint)
         {
             if (thisDirection.Magnitude.Equals(0f) || otherDirection.Magnitude.Equals(0f))
@@ -97,15 +151,25 @@ namespace ImportantClasses
                 j = ((p1.X - p2.X) / v2.X + (v1.X / v2.X) * ((p2.Y - p1.Y) / v1.Y)) /
                       (1 - (v1.X * v2.Y / (v2.X * v1.Y)));
             }
+            if (float.IsNaN(j)) //the vectors have no intersection point
+                return null;
             //intersection point = p2 + v2 * j
             return new Vector2(p2.X + v2.X*j, p2.Y + v2.Y*j);
         }
 
+        /// <summary>
+        /// the vector which is orthogonal on this vector. Its direction is to the right side of this vector
+        /// </summary>
+        /// <returns>the orthogonal vector</returns>
         public Vector2 Normal()
         {
             return new Vector2(Y, -X);
         }
 
+        /// <summary>
+        /// calculates a vector with the length of 1 and the same direction as this vector
+        /// </summary>
+        /// <returns>the vector with the normalized length</returns>
         public Vector2 Normalize()
         {
             Vector<float> buffer = _vector.Normalize(2);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Xml.Serialization;
 using ImportantClasses;
 using CalculationComponents;
 
@@ -14,6 +15,7 @@ namespace Simulator
         private volatile bool _isCalculating = false; //says wheather the workerThread is working
         private volatile EventWaitHandle _ewh; //says the workerThread when to calculate
         
+        [XmlIgnore]
         public InputData InputDataBuffer { get; set; } 
 
         [ContainSettings("Car")]

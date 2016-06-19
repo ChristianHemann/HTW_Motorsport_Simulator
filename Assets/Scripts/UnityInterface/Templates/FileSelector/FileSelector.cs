@@ -56,20 +56,20 @@ public class FileSelector : MonoBehaviour
 	/// 	- If set to true, this instance will destroy itself when the window closes.
 	/// </summary>
 	public bool destroyOnClose = false;
-	
-	/// <summary>
-	/// 	- The window dimensions.
-	/// </summary>
-	public Rect windowDimensions = new Rect(0,0,600,600);
-	
-	#endregion
-	
-	#region PublicStaticParameters
-	
-	/// <summary>
-	/// 	- The window style.
-	/// </summary>
-	private static GUIStyle _windowStyle;
+    
+    #endregion
+
+    #region PublicStaticParameters
+
+    /// <summary>
+    /// 	- The window dimensions.
+    /// </summary>
+    public static Rect windowDimensions = new Rect(0, 0, 600, 600);
+
+    /// <summary>
+    /// 	- The window style.
+    /// </summary>
+    private static GUIStyle _windowStyle;
 	public static GUIStyle windowStyle
 	{
 		get

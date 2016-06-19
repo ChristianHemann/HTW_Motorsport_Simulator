@@ -412,8 +412,8 @@ namespace ImportantClasses
         /// <param name="path">The path to the file</param>
         public static void SaveSetting(string name, string path)
         {
-            try
-            {
+            //try
+            //{
                 if (String.IsNullOrEmpty(path))
                 {
                     Message.Send("There is no valid file selected for saving " + name, Message.MessageCode.Warning);
@@ -426,14 +426,16 @@ namespace ImportantClasses
                     {
                         Xml.WriteXml(path, obj.Obj);
                         obj.Path = path;
+                        if (FileSaved != null)
+                            FileSaved(obj.Obj.GetType());
                         return;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Message.Send("An error occured during saving the file", Message.MessageCode.Error);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Message.Send("An error occured during saving the file", Message.MessageCode.Error);
+            //}
         }
 
         /// <summary>
@@ -480,6 +482,8 @@ namespace ImportantClasses
                             fieldInfo.SetValue(null, obj);
                             actObj.Obj = obj;
                             actObj.Path = path;
+                            if (FileLoaded != null)
+                                FileLoaded(obj.GetType());
                         }
                     }
                     //search in properties
@@ -495,13 +499,14 @@ namespace ImportantClasses
                             propertyInfo.SetValue(null, obj, null);
                             actObj.Obj = obj;
                             actObj.Path = path;
+                            if (FileLoaded != null)
+                                FileLoaded(obj.GetType());
                         }
                     }
                 //}
                 //catch (Exception ex)
                 //{
                 //    Message.Send("The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type", Message.MessageCode.Warning);
-                //    throw new Exception("could not load the file", ex);
                 //}
 
             }
@@ -615,6 +620,18 @@ namespace ImportantClasses
                 SearchForSettingMenuItemAttribute(propertyInfo.GetValue(parent, null), childDictionary);
             }
         }
+
+        public delegate void OnSaveLoad(Type objectType);
+
+        /// <summary>
+        /// invoked when a file is read
+        /// </summary>
+        public static event OnSaveLoad FileLoaded;
+
+        /// <summary>
+        /// invoked when a file is written
+        /// </summary>
+        public static event OnSaveLoad FileSaved;
     }
 }
 

@@ -14,7 +14,7 @@ namespace CalculationComponents.TrackComponents
         /// the previous segment of the track
         /// </summary>
         [XmlIgnore] //it is not saved to avoid endless loops
-        public TrackSegment PreviousTrackSegment
+        public virtual TrackSegment PreviousTrackSegment
         {
             get { return _previousTrackSegment; }
             set
@@ -65,7 +65,9 @@ namespace CalculationComponents.TrackComponents
         /// <param name="endDirection">the direction of the segment where it ends</param>
         protected TrackSegment(TrackSegment previousTrackSegment, float trackWidthEnd, Vector2 endPoint, Vector2 endDirection)
         {
-            PreviousTrackSegment = previousTrackSegment;
+            _previousTrackSegment = previousTrackSegment;
+            if (_previousTrackSegment != null)
+                _previousTrackSegment.TrackSegmentChanged += PreviousTrackSegmentChanged;
             TrackWidthEnd = trackWidthEnd;
             _endDirection = endDirection;
             _endPoint = endPoint;
@@ -98,7 +100,7 @@ namespace CalculationComponents.TrackComponents
         /// <summary>
         /// used to call the event TrackSegmentChanged from derived classes
         /// </summary>
-        protected void CallTrackSegmentChangedEvent()
+        internal void CallTrackSegmentChangedEvent()
         {
             if (TrackSegmentChanged != null)
                 TrackSegmentChanged();

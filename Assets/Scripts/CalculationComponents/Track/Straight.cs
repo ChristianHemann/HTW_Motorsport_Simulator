@@ -92,7 +92,7 @@ namespace CalculationComponents.TrackComponents
         /// </summary>
         protected override void CalculateBaseValues()
         {
-            EndPoint = PreviousTrackSegment.EndPoint + _lenght * EndDirection;
+            EndPoint = PreviousTrackSegment.EndPoint + _lenght * EndDirection.Normalize();
         }
 
         /// <summary>

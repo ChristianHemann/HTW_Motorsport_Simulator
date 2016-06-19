@@ -51,6 +51,11 @@ namespace ImportantClasses
             }
 
             /// <summary>
+            /// ratio between two numerical values. the default Ratio is 0.5:0.5
+            /// </summary>
+            public Ratio() : this(0.5f, 0.5f) {  }
+
+            /// <summary>
             /// sets the ratio as the same ratio as firstValue:secondValue but normalize it so that the sum is 1
             /// </summary>
             /// <param name="firstValue">The first value of the ratio FirstValue:SecondValue</param>

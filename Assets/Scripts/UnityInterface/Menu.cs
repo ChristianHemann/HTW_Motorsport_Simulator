@@ -30,6 +30,7 @@ namespace UnityInterface
         private Dictionary<string, object> _namesDictionary;
 
         //Define Size
+        private bool _isSizeCalculated = false;
         private float _padding;
         private float _contentWidth;
         private float _topBarHeight;
@@ -46,18 +47,37 @@ namespace UnityInterface
         {
             _namesList = new List<string>();
             Settings.Initialize();
-            CalculateSize();
             _itemScrollPosition = new UnityEngine.Vector2(0, 0);
             _settingScrollPosition = new UnityEngine.Vector2(0, 0);
             _topBarScrollPosition = new UnityEngine.Vector2(0, 0);
             Message.OnNewMessage += ShowMessage;
         }
-        
+
+        /// <summary>
+        /// calcutates the size of the controls according to the screen size
+        /// </summary>
+        private void CalculateSize()
+        {
+            _contentWidth = Screen.width * 0.98f;
+            _contentHeight = Screen.height * 0.98f;
+            _buttonHeight = GUI.skin.GetStyle("Button").CalcHeight(new GUIContent("some text"), _contentWidth); //get the height of a button with the text "some text"
+            _topBarHeight = _buttonHeight*1.5f;
+            _padding = _buttonHeight*0.15f;
+            _topBarButtonWidth = _contentWidth / 8;
+            _menuItemWidth = _contentWidth / 5 - 20; //20% of the width for the MenuItems; 20 is subtracted for the scrollBar
+            _menuSettingWidth = _contentWidth - _menuItemWidth - _padding - 20; //80% minus the _padding for the Settings; 20 is subtracted for the scrollBar
+            SettingTemplate.SetInputHeight(GUI.skin.GetStyle("TextField").CalcHeight(new GUIContent("some text"),_contentWidth));
+            FileSelector.windowDimensions = new Rect(0, 0, _contentWidth * 0.5f, _contentHeight);
+            _isSizeCalculated = true;
+        }
+
         /// <summary>
         /// called by unity when an action to the userinterface happend
         /// </summary>
         private void OnGUI()
         {
+            if(!_isSizeCalculated)
+                CalculateSize();
             if (!_showSettings)
                 DrawMainMenu();
             else //Draw Settings
@@ -74,13 +94,13 @@ namespace UnityInterface
                     {
                         //the direct conversion (values = (object[]) oldValue) is not possible
                         object[] values = ((IEnumerable)keyValuePair.Value).Cast<object>().ToArray();
-                        settingContentHeight += (SettingTemplate.GetRelativeHeight(typeof(string)) +
-                                  values.Length * SettingTemplate.GetRelativeHeight(values[0].GetType())) * _contentHeight;
+                        settingContentHeight += SettingTemplate.GetHeight(typeof(string)) +
+                                  values.Length * (SettingTemplate.GetHeight(values[0].GetType())+_padding);
                     }
                     else
-                        settingContentHeight += SettingTemplate.GetRelativeHeight(keyValuePair.Value.GetType()) * _contentHeight;
+                        settingContentHeight += SettingTemplate.GetHeight(keyValuePair.Value.GetType());
                 }
-                settingContentHeight += _buttonHeight + _padding + 20; //height of the buttons on the bottom + the _padding between button and settings + height of the scrollBar
+                settingContentHeight += _buttonHeight + _padding*4 + 20; //height of the buttons on the bottom + the _padding between button and settings + height of the scrollBar
 
                 //Begin drawing of the menu
                 GUI.BeginGroup(new Rect(_padding, _padding, _contentWidth, _contentHeight)); //content; _padding to the edge
@@ -117,27 +137,12 @@ namespace UnityInterface
         }
 
         /// <summary>
-        /// calcutates the size of the controls according to the screen size
-        /// </summary>
-        private void CalculateSize()
-        {
-            _padding = (Screen.width + Screen.height) / 200f; //1% _padding to the edge of the screen
-            _contentWidth = Screen.width - (2 * _padding); //width of the Screeen minus the _padding
-            _contentHeight = Screen.height - (2 * _padding); //height of the Screen minus the _padding
-            _topBarHeight = Screen.height / 100 * 12; //12% Height for the Bar on the Top
-            _buttonHeight = _topBarHeight - _padding;
-            _topBarButtonWidth = _contentWidth / 8;
-            _menuItemWidth = _contentWidth / 5 - 20; //20% of the width for the MenuItems; 20 is subtracted for the scrollBar
-            _menuSettingWidth = _contentWidth - _menuItemWidth - _padding - 20; //80% minus the _padding for the Settings; 20 is subtracted for the scrollBar
-        }
-
-        /// <summary>
         /// Draws the Main Menu
         /// </summary>
         private void DrawMainMenu()
         {
             //Start Button
-            if (GUI.Button(new Rect(_menuItemWidth, _topBarHeight, _contentWidth - 2*_menuItemWidth, _buttonHeight),
+            if (GUI.Button(new Rect(_menuItemWidth, _topBarHeight, _contentWidth - 2*_menuItemWidth, _buttonHeight*1.5f),
                 "Start Race"))
             {
                 SceneManager.LoadScene("Simulator");
@@ -145,8 +150,8 @@ namespace UnityInterface
 
             //Settings Button
             if ( GUI.Button(
-                    new Rect(_menuItemWidth, _topBarHeight + _buttonHeight + _padding, _contentWidth - 2*_menuItemWidth,
-                        _buttonHeight), "Settings"))
+                    new Rect(_menuItemWidth, _topBarHeight + _buttonHeight*1.5f + _padding, _contentWidth - 2*_menuItemWidth,
+                        _buttonHeight*1.5f), "Settings"))
             {
                 _showSettings = true;
             }
@@ -154,9 +159,9 @@ namespace UnityInterface
             //Quit Application
             if (
                 GUI.Button(
-                    new Rect(_menuItemWidth, _topBarHeight + (_buttonHeight + _padding)*2.5f,
+                    new Rect(_menuItemWidth, _topBarHeight + (_buttonHeight*1.5f + _padding)*2.7f,
                         _contentWidth - 2*_menuItemWidth,
-                        _buttonHeight), "Quit"))
+                        _buttonHeight*1.5f), "Quit"))
             {
                 Application.Quit();
             }
@@ -221,8 +226,8 @@ namespace UnityInterface
                 {
                     //the direct conversion (values = (object[]) oldValue) is not possible
                     object[] values = ((IEnumerable) keyValuePair.Value).Cast<object>().ToArray();
-                    height = (SettingTemplate.GetRelativeHeight(typeof(string)) +
-                              values.Length*SettingTemplate.GetRelativeHeight(values[0].GetType()))*_contentHeight;
+                    height = SettingTemplate.GetHeight(typeof(string)) +
+                              values.Length*(SettingTemplate.GetHeight(values[0].GetType())+_padding);
                     if (values.Length > 0)
                         newValue = SettingTemplate.DrawArray(values, keyValuePair.Key,
                             new Rect(0, posY, _menuSettingWidth, height));
@@ -231,7 +236,7 @@ namespace UnityInterface
                 }
                 else //Draw a value other than arrays
                 {
-                    height = SettingTemplate.GetRelativeHeight(keyValuePair.Value.GetType())*_contentHeight;
+                    height = SettingTemplate.GetHeight(keyValuePair.Value.GetType());
                     newValue = SettingTemplate.Draw(keyValuePair.Value, keyValuePair.Key,
                         new Rect(0, posY, _menuSettingWidth, height));
 
@@ -246,7 +251,7 @@ namespace UnityInterface
                     Settings.ChangeSettingTomporary(tempList.ToArray(), newValue); //add the changed value to the buffer of temporary changes
                 }
 
-                posY += height + _padding/2; //calculate the position in Y-direction
+                posY += height + _padding; //calculate the position in Y-direction
             }
 
             DrawSettingButtons(posY);
@@ -258,6 +263,7 @@ namespace UnityInterface
         /// <param name="posY">the position of the buttons in Y-Direction so that they are not collide with other controls</param>
         private void DrawSettingButtons(float posY)
         {
+            posY += 3*_padding; //little space between settings and buttons
             if (Settings.HasTemporaryChanges()) //show the buttons just if there are changes
             {
                 if (GUI.Button(new Rect(0, posY, _menuSettingWidth*0.24f, _buttonHeight),

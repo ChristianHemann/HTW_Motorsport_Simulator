@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 
 namespace UnityInterface.SettingTemplates
@@ -10,8 +11,10 @@ namespace UnityInterface.SettingTemplates
     /// </summary>
     public class SettingTemplate
     {
-        private static readonly Dictionary<Type, float> heightDictionary = new Dictionary<Type, float>(); //defines the percentage height for each Types control
+        private static readonly Dictionary<Type, float> heightDictionary = new Dictionary<Type, float>(); //defines the relative heigth to _inputHeigth for each Types control
         private static SettingTemplate _instance; //just to make sure, that the static Draw method won't find itself, but all the other methods
+        private static float _inputHeight = 30;
+        private static float _padding = 2;
 
         private static SettingTemplate Instance
         {
@@ -32,14 +35,32 @@ namespace UnityInterface.SettingTemplates
         private static void Initialize()
         {
             _instance = new SettingTemplate();
-            heightDictionary.Add(typeof(string), 0.2f);
-            heightDictionary.Add(typeof(bool), 0.2f);
-            heightDictionary.Add(typeof(int), 0.2f);
-            heightDictionary.Add(typeof(byte), 0.2f);
-            heightDictionary.Add(typeof(sbyte), 0.2f);
-            heightDictionary.Add(typeof(uint), 0.2f);
-            heightDictionary.Add(typeof(float), 0.2f);
-            heightDictionary.Add(typeof(double), 0.2f);
+            heightDictionary.Add(typeof(string), 1f);
+            heightDictionary.Add(typeof(bool), 1f);
+            heightDictionary.Add(typeof(int), 1f);
+            heightDictionary.Add(typeof(byte), 1f);
+            heightDictionary.Add(typeof(sbyte), 1f);
+            heightDictionary.Add(typeof(uint), 1f);
+            heightDictionary.Add(typeof(float), 1f);
+            heightDictionary.Add(typeof(double), 1f);
+        }
+
+        /// <summary>
+        /// sets the height which is used to calculate the height of all controls
+        /// </summary>
+        /// <param name="inputHeight">the height of a TextField with a height of a single textline</param>
+        public static void SetInputHeight(float inputHeight)
+        {
+            _inputHeight = inputHeight;
+        }
+
+        /// <summary>
+        /// sets the padding between two controls of an array
+        /// </summary>
+        /// <param name="padding">the padding between two controls</param>
+        public static void SetPadding(float padding)
+        {
+            _padding = padding;
         }
 
         /// <summary>
@@ -47,13 +68,13 @@ namespace UnityInterface.SettingTemplates
         /// </summary>
         /// <param name="type">The Type of the value of which the height is asked</param>
         /// <returns>The relative height of the control</returns>
-        public static float GetRelativeHeight(Type type)
+        public static float GetHeight(Type type)
         {
             float height = 0;
             if (heightDictionary.TryGetValue(type, out height))
-                return height;
+                return height*_inputHeight;
             else
-                return 0.2f;
+                return _inputHeight;
         }
 
         /// <summary>
@@ -92,16 +113,16 @@ namespace UnityInterface.SettingTemplates
             if(oldValue.Length == 0)
                 return oldValue;
 
-            float height = GetRelativeHeight(oldValue[0].GetType())*position.height;
+            float height = GetHeight(oldValue[0].GetType());
 
             GUI.BeginGroup(position); //Group all the controls
-            GUI.Label(new Rect(0, 0, position.width, 20f), name);
+            GUI.Label(new Rect(0, 0, position.width, _inputHeight), name);
 
             List<object> newValues = new List<object>();//save the values in case that they are changed
             for (int i = 0; i < oldValue.Length; i++)
             {
                 object value = Draw(oldValue[i], (i+1).ToString(),
-                    new Rect(0, 22 + (height + 2) * i, position.width - 20, height));
+                    new Rect(0, (height + _padding) * (i+1), position.width, height));
                 newValues.Add(value);
             }
             GUI.EndGroup();

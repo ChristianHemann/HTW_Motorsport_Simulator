@@ -26,7 +26,12 @@ namespace CalculationComponents
                     _instance = new Track();
                 return _instance;
             }
-            set { _instance = value; } //The setter is just to load a value via reflection
+            set
+            {
+                Settings.FileLoaded -= _instance.SetPreviousTrackSegments;
+                _instance = value;
+                Settings.FileLoaded += _instance.SetPreviousTrackSegments;
+            } //The setter is just to load a value via reflection
         }
 
         /// <summary>
@@ -79,7 +84,6 @@ namespace CalculationComponents
             Name = "";
             ConeDistance = 1f;
             TrackSegments = new List<TrackSegment>();
-            Xml.FinishedReading += SetPreviousTrackSegments;
             //TrackSegments.Add(new StartLine(null, 5, new Vector2(0, 0), new Vector2(1, 0)));
             //TrackSegments.Add(new Straight(TrackSegments.Last(), 5, 10f));
             //TrackSegments.Add(new Curve(TrackSegments.Last(), 5, new Vector2(20, 10)));
@@ -166,6 +170,8 @@ namespace CalculationComponents
                     trackSegment.PreviousTrackSegment = previous;
                     previous = trackSegment;
                 }
+                if (_trackSegments.Count > 0)
+                    _trackSegments.First().CallTrackSegmentChangedEvent();
             }
         }
 

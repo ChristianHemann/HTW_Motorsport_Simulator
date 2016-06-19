@@ -1,4 +1,6 @@
 ﻿
+using System.Security.Cryptography;
+using System.Xml.Serialization;
 using ImportantClasses;
 using Output;
 
@@ -19,7 +21,16 @@ namespace CalculationComponents
             set
             {
                 _gears = value;
-                
+                float[] buffer = Transmissions;
+                Transmissions = new float[value];
+                if (buffer != null)
+                {
+                    int len = buffer.Length < value ? buffer.Length : value;
+                    for (int i = 0; i < len; i++)
+                    {
+                        Transmissions[i] = buffer[i];
+                    }
+                }
             }
         }
 
@@ -29,6 +40,7 @@ namespace CalculationComponents
         /// <summary>
         /// sets the gear in which the car is
         /// </summary>
+        [XmlIgnore]
         public sbyte Gear { get; set; }
 
         private byte _gears;
