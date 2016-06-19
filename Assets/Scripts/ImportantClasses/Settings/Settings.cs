@@ -412,8 +412,8 @@ namespace ImportantClasses
         /// <param name="path">The path to the file</param>
         public static void SaveSetting(string name, string path)
         {
-            //try
-            //{
+            try
+            {
                 if (String.IsNullOrEmpty(path))
                 {
                     Message.Send("There is no valid file selected for saving " + name, Message.MessageCode.Warning);
@@ -431,12 +431,12 @@ namespace ImportantClasses
                         return;
                     }
                 }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Message.Send("An error occured during saving the file", Message.MessageCode.Error);
-            //}
         }
+            catch (Exception ex)
+            {
+                Message.Send("An error occured during saving the file", Message.MessageCode.Error);
+            }
+}
 
         /// <summary>
         /// Load all objects which are marked as a setting from a file. If no path for a file was specified an openFilePanel will appear

@@ -33,7 +33,10 @@ namespace ImportantClasses
         /// </summary>
         public static readonly List<Logging> Data = new List<Logging>();
 
-        private static readonly string SavingPath = Path.Combine(Settings.SettingsPath, "Log"); //The Path to save the Logfiles
+        /// <summary>
+        /// the path to save the logfiles
+        /// </summary>
+        public static readonly string SavingPath = Path.Combine(Settings.SettingsPath, "Log");
         private static string _currentFile = String.Empty; //the current used LogFile
 
         /// <summary>
@@ -79,8 +82,6 @@ namespace ImportantClasses
         {
             if (!Directory.Exists(SavingPath))
                 Directory.CreateDirectory(SavingPath);
-            //if (!File.Exists(_currentFile))
-            //    File.Create(_currentFile).Close();
             FileStream fileStream = new FileStream(_currentFile,FileMode.Append);
             System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
             byte[] text = enc.GetBytes(log.ToString()+"\n");

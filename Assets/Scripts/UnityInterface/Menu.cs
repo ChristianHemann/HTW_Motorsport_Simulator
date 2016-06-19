@@ -13,17 +13,25 @@ namespace UnityInterface
 {
     internal class Menu : MonoBehaviour
     {
+        public enum MenuSection
+        {
+            MainMenu,
+            Settings,
+            Logging
+        }
         private List<string> _namesList; //saves place in menu which is actually shown
         private UnityEngine.Vector2 _itemScrollPosition; //the scroll Position for the Menuitems
         private UnityEngine.Vector2 _settingScrollPosition; //the scroll position for the settings
         private UnityEngine.Vector2 _topBarScrollPosition; //the scroll position of the bar on the top
-        private bool _showSettings = false; //false = Main Menu; true = settings;
+        private MenuSection _actualSection = MenuSection.MainMenu;
         private bool _showOverwriteFileDialog = false; //when set to true the user is asked if he wants to overwrite the last used file or create a new file
         private readonly List<string> _outstandingObjectsToSave = new List<string>(); //the objects where the user shall be asked for a path for saving
         private readonly List<string> _outstandingObjectsToLoad = new List<string>(); //the objects where the user shall be asked for a path for loading
         private bool _fileSelectorIsShowed; //says whether the FileSelector is open
         private string _lastUsedDirectory; //saves the directory which was last used by the FileSelector
         private DateTime _lastMessageTime; //the Time of the last Message; The last message will be visible for x seconds
+        private string _logFileContent = "";
+        private UnityEngine.Vector2 _loggingScrollPosition;
 
         //setting lists
         private List<string> _menuItems;
@@ -50,6 +58,7 @@ namespace UnityInterface
             _itemScrollPosition = new UnityEngine.Vector2(0, 0);
             _settingScrollPosition = new UnityEngine.Vector2(0, 0);
             _topBarScrollPosition = new UnityEngine.Vector2(0, 0);
+            _loggingScrollPosition = new UnityEngine.Vector2(0, 0);
             Message.OnNewMessage += ShowMessage;
         }
 
@@ -65,7 +74,7 @@ namespace UnityInterface
             _padding = _buttonHeight*0.15f;
             _topBarButtonWidth = _contentWidth / 8;
             _menuItemWidth = _contentWidth / 5 - 20; //20% of the width for the MenuItems; 20 is subtracted for the scrollBar
-            _menuSettingWidth = _contentWidth - _menuItemWidth - _padding - 20; //80% minus the _padding for the Settings; 20 is subtracted for the scrollBar
+            _menuSettingWidth = _contentWidth - _menuItemWidth - _padding*3 - 20; //80% minus the _padding for the Settings; 20 is subtracted for the scrollBar
             SettingTemplate.SetInputHeight(GUI.skin.GetStyle("TextField").CalcHeight(new GUIContent("some text"),_contentWidth));
             FileSelector.windowDimensions = new Rect(0, 0, _contentWidth * 0.5f, _contentHeight);
             _isSizeCalculated = true;
@@ -77,10 +86,11 @@ namespace UnityInterface
         private void OnGUI()
         {
             if(!_isSizeCalculated)
-                CalculateSize();
-            if (!_showSettings)
+                CalculateSize(); //Initialize
+
+            if (_actualSection == MenuSection.MainMenu)
                 DrawMainMenu();
-            else //Draw Settings
+            else if(_actualSection == MenuSection.Settings)
             {
                 //get the items and settings that are actually shown
                 _menuItems = Settings.GetMenuItems(_namesList.ToArray());
@@ -120,19 +130,24 @@ namespace UnityInterface
                 
                 //Settings
                 _settingScrollPosition =
-                    GUI.BeginScrollView(new Rect(_menuItemWidth + _padding, _topBarHeight, _menuSettingWidth+20,
+                    GUI.BeginScrollView(new Rect(_menuItemWidth + 3*_padding, _topBarHeight, _menuSettingWidth+20,
                         _contentHeight - _topBarHeight), _settingScrollPosition, new Rect(0, 0, _menuSettingWidth, settingContentHeight));
                 DrawSettings();
                 GUI.EndScrollView();//End Settings
 
-                //Message
-                if (DateTime.Now - _lastMessageTime < TimeSpan.FromSeconds(5))
-                {
-                    GUI.Label(new Rect(0, _contentHeight - 25, _contentWidth, 25),
-                        Message.Messages.Last().MessageText);
-                }
-
                 GUI.EndGroup(); //End Content
+            }
+            else if (_actualSection == MenuSection.Logging)
+            {
+                DrawTopBar();
+                DrawLogging();
+            }
+
+            //Message
+            if (DateTime.Now - _lastMessageTime < TimeSpan.FromSeconds(5))
+            {
+                GUI.Label(new Rect(25, _contentHeight - 25, _contentWidth, 25),
+                    Message.Messages.Last().MessageText);
             }
         }
 
@@ -153,13 +168,23 @@ namespace UnityInterface
                     new Rect(_menuItemWidth, _topBarHeight + _buttonHeight*1.5f + _padding, _contentWidth - 2*_menuItemWidth,
                         _buttonHeight*1.5f), "Settings"))
             {
-                _showSettings = true;
+                _actualSection = MenuSection.Settings;
+            }
+
+            //Logging Button
+            if (
+                GUI.Button(
+                    new Rect(_menuItemWidth, _topBarHeight + (_buttonHeight*1.5f + _padding)*2,
+                        _contentWidth - 2*_menuItemWidth,
+                        _buttonHeight*1.5f), "View Log"))
+            {
+                _actualSection = MenuSection.Logging;
             }
 
             //Quit Application
             if (
                 GUI.Button(
-                    new Rect(_menuItemWidth, _topBarHeight + (_buttonHeight*1.5f + _padding)*2.7f,
+                    new Rect(_menuItemWidth, _topBarHeight + (_buttonHeight*1.5f + _padding)*3.7f,
                         _contentWidth - 2*_menuItemWidth,
                         _buttonHeight*1.5f), "Quit"))
             {
@@ -176,22 +201,31 @@ namespace UnityInterface
             if (GUI.Button(new Rect(0, 0, _topBarButtonWidth, _buttonHeight), "Main"))
             {
                 _namesList.Clear();
-                _showSettings = false;
+                _actualSection = MenuSection.MainMenu;
             }
 
-            //back to the settings start page
-            if(GUI.Button(new Rect(_topBarButtonWidth + _padding, 0,_topBarButtonWidth, _buttonHeight), "Settings"))
-                _namesList.Clear();
-
-            //back to a menuitem in the hierachy
-            for (int i = 0; i < _namesList.Count; i++)
+            if (_actualSection == MenuSection.Settings)
             {
-                if(GUI.Button(new Rect((i+2)*(_topBarButtonWidth+_padding), 0, _topBarButtonWidth, _buttonHeight),_namesList.ElementAt(i)))
+                //back to the settings start page
+                if (GUI.Button(new Rect(_topBarButtonWidth + _padding, 0, _topBarButtonWidth, _buttonHeight), "Settings"))
+                    _namesList.Clear();
+
+                //back to a menuitem in the hierachy
+                for (int i = 0; i < _namesList.Count; i++)
                 {
-                    _namesList = _namesList.GetRange(0, i + 1);
-                    break;
+                    if (
+                        GUI.Button(
+                            new Rect((i + 2)*(_topBarButtonWidth + _padding), 0, _topBarButtonWidth, _buttonHeight),
+                            _namesList.ElementAt(i)))
+                    {
+                        _namesList = _namesList.GetRange(0, i + 1);
+                        break;
+                    }
                 }
             }
+            else if (_actualSection == MenuSection.Logging)
+                //show button to see where you are
+                GUI.Button(new Rect(_topBarButtonWidth + _padding, 0, _topBarButtonWidth, _buttonHeight), "View Log");
         }
 
         /// <summary>
@@ -368,6 +402,36 @@ namespace UnityInterface
         private void ShowMessage(Message message)
         {
             _lastMessageTime = DateTime.Now;
+        }
+
+        private void DrawLogging()
+        {
+            if (GUI.Button(new Rect(0, _topBarHeight, _contentWidth, _buttonHeight), "select LogFile"))
+            {
+                _fileSelectorIsShowed = true;
+                FileSelector.GetFile(Logging.SavingPath, GotLogFile, ".txt");
+            }
+            GUIContent content = new GUIContent(_logFileContent);
+            float height = GUI.skin.GetStyle("TextArea").CalcHeight(content, _contentWidth);
+            _loggingScrollPosition = GUI.BeginScrollView(
+                new Rect(0, _buttonHeight + _padding + _topBarHeight, _contentWidth,
+                    _contentHeight - _padding - _buttonHeight-_topBarHeight),
+                _loggingScrollPosition, new Rect(0, 0, _contentWidth - 20, height + 2*_padding));
+            GUI.Label(new Rect(0, _padding, _contentWidth, height), content);
+            GUI.EndScrollView();
+        }
+
+        private void GotLogFile(FileSelector.Status status, string path)
+        {
+            if (status == FileSelector.Status.Successful)
+            {
+                FileStream fs = File.Open(path, FileMode.Open);
+                byte[] buffer = new byte[16382];
+                fs.Read(buffer, 0, 16382); //read not more than 16KB; one GUI.Label cannot contain more characters
+                System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
+                _logFileContent = enc.GetString(buffer, 0, buffer.Length);
+            }
+            _fileSelectorIsShowed = false;
         }
     }
 }
