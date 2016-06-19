@@ -8,8 +8,19 @@ namespace Output
 {
    public class SecondaryDriveOutput
     {
-       
-        public float torque { get; set; }
-        public float power { get; set; }
+        private static SecondaryDriveOutput _lastCalculation;
+        public static SecondaryDriveOutput LastCalculation
+        {
+            get
+            {
+                if (_lastCalculation == null)
+                    _lastCalculation = new SecondaryDriveOutput();
+                return _lastCalculation;
+            }
+            set { _lastCalculation = value; }
+        }
+
+        public float Torque { get; set; }
+        public float Rpm { get; set; }
     }
 }

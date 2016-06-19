@@ -413,10 +413,12 @@ namespace UnityInterface
             }
             GUIContent content = new GUIContent(_logFileContent);
             float height = GUI.skin.GetStyle("TextArea").CalcHeight(content, _contentWidth);
+
             _loggingScrollPosition = GUI.BeginScrollView(
                 new Rect(0, _buttonHeight + _padding + _topBarHeight, _contentWidth,
                     _contentHeight - _padding - _buttonHeight-_topBarHeight),
                 _loggingScrollPosition, new Rect(0, 0, _contentWidth - 20, height + 2*_padding));
+
             GUI.Label(new Rect(0, _padding, _contentWidth, height), content);
             GUI.EndScrollView();
         }
