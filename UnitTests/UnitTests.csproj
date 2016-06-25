@@ -63,7 +63,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="GearBoxTest.cs" />
+    <Compile Include="BrakeTest1.cs" />
+    <Compile Include="EngineTest1.cs" />
     <Compile Include="SplineInterpolationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LinearInterpolationTest.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="StraightTest.cs" />
     <Compile Include="TrackTest.cs" />
     <Compile Include="Vector2Test.cs" />
+    <Compile Include="VectorExtensionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HTW_Motorsport_Simulator.CSharp.csproj">
