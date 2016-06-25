@@ -175,6 +175,11 @@ namespace CalculationComponents
             }
         }
 
+        public void CalculateBackwards()
+        {
+            //here is nothing to do
+        }
+
         public event CalculationReadyDelegate OnCalculationReady;
     }
 }

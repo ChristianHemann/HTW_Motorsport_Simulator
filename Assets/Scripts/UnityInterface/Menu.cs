@@ -30,8 +30,9 @@ namespace UnityInterface
         private bool _fileSelectorIsShowed; //says whether the FileSelector is open
         private string _lastUsedDirectory; //saves the directory which was last used by the FileSelector
         private DateTime _lastMessageTime; //the Time of the last Message; The last message will be visible for x seconds
-        private string _logFileContent = "";
+        private Logging[] _logs;
         private UnityEngine.Vector2 _loggingScrollPosition;
+        private uint _numOfLogs = 20;
 
         //setting lists
         private List<string> _menuItems;
@@ -406,32 +407,38 @@ namespace UnityInterface
 
         private void DrawLogging()
         {
-            if (GUI.Button(new Rect(0, _topBarHeight, _contentWidth, _buttonHeight), "select LogFile"))
-            {
-                _fileSelectorIsShowed = true;
-                FileSelector.GetFile(Logging.SavingPath, GotLogFile, ".txt");
-            }
-            GUIContent content = new GUIContent(_logFileContent);
-            float height = GUI.skin.GetStyle("TextArea").CalcHeight(content, _contentWidth);
+            float logPosY = 0;
+            _logs = Logging.GetLogs(count: _numOfLogs);
+            float logHeight = _buttonHeight*3 + _padding*3;
+            float height = _logs.Length*logHeight;
 
             _loggingScrollPosition = GUI.BeginScrollView(
-                new Rect(0, _buttonHeight + _padding + _topBarHeight, _contentWidth,
-                    _contentHeight - _padding - _buttonHeight-_topBarHeight),
+                new Rect(0, _topBarHeight, _contentWidth, _contentHeight - _topBarHeight),
                 _loggingScrollPosition, new Rect(0, 0, _contentWidth - 20, height + 2*_padding));
-
-            GUI.Label(new Rect(0, _padding, _contentWidth, height), content);
+            foreach (Logging log in _logs)
+            {
+                DrawLog(log, new Rect(0, logPosY, _contentWidth, logHeight));
+                logPosY += logHeight;
+            }
             GUI.EndScrollView();
+        }
+
+        private void DrawLog(Logging log, Rect position)
+        {
+            GUI.Label(new Rect(position.x, position.y, position.width, _buttonHeight), log.Value.ToString());
+            GUI.Label(
+                new Rect(position.x + position.width*0.1f, position.y + _buttonHeight + _padding, position.width*0.9f,
+                    _buttonHeight), "Classification: " + log.classification.ToString());
+            GUI.Label(
+                new Rect(position.x + position.width * 0.1f, position.y + 2*(_buttonHeight + _padding), position.width * 0.9f,
+                    _buttonHeight), "MessageCode: " + log.Code.ToString());
         }
 
         private void GotLogFile(FileSelector.Status status, string path)
         {
             if (status == FileSelector.Status.Successful)
             {
-                FileStream fs = File.Open(path, FileMode.Open);
-                byte[] buffer = new byte[16382];
-                fs.Read(buffer, 0, 16382); //read not more than 16KB; one GUI.Label cannot contain more characters
-                System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
-                _logFileContent = enc.GetString(buffer, 0, buffer.Length);
+                _logs = Logging.GetLogs(count:_numOfLogs);
             }
             _fileSelectorIsShowed = false;
         }

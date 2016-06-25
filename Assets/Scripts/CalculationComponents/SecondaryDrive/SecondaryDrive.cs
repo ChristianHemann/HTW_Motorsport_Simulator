@@ -45,6 +45,11 @@ namespace CalculationComponents
             throw new NotImplementedException();
         }
 
+        public void CalculateBackwards()
+        {
+            throw new NotImplementedException();
+        }
+
         public event CalculationReadyDelegate OnCalculationReady;
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using System;
 using ImportantClasses;
 using Output;
 
@@ -61,6 +62,11 @@ namespace CalculationComponents
         public void StoreResult()
         {
             BrakeOutput.LastCalculation = _actualCalculation;
+        }
+
+        public void CalculateBackwards()
+        {
+            //here is nothing to do
         }
 
         /// <summary>

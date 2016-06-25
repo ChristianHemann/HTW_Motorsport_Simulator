@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
 using ImportantClasses;
@@ -86,6 +87,14 @@ namespace CalculationComponents
         public void StoreResult()
         {
             GearBoxOutput.LastCalculation.Torque = actualCalculation.Torque;
+        }
+
+        /// <summary>
+        /// called when all Calculation Steps are ready to calculate the gearBox rpm
+        /// </summary>
+        public void CalculateBackwards()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

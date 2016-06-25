@@ -9,6 +9,7 @@ namespace ImportantClasses
         /// </summary>
         public enum MessageCode
         {
+            None = 0,
             Notification,
             Warning,
             Error,
