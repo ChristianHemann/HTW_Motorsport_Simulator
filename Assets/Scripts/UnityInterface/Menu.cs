@@ -371,6 +371,11 @@ namespace UnityInterface
             }
         }
 
+        /// <summary>
+        /// Callback function which is called when a path was selected in the FileSelector. used for files to save
+        /// </summary>
+        /// <param name="status">the return status of the fileSelector</param>
+        /// <param name="path">the selected Path</param>
         private void GotFileToSave(FileSelector.Status status, string path)
         {
             if (status == FileSelector.Status.Cancelled)
@@ -384,7 +389,12 @@ namespace UnityInterface
             }
             _fileSelectorIsShowed = false;
         }
-
+        
+        /// <summary>
+        /// Callback function which is called when a path was selected in the FileSelector. used for files to load
+        /// </summary>
+        /// <param name="status">the return status of the fileSelector</param>
+        /// <param name="path">the selected Path</param>
         private void GotFileToLoad(FileSelector.Status status, string path)
         {
             if (status == FileSelector.Status.Cancelled)
@@ -400,13 +410,21 @@ namespace UnityInterface
             _fileSelectorIsShowed = false;
         }
 
+        /// <summary>
+        /// sets the time when the last Message to show was sent
+        /// </summary>
+        /// <param name="message"></param>
         private void ShowMessage(Message message)
         {
             _lastMessageTime = DateTime.Now;
         }
 
+        /// <summary>
+        /// Draws the collected logs
+        /// </summary>
         private void DrawLogging()
         {
+            //TODO: Add filter functions
             float logPosY = 0;
             _logs = Logging.GetLogs(count: _numOfLogs);
             float logHeight = _buttonHeight*3 + _padding*3;
@@ -423,6 +441,11 @@ namespace UnityInterface
             GUI.EndScrollView();
         }
 
+        /// <summary>
+        /// Draws a single log to the gui
+        /// </summary>
+        /// <param name="log">the log to show</param>
+        /// <param name="position">the position and size which can be used</param>
         private void DrawLog(Logging log, Rect position)
         {
             GUI.Label(new Rect(position.x, position.y, position.width, _buttonHeight), log.Value.ToString());
@@ -432,15 +455,6 @@ namespace UnityInterface
             GUI.Label(
                 new Rect(position.x + position.width * 0.1f, position.y + 2*(_buttonHeight + _padding), position.width * 0.9f,
                     _buttonHeight), "MessageCode: " + log.Code.ToString());
-        }
-
-        private void GotLogFile(FileSelector.Status status, string path)
-        {
-            if (status == FileSelector.Status.Successful)
-            {
-                _logs = Logging.GetLogs(count:_numOfLogs);
-            }
-            _fileSelectorIsShowed = false;
         }
     }
 }

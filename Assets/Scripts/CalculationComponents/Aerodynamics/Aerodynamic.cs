@@ -3,29 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ImportantClasses;
+using Output;
 
 namespace CalculationComponents
 {
     public class Aerodynamic : ICalculationComponent
     {
+        private AeroOutput _actualCalculation;
+
+        public Aerodynamic()
+        {
+            _actualCalculation = new AeroOutput();
+        }
+
         public void Calculate()
         {
-            throw new NotImplementedException();
+            //actually there is no aerodynamic implemented
+            _actualCalculation.Downforce = 0;
+            _actualCalculation.Drag = 0;
+            
+            if (OnCalculationReady != null)
+                OnCalculationReady();
         }
 
         public void StopCalculation()
         {
-            throw new NotImplementedException();
+            //actually there is no aerodynamic implemented
         }
 
         public void StoreResult()
         {
-            throw new NotImplementedException();
+            AeroOutput.LastCalculation.Downforce = _actualCalculation.Downforce;
+            AeroOutput.LastCalculation.Drag = _actualCalculation.Drag;
         }
 
         public void CalculateBackwards()
         {
-            throw new NotImplementedException();
+            //here is nothing to calculate
         }
 
         public event CalculationReadyDelegate OnCalculationReady;

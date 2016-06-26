@@ -19,7 +19,7 @@ namespace CalculationComponents
         /// <summary>
         /// the Brakebalance between front and rearAxis. FirstValue is front - SecondValue is rear
         /// </summary>
-        [Setting("Brakebalance")]
+        [Setting("Brakebalance (0:100 to 100:0)")]
         public MathHelper.Ratio BrakeBalance { get; set; }
 
         private BrakeOutput _actualCalculation;

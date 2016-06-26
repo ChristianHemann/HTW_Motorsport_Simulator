@@ -47,7 +47,7 @@ namespace Simulator
         [SettingMenuItem("Gearbox")]
         public GearBox GearBox;
 
-        [SettingMenuItem("Chassis")]
+        [SettingMenuItem("Overall car and chassis")]
         public OverallCar OverallCar;
 
         [SettingMenuItem("Secondary Drive")]

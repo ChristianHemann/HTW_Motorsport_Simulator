@@ -13,7 +13,7 @@ namespace CalculationComponents
     public class GearBox : ICalculationComponent
     {
         //Settings
-        [Setting("Efficency", 0.9, 0.0, 1.0, 3)]
+        [Setting("Efficency (0 to 1)", 0.9, 0.0, 1.0, 3)]
         public float Efficency { get; set; }
 
         [Setting("Number of Gears", 4)]

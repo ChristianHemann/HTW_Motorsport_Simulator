@@ -154,6 +154,7 @@ namespace ImportantClasses
         /// <param name="log">the log to save</param>
         private static void Write(Logging log)
         {
+            //TODO: Write the logs async to improve the performance
             if (!Directory.Exists(SavingPath))
                 Directory.CreateDirectory(SavingPath);
             if (!File.Exists(_logFile))

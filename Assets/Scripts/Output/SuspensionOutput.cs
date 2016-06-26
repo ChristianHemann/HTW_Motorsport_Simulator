@@ -8,9 +8,9 @@ namespace Output
     public class SuspensionOutput
     {
        
-        public float torq { get; set; }
-        public float wheelload { get; set; }
-        public float wheelangle {get; set;}
+        public float Torque { get; set; }
+        public float WheelLoad { get; set; }
+        public float WheelAngle {get; set;}
         public float camb { get; set; }
         public float incl { get; set; }
         public float track { get; set; }

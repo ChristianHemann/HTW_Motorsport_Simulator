@@ -24,7 +24,7 @@ namespace CalculationComponents
         {
             CharacteristicLine = new Spline(new[] {0.0, 10000.0}, new[] {0.0, 100.0});
             CharacteristicLine.NameX = "rounds per minute";
-            CharacteristicLine.NameY = "torque";
+            CharacteristicLine.NameY = "torque (Nm)";
             actualCalculation = new EngineOutput();
         }
 

@@ -8,9 +8,20 @@ namespace Output
 {
    public class AeroOutput
     {
-       
-        public float downforce { get; set; }
-        public float drag { get; set; }
+        private static AeroOutput _lastCalculation;
+        public static AeroOutput LastCalculation
+        {
+            get
+            {
+                if (_lastCalculation == null)
+                    _lastCalculation = new AeroOutput();
+                return _lastCalculation;
+            }
+            set { _lastCalculation = value; }
+        }
+
+        public float Downforce { get; set; }
+        public float Drag { get; set; }
 
     }
 

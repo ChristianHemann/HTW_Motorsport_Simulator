@@ -8,6 +8,15 @@ namespace CalculationComponents
 {
     public class OverallCar : ICalculationComponent
     {
+        [Setting("Wheelbase (m)")]
+        public float Wheelbase { get; set; }
+        [Setting("Weight (kg)")]
+        public float Weight { get; set; }
+        [Setting("Track width")]
+        public float TrackWidth { get; set; }
+        [Setting("Drag")]
+        public Spline Drag { get; set; }
+        
         public void Calculate()
         {
             throw new NotImplementedException();

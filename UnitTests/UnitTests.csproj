@@ -75,6 +75,7 @@
     <Compile Include="CurveTest.cs" />
     <Compile Include="StraightTest.cs" />
     <Compile Include="TrackTest.cs" />
+    <Compile Include="SteeringTest.cs" />
     <Compile Include="Vector2Test.cs" />
   </ItemGroup>
   <ItemGroup>
