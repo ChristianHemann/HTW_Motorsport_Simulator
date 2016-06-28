@@ -6,10 +6,14 @@ using CalculationComponents;
 
 namespace Output
 {
+    /// <summary>
+    /// stores the calculation results of the gearbox
+    /// </summary>
     public class GearBoxOutput
     {
-        private static GearBoxOutput _lastCalculation;
-
+        /// <summary>
+        /// used to store the calculation results of the last calculation step
+        /// </summary>
         public static GearBoxOutput LastCalculation
         {
             get
@@ -20,8 +24,15 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
-        
+        private static GearBoxOutput _lastCalculation;
+
+        /// <summary>
+        /// the output torque of the gearbox
+        /// </summary>
         public float Torque { get; set; }
-        public float Rpm { get; set; } //rounds per minute
+        /// <summary>
+        /// the revolution speed of the gearbox in rounds per minute
+        /// </summary>
+        public float Rpm { get; set; }
     }
 }

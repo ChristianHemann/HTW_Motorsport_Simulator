@@ -6,9 +6,14 @@ using CalculationComponents;
 
 namespace Output
 {
+    /// <summary>
+    /// stores the calculation results of the secondary drive
+    /// </summary>
    public class SecondaryDriveOutput
     {
-        private static SecondaryDriveOutput _lastCalculation;
+        /// <summary>
+        /// used to store the calculation results of the last calculation step
+        /// </summary>
         public static SecondaryDriveOutput LastCalculation
         {
             get
@@ -19,8 +24,15 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
+        private static SecondaryDriveOutput _lastCalculation;
 
+        /// <summary>
+        /// the output torque of the secondary drive
+        /// </summary>
         public float Torque { get; set; }
+        /// <summary>
+        /// the revolution speed of the secondary drive in rounds per minute
+        /// </summary>
         public float Rpm { get; set; }
     }
 }

@@ -1,9 +1,14 @@
 ﻿
 namespace Output
 {
+    /// <summary>
+    /// stores the calculation results of the engine
+    /// </summary>
     public class EngineOutput
     {
-        private static EngineOutput _lastCalculation;
+        /// <summary>
+        /// used to store the calculation results of the last calculation step
+        /// </summary>
         public static EngineOutput LastCalculation {
             get
             {
@@ -13,8 +18,15 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
-        
-        public float torque { get; set; }
-        public float rpm { get; set; } //rounds per minute
+        private static EngineOutput _lastCalculation;
+
+        /// <summary>
+        /// the output torque of the engine
+        /// </summary>
+        public float Torque { get; set; }
+        /// <summary>
+        /// the revolution speed of the gearbox in rounds per minute
+        /// </summary>
+        public float Rpm { get; set; }
     }
 }

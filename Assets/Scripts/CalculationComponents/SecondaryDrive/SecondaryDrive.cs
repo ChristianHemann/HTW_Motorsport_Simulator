@@ -7,6 +7,9 @@ using Output;
 
 namespace CalculationComponents
 {
+    /// <summary>
+    /// The Seconrady Drive of the vehicle
+    /// </summary>
     public class SecondaryDrive : ICalculationComponent
     {
         /// <summary>
@@ -16,13 +19,16 @@ namespace CalculationComponents
         public float Transmission { get; set; }
 
         /// <summary>
-        /// the moment of inertia of the secondary drive
+        /// the polar area moment of inertia of the secondary drive
         /// </summary>
-        [Setting("Polar area moment of Inertia (m^4)")]
+        [Setting("Polar area moment of inertia (m^4)")]
         public float InertiaTorque { get; set; }
 
-        private SecondaryDriveOutput _actualCalculation;
+        private readonly SecondaryDriveOutput _actualCalculation;
 
+        /// <summary>
+        /// The Seconrady Drive of the vehicle
+        /// </summary>
         public SecondaryDrive()
         {
             _actualCalculation = new SecondaryDriveOutput();
@@ -30,26 +36,41 @@ namespace CalculationComponents
             InertiaTorque = 0;
         }
 
+        /// <summary>
+        /// Calculates the output torque of the secondary drive
+        /// </summary>
         public void Calculate()
         {
             _actualCalculation.Torque = GearBoxOutput.LastCalculation.Torque*Transmission;
         }
 
+        /// <summary>
+        /// stops the actual running calculation
+        /// </summary>
         public void StopCalculation()
         {
             //the calculation is too short as it would worth to stop it
         }
 
+        /// <summary>
+        /// stores the results of the Calculate-function
+        /// </summary>
         public void StoreResult()
         {
-            throw new NotImplementedException();
+            SecondaryDriveOutput.LastCalculation.Torque = _actualCalculation.Torque;
         }
 
+        /// <summary>
+        /// invoke when the other parts of the car are calculated. Calculates the output rpm
+        /// </summary>
         public void CalculateBackwards()
         {
-            throw new NotImplementedException();
+            //calculate rpm when the car is calculated
         }
 
+        /// <summary>
+        /// will be triggered when the calculation is done
+        /// </summary>
         public event CalculationReadyDelegate OnCalculationReady;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using ImportantClasses;
 using Output;
+using Simulator;
 
 namespace CalculationComponents
 {
@@ -9,13 +10,19 @@ namespace CalculationComponents
     /// </summary>
     public class Engine : ICalculationComponent
     {
-        [Setting("Characteristic Line")]
+        /// <summary>
+        /// the carachteeristic line of the engine in torque per revolution speed
+        /// </summary>
+        [Setting("Characteristic Line (torque/rpm)")]
         public Spline CharacteristicLine { get; set; }
 
-        [Setting("max. rpm")]
+        /// <summary>
+        /// the maximum revolution speed of the engine
+        /// </summary>
+        [Setting("Maximum revolustion speed (rpm)")]
         public int MaxRpm { get; set; }
 
-        private EngineOutput actualCalculation; //the result of the actual done calculation
+        private EngineOutput _actualCalculation; //the result of the actual done calculation
 
         /// <summary>
         /// calculates an engine. Will be initialized with the standard values
@@ -25,7 +32,7 @@ namespace CalculationComponents
             CharacteristicLine = new Spline(new[] {0.0, 10000.0}, new[] {0.0, 100.0});
             CharacteristicLine.NameX = "rounds per minute";
             CharacteristicLine.NameY = "torque (Nm)";
-            actualCalculation = new EngineOutput();
+            _actualCalculation = new EngineOutput();
         }
 
         /// <summary>
@@ -33,7 +40,7 @@ namespace CalculationComponents
         /// </summary>
         public void Calculate()
         {
-            actualCalculation.torque = (float) CharacteristicLine.Interpolate(EngineOutput.LastCalculation.rpm) * InputData.UsedInputData.AccelerationPedal;
+            _actualCalculation.Torque = (float) CharacteristicLine.Interpolate(EngineOutput.LastCalculation.Rpm) * InputData.UsedInputData.AccelerationPedal;
             if(OnCalculationReady != null)
                 OnCalculationReady();
         }
@@ -51,13 +58,18 @@ namespace CalculationComponents
         /// </summary>
         public void StoreResult()
         {
-            EngineOutput.LastCalculation.torque = actualCalculation.torque;
-            //the rpm will be calculated by the car when its speed is known
+            EngineOutput.LastCalculation.Torque = _actualCalculation.Torque;
+            EngineOutput.LastCalculation.Rpm = _actualCalculation.Rpm;
         }
 
+        /// <summary>
+        /// invoked after the calculation of the car is ready to calculate the input parameters fof the next calculation step
+        /// </summary>
         public void CalculateBackwards()
         {
-            throw new NotImplementedException();
+            _actualCalculation.Rpm = GearBoxOutput.LastCalculation.Rpm/
+                                     CalculationController.Instance.GearBox.Transmissions[
+                                         CalculationController.Instance.GearBox.Gear - 1];
         }
 
         /// <summary>

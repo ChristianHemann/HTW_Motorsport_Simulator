@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Xml.Serialization;
 using ImportantClasses;
 using Output;
+using Simulator;
 
 namespace CalculationComponents
 {
@@ -13,9 +14,15 @@ namespace CalculationComponents
     public class GearBox : ICalculationComponent
     {
         //Settings
+        /// <summary>
+        /// the effficency factor of the gearbox
+        /// </summary>
         [Setting("Efficency (0 to 1)", 0.9, 0.0, 1.0, 3)]
         public float Efficency { get; set; }
 
+        /// <summary>
+        /// the number of gears that the gearbox has
+        /// </summary>
         [Setting("Number of Gears", 4)]
         public byte Gears {
             get { return _gears; }
@@ -35,6 +42,9 @@ namespace CalculationComponents
             }
         }
 
+        /// <summary>
+        /// the transmission of each gear
+        /// </summary>
         [Setting("Transmission for each gear (rpmIn/rpmOut)")]
         public float[] Transmissions { get; set; }
 
@@ -46,7 +56,7 @@ namespace CalculationComponents
 
         private byte _gears;
 
-        private GearBoxOutput actualCalculation; //the result of the actual done calculation
+        private GearBoxOutput _actualCalculation; //the result of the actual done calculation
 
         /// <summary>
         /// calculates an gearBox. Will be initialized with the standard values
@@ -55,7 +65,7 @@ namespace CalculationComponents
         {
             Gears = 4;
             Efficency = 0.9f;
-            actualCalculation = new GearBoxOutput();
+            _actualCalculation = new GearBoxOutput();
             Transmissions = new float[Gears];
         }
 
@@ -65,9 +75,9 @@ namespace CalculationComponents
         public void Calculate()
         {
             if (Gear == 0)
-                actualCalculation.Torque = 0;
+                _actualCalculation.Torque = 0;
             else
-                actualCalculation.Torque = EngineOutput.LastCalculation.torque*Efficency*Transmissions[Gear-1];
+                _actualCalculation.Torque = EngineOutput.LastCalculation.Torque*Efficency*Transmissions[Gear-1];
 
             if (OnCalculationReady != null)
                 OnCalculationReady();
@@ -86,7 +96,7 @@ namespace CalculationComponents
         /// </summary>
         public void StoreResult()
         {
-            GearBoxOutput.LastCalculation.Torque = actualCalculation.Torque;
+            GearBoxOutput.LastCalculation.Torque = _actualCalculation.Torque;
         }
 
         /// <summary>
@@ -94,7 +104,8 @@ namespace CalculationComponents
         /// </summary>
         public void CalculateBackwards()
         {
-            throw new NotImplementedException();
+            _actualCalculation.Rpm = SecondaryDriveOutput.LastCalculation.Rpm/
+                                     CalculationController.Instance.SecondaryDrive.Transmission;
         }
 
         /// <summary>
