@@ -1,5 +1,4 @@
-﻿using System;
-using ImportantClasses;
+﻿using ImportantClasses;
 using Output;
 
 namespace CalculationComponents
@@ -53,14 +52,6 @@ namespace CalculationComponents
         {
             EngineOutput.LastCalculation.torque = actualCalculation.torque;
             //the rpm will be calculated by the car when its speed is known
-        }
-
-        /// <summary>
-        /// Called when all Calculations are ready to calculate the engine rpm
-        /// </summary>
-        public void CalculateBackwards()
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
