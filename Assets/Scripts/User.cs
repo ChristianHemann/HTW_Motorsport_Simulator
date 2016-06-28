@@ -14,12 +14,12 @@ namespace Simulator
     {
         private User()
         {
-            Best_round_times = new Dictionary<string, TimeSpan>();
+            Best_round_times = new SerializableDictionary<string, TimeSpan>();
             Name = "";
             Forname = "";
         }
-        [ContainSettings("User")]
 
+        [ContainSettings("User")]
         public static User Instance
         {
             get
@@ -28,7 +28,7 @@ namespace Simulator
                     _instance = new User();
                 return _instance;
             }
-
+            set { _instance = value; }
         }
         private static User _instance;
         [Setting("Name")]
@@ -37,13 +37,14 @@ namespace Simulator
             get;
             set;
         }
-        [Setting("Forname")]
+        [Setting("Forename")]
         public string Forname
         {
             get;
             set;
         }
-        public Dictionary<string, TimeSpan> Best_round_times
+
+        public SerializableDictionary<string, TimeSpan> Best_round_times
         { get; set; }
 
         public void set_Round_time(string name, TimeSpan time)

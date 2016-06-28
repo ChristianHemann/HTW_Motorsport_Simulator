@@ -1,4 +1,5 @@
 ﻿
+using System;
 using ImportantClasses;
 using Output;
 
@@ -39,9 +40,9 @@ namespace CalculationComponents
         public void Calculate()
         {
             _actualCalculation = new BrakeOutput();
-            _actualCalculation.BrakeMomentFront = (float) (NormalBrakeMoment*2*InputData.UsedInputData.BrakePedal*
+            _actualCalculation.BrakeMomentFront = (float) (NormalBrakeMoment*InputData.UsedInputData.BrakePedal*
                                                           BrakeBalance.FirstValue);
-            _actualCalculation.BrakeMomentRear = (float) (NormalBrakeMoment*2*InputData.UsedInputData.BrakePedal*
+            _actualCalculation.BrakeMomentRear = (float) (NormalBrakeMoment*InputData.UsedInputData.BrakePedal*
                                                          BrakeBalance.SecondValue);
             if (OnCalculationReady != null)
                 OnCalculationReady();
@@ -61,6 +62,11 @@ namespace CalculationComponents
         public void StoreResult()
         {
             BrakeOutput.LastCalculation = _actualCalculation;
+        }
+
+        public void CalculateBackwards()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

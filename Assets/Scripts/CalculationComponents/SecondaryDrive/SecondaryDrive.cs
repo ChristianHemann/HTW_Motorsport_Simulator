@@ -18,7 +18,7 @@ namespace CalculationComponents
         /// <summary>
         /// the moment of inertia of the secondary drive
         /// </summary>
-        [Setting("inertia torque")]
+        [Setting("Polar area moment of Inertia (m^4)")]
         public float InertiaTorque { get; set; }
 
         private SecondaryDriveOutput _actualCalculation;
@@ -32,12 +32,12 @@ namespace CalculationComponents
 
         public void Calculate()
         {
-            throw new NotImplementedException();
+            _actualCalculation.Torque = GearBoxOutput.LastCalculation.Torque*Transmission;
         }
 
         public void StopCalculation()
         {
-            throw new NotImplementedException();
+            //the calculation is too short as it would worth to stop it
         }
 
         public void StoreResult()

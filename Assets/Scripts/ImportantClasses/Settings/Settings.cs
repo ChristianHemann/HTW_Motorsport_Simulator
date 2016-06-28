@@ -431,12 +431,13 @@ namespace ImportantClasses
                         return;
                     }
                 }
-        }
+            }
             catch (Exception ex)
             {
-                Message.Send("An error occured during saving the file", Message.MessageCode.Error);
+                Message.Send("An error occured during saving the file: " + ex.Message, Message.MessageCode.Error);
+                throw ex;
             }
-}
+        }
 
         /// <summary>
         /// Load all objects which are marked as a setting from a file. If no path for a file was specified an openFilePanel will appear
@@ -466,8 +467,8 @@ namespace ImportantClasses
             {
                 if (actObj.Name != name) //Find the correct object
                     continue;
-                //try
-                //{
+                try
+                {
                     //search in fields
                     IEnumerable<FieldInfo> fieldInfos =
                         actObj.ParentType.GetFields()
@@ -503,12 +504,11 @@ namespace ImportantClasses
                                 FileLoaded(obj.GetType());
                         }
                     }
-                //}
-                //catch (Exception ex)
-                //{
-                //    Message.Send("The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type", Message.MessageCode.Warning);
-                //}
-
+                }
+                catch (Exception ex)
+                {
+                    Message.Send("The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type. ErrorMessage: " + ex.Message, Message.MessageCode.Warning);
+                }
             }
         }
 

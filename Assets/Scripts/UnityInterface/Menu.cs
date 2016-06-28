@@ -302,7 +302,7 @@ namespace UnityInterface
             if (Settings.HasTemporaryChanges()) //show the buttons just if there are changes
             {
                 if (GUI.Button(new Rect(0, posY, _menuSettingWidth*0.24f, _buttonHeight),
-                    "save all Settings"))
+                    "Save all Settings"))
                 {
                     _showOverwriteFileDialog = true;
                 }

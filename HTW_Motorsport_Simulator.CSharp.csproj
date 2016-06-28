@@ -107,6 +107,7 @@
     <Compile Include="Assets\Scripts\ImportantClasses\Logging.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\MathHelper.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Message.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\SerializableDictionary.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Settings\ContainSettingObject.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Settings\ContainSettingsAttribute.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Settings\SettingAttribute.cs" />
