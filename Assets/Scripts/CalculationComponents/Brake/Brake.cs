@@ -11,9 +11,9 @@ namespace CalculationComponents
     public class Brake : ICalculationComponent
     {
         /// <summary>
-        /// The normal Brakemoment per Wheel, when the Brakebalance is 50:50
+        /// The normal Brakemoment per Wheels, when the Brakebalance is 50:50
         /// </summary>
-        [Setting("Brakemoment per Wheel (Nm) (Balance 50:50)")]
+        [Setting("Brakemoment per Wheels (Nm) (Balance 50:50)")]
         public int NormalBrakeMoment { get; set; }
 
         /// <summary>

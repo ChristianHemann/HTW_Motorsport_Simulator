@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CalculationComponents;
+﻿using CalculationComponents.Enums;
+
 namespace Output
 {
     public class SuspensionOutput

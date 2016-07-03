@@ -64,8 +64,8 @@ namespace Simulator
         [SettingMenuItem("Suspension")]
         public Suspension Suspension;
 
-        [SettingMenuItem("Wheel")]
-        public Wheel Wheel;
+        [SettingMenuItem("Wheels")]
+        public Wheels Wheels;
 
         private CalculationController()
         {
@@ -82,7 +82,7 @@ namespace Simulator
             SecondaryDrive = new SecondaryDrive();
             Steering = new Steering();
             Suspension = new Suspension();
-            Wheel = new Wheel();
+            Wheels = new Wheels();
 
             _workerThread = new Thread(WorkerFunction);
         }
@@ -221,8 +221,8 @@ namespace Simulator
             Steering.StoreResult();
             Track.Instance.CalculateBackwards();
             Track.Instance.StoreResult();
-            Wheel.CalculateBackwards();
-            Wheel.StoreResult();
+            Wheels.CalculateBackwards();
+            Wheels.StoreResult();
             OverallCar.CalculateBackwards();
             OverallCar.StoreResult();
             Suspension.CalculateBackwards();
@@ -234,8 +234,8 @@ namespace Simulator
             //iterate as long as the result is not exact enough
             Track.Instance.Calculate();
             Track.Instance.StoreResult();
-            Wheel.Calculate();
-            Wheel.StoreResult();
+            Wheels.Calculate();
+            Wheels.StoreResult();
             OverallCar.Calculate();
             OverallCar.StoreResult();
             Suspension.Calculate();

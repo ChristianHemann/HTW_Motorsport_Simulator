@@ -18,11 +18,10 @@ namespace CalculationComponents.SuspensionComponents
         [Setting("Wishbone")]
         public Wishbone Wishbone { get; set; }
 
-        private readonly Wheels _wheel;
+        private readonly Enums.Wheels _wheel;
         private readonly SuspensionOutput _actualCalculation;
-
-
-        public WheelSuspension(Wheels wheel)
+        
+        public WheelSuspension(Enums.Wheels wheel)
         {
             BellCrank = new BellCrank();
             Damper = new Damper();
@@ -38,7 +37,7 @@ namespace CalculationComponents.SuspensionComponents
         {
             if ((int)_wheel < 2) //front axis
             {
-                _actualCalculation.Torque = 0;
+                _actualCalculation.Torque = -BrakeOutput.LastCalculation.BrakeMomentFront/2;
                 if ((int)_wheel % 2 == 0) //left wheel
                     _actualCalculation.WheelAngle = SteeringOutput.LastCalculation.WheelAngleLeft;
                 else
@@ -46,7 +45,8 @@ namespace CalculationComponents.SuspensionComponents
             }
             else//rearAxis
             {
-                _actualCalculation.Torque = SecondaryDriveOutput.LastCalculation.Torque / 2;
+                _actualCalculation.Torque = SecondaryDriveOutput.LastCalculation.Torque/2
+                                            - BrakeOutput.LastCalculation.BrakeMomentFront/2;
                 _actualCalculation.WheelAngle = 0;
             }
             _actualCalculation.WheelLoad = CalculationController.Instance.OverallCar.Weight * 9.81f / 4;

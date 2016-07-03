@@ -94,7 +94,8 @@
     <Compile Include="Assets\Scripts\CalculationComponents\Track\Straight.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Track\Track.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Track\TrackSegment.cs" />
-    <Compile Include="Assets\Scripts\CalculationComponents\Wheel\Wheel.cs" />
+    <Compile Include="Assets\Scripts\CalculationComponents\Wheels\Wheel.cs" />
+    <Compile Include="Assets\Scripts\CalculationComponents\Wheels\Wheels.cs" />
     <Compile Include="Assets\Scripts\CalculationController.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\CharacteristicMap.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\ClassExtender.cs" />

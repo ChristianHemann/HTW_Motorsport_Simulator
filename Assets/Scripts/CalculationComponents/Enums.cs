@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CalculationComponents
+namespace CalculationComponents.Enums
 {
     public enum Axis
     {
@@ -17,5 +17,12 @@ namespace CalculationComponents
         FrontRight,
         RearLeft,
         RearRight
+    }
+
+    public enum DrivingDirection
+    {
+        Left = 0,
+        Straight,
+        Right
     }
 }

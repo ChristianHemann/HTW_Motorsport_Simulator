@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CalculationComponents.SuspensionComponents;
 using ImportantClasses;
+using CalculationComponents.Enums;
 
 namespace CalculationComponents
 {
@@ -18,8 +19,8 @@ namespace CalculationComponents
 
         public Suspension()
         {
-            FrontAxis = new SuspensionComponents.Axis(Axis.Front);
-            RearAxis = new SuspensionComponents.Axis(Axis.Rear);
+            FrontAxis = new SuspensionComponents.Axis(Enums.Axis.Front);
+            RearAxis = new SuspensionComponents.Axis(Enums.Axis.Rear);
             FrontAxis.RightWheel.OnCalculationReady += WheelCalculationReady;
             FrontAxis.LeftWheel.OnCalculationReady += WheelCalculationReady;
             RearAxis.RightWheel.OnCalculationReady += WheelCalculationReady;

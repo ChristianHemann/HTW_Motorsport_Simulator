@@ -1,4 +1,5 @@
 ﻿using System;
+using CalculationComponents.Enums;
 using ImportantClasses;
 
 namespace CalculationComponents.SuspensionComponents
@@ -12,13 +13,13 @@ namespace CalculationComponents.SuspensionComponents
         [SettingMenuItem("Right wheel")]
         public WheelSuspension RightWheel { get; set; }
 
-        private CalculationComponents.Axis _axis;
+        private Enums.Axis _axis;
 
-        public Axis(CalculationComponents.Axis axis)
+        public Axis(Enums.Axis axis)
         {
             Stabilisator = new Stabilisator();
-            LeftWheel = new WheelSuspension((Wheels)(2 * (int)axis));
-            RightWheel = new WheelSuspension((Wheels)(2 * (int)axis + 1));
+            LeftWheel = new WheelSuspension((Enums.Wheels)(2 * (int)axis));
+            RightWheel = new WheelSuspension((Enums.Wheels)(2 * (int)axis + 1));
             _axis = axis;
         }
 
