@@ -15,7 +15,7 @@ namespace CalculationComponents
     {
         //Settings
         /// <summary>
-        /// the effficency factor of the gearbox
+        /// the effficency factor of the gearbox (0 to 1)
         /// </summary>
         [Setting("Efficency (0 to 1)", 0.9, 0.0, 1.0, 3)]
         public float Efficency { get; set; }
@@ -43,7 +43,7 @@ namespace CalculationComponents
         }
 
         /// <summary>
-        /// the transmission of each gear
+        /// the transmission of each gear (rpmIn/rpmOut)
         /// </summary>
         [Setting("Transmission for each gear (rpmIn/rpmOut)")]
         public float[] Transmissions { get; set; }
@@ -97,6 +97,7 @@ namespace CalculationComponents
         public void StoreResult()
         {
             GearBoxOutput.LastCalculation.Torque = _actualCalculation.Torque;
+            GearBoxOutput.LastCalculation.Rpm = _actualCalculation.Rpm;
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace CalculationComponents
         /// </summary>
         public void CalculateBackwards()
         {
-            _actualCalculation.Rpm = SecondaryDriveOutput.LastCalculation.Rpm/
+            _actualCalculation.Rpm = SecondaryDriveOutput.LastCalculation.Rpm*
                                      CalculationController.Instance.SecondaryDrive.Transmission;
         }
 

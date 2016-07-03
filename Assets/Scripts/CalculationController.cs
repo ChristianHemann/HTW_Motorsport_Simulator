@@ -5,6 +5,7 @@ using System.Threading;
 using System.Xml.Serialization;
 using ImportantClasses;
 using CalculationComponents;
+using ThreadState = System.Threading.ThreadState;
 
 namespace Simulator
 {
@@ -12,8 +13,12 @@ namespace Simulator
     {
         private readonly Thread _workerThread; //The Thread which is calculating the behavior of the car
         private volatile bool _runThread = false; //determines wheather the workerThread shall continue running
+        private volatile bool _interruptThread = true; //determines wheather the workerThread shall be interrupted
         private volatile bool _isCalculating = false; //says wheather the workerThread is working
-        private volatile EventWaitHandle _ewh; //says the workerThread when to calculate
+        private volatile EventWaitHandle _calculationEwh; //says the workerThread when to calculate
+        private volatile EventWaitHandle _threadInterrupedEwh; //says when the workerThread is securely interrupted
+        private volatile EventWaitHandle _threadEndedEwh; //says when the workerThread has ended
+        private volatile EventWaitHandle _continueThreadEwh; //says when to continue the interrupted workerThread
         
         [XmlIgnore]
         public InputData InputDataBuffer { get; set; } 
@@ -64,8 +69,12 @@ namespace Simulator
 
         private CalculationController()
         {
-            _ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _calculationEwh = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _continueThreadEwh = new EventWaitHandle(true, EventResetMode.AutoReset);
+            _threadEndedEwh = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _threadInterrupedEwh = new EventWaitHandle(false, EventResetMode.AutoReset);
             _workerThread = new Thread(WorkerFunction);
+
             Aerodynamic = new Aerodynamic();
             Brake = new Brake();
             Engine = new Engine();
@@ -79,10 +88,17 @@ namespace Simulator
 
         public static void Initialize()
         {
-            if(Instance._runThread)
-                Terminate();
-            Instance._runThread = true;
-            Instance._workerThread.Start();
+            if (Instance._workerThread.ThreadState == ThreadState.Running)
+            {
+                Instance._interruptThread = false;
+                Instance._continueThreadEwh.Set();
+            }
+            else
+            {
+                Instance._runThread = true;
+                Instance._interruptThread = false;
+                Instance._workerThread.Start();
+            }
         }
 
         public static void Calculate()
@@ -90,15 +106,24 @@ namespace Simulator
             if (!Instance._isCalculating)
             {
                 InputData.UsedInputData = InputData.ActualInputData; //Use the actual InputData in the next calculation step
-                Instance._ewh.Set();
+                Instance._calculationEwh.Set();
             }
+        }
+
+        public static void Interrupt()
+        {
+            Instance._interruptThread = true;
+            Instance._calculationEwh.Set();
+            Instance._threadInterrupedEwh.WaitOne();
         }
 
         public static void Terminate()
         {
             Instance._runThread = false;
-            Instance._ewh.Set(); //make sure the Thread is not waiting
-            //Instance._workerThread.Abort();
+            Instance._interruptThread = true;
+            Instance._calculationEwh.Set(); //make sure the Thread is not waiting
+            Instance._threadInterrupedEwh.WaitOne();
+            Instance._threadEndedEwh.WaitOne();
         }
 
         private void WorkerFunction()
@@ -108,43 +133,87 @@ namespace Simulator
             Stopwatch performanceWatch = new Stopwatch();
             while (_runThread)
             {
-                _ewh.WaitOne(); //wait until it is signaled
-                _isCalculating = true;
-
-                //Performance mesurement
-                performanceWatch.Start();
-                i++; //Calculation Number
-                try
+                _continueThreadEwh.WaitOne(); //wait until the thread is no more interrupted
+                while (!_interruptThread)
                 {
-                    Aerodynamic.Calculate();
-                    Brake.Calculate();
-                    Engine.Calculate();
-                    GearBox.Calculate();
-                    SecondaryDrive.Calculate();
-                    Steering.Calculate();
+                    _isCalculating = true;
 
-                    DoIterativeWork();
+                    //Performance mesurement
+                    performanceWatch.Start();
+                    i++; //Calculation Number
+                    try
+                    {
+                        DoWork();
+                    }
+                    catch (NotImplementedException ex)
+                    {
+                        Logging.Log("Not implemented Exception: " + ex.Message, Logging.Classification.CalculationResult);
+                    }
+                    //performance mesurement
+                    time = performanceWatch.Elapsed.Milliseconds;
+                    performanceWatch.Reset();
+                    if (LogPerformance)
+                        Logging.Log("Iteration: " + i.ToString() + " Time: " + time.ToString() + "ms",
+                            Logging.Classification.CalculationResult);
+                    _isCalculating = false;
+
+                    _calculationEwh.WaitOne(); //wait until it is signaled
                 }
-                catch (NotImplementedException ex)
-                {
-                    Logging.Log("Not implemented Exception: "+ex.Message,Logging.Classification.CalculationResult);
-                }
-                //performance mesurement
-                time = performanceWatch.Elapsed.Milliseconds;
-                performanceWatch.Reset();
-                if(LogPerformance)
-                    Logging.Log("Iteration: "+i.ToString()+" Time: "+time.ToString()+"ms",Logging.Classification.CalculationResult);
-                _isCalculating = false;
+                _threadInterrupedEwh.Set();
             }
+            _threadEndedEwh.Set();
+        }
+
+        private void DoWork()
+        {
+            Aerodynamic.Calculate();
+            Aerodynamic.StoreResult();
+            Brake.Calculate();
+            Brake.StoreResult();
+            Engine.Calculate();
+            Engine.StoreResult();
+            GearBox.Calculate();
+            GearBox.StoreResult();
+            SecondaryDrive.Calculate();
+            SecondaryDrive.StoreResult();
+            Steering.Calculate();
+            Steering.StoreResult();
+
+            DoIterativeWork();
+
+            Aerodynamic.CalculateBackwards();
+            Aerodynamic.StoreResult();
+            Brake.CalculateBackwards();
+            Brake.StoreResult();
+            Engine.CalculateBackwards();
+            Engine.StoreResult();
+            GearBox.CalculateBackwards();
+            GearBox.StoreResult();
+            SecondaryDrive.CalculateBackwards();
+            SecondaryDrive.StoreResult();
+            Steering.CalculateBackwards();
+            Steering.StoreResult();
+            Track.Instance.CalculateBackwards();
+            Track.Instance.StoreResult();
+            Wheel.CalculateBackwards();
+            Wheel.StoreResult();
+            OverallCar.CalculateBackwards();
+            OverallCar.StoreResult();
+            Suspension.CalculateBackwards();
+            Suspension.StoreResult();
         }
 
         private void DoIterativeWork()
         {
             //iterate as long as the result is not exact enough
             Track.Instance.Calculate();
+            Track.Instance.StoreResult();
             Wheel.Calculate();
+            Wheel.StoreResult();
             OverallCar.Calculate();
+            OverallCar.StoreResult();
             Suspension.Calculate();
+            Suspension.StoreResult();
         }
     }
 }

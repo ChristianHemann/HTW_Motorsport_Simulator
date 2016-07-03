@@ -5,6 +5,7 @@ using System.Text;
 using CalculationComponents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Output;
+using Simulator;
 
 namespace UnitTests
 {
@@ -25,8 +26,10 @@ namespace UnitTests
             _gearBox.Transmissions[1] = 5;
             _gearBox.Transmissions[2] = 1;
             EngineOutput.LastCalculation = new EngineOutput();
-            EngineOutput.LastCalculation.torque = 100;
+            EngineOutput.LastCalculation.Torque = 100;
             _expectedValues = new[] {0, 900f, 450f, 90f};
+            SecondaryDriveOutput.LastCalculation.Rpm = 1000;
+            CalculationController.Instance.SecondaryDrive.Transmission = 10;
         }
 
         [TestMethod]
@@ -39,6 +42,9 @@ namespace UnitTests
                 _gearBox.StoreResult();
                 Assert.AreEqual(GearBoxOutput.LastCalculation.Torque, _expectedValues[i], 1e-6);
             }
+            _gearBox.CalculateBackwards();
+            _gearBox.StoreResult();
+            Assert.AreEqual(10000, GearBoxOutput.LastCalculation.Rpm,1e-5);
         }
     }
 }

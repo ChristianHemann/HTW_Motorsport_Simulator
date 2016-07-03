@@ -13,13 +13,13 @@ namespace CalculationComponents
     public class SecondaryDrive : ICalculationComponent
     {
         /// <summary>
-        /// the transmission of the secondary drive
+        /// the transmission of the secondary drive (rpmIn/rpmOut)
         /// </summary>
         [Setting("Transmission (rpmIn/rpmOut)")]
         public float Transmission { get; set; }
 
         /// <summary>
-        /// the polar area moment of inertia of the secondary drive
+        /// the polar area moment of inertia of the secondary drive (m^4)
         /// </summary>
         [Setting("Polar area moment of inertia (m^4)")]
         public float InertiaTorque { get; set; }

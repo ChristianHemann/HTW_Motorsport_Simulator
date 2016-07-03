@@ -48,7 +48,7 @@ namespace UnityInterface
 
         private void OnDestroy()
         {
-            CalculationController.Terminate();
+            CalculationController.Interrupt();
         }
     }
 }
