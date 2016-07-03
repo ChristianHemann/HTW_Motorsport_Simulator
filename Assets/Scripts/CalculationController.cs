@@ -73,7 +73,6 @@ namespace Simulator
             _continueThreadEwh = new EventWaitHandle(true, EventResetMode.AutoReset);
             _threadEndedEwh = new EventWaitHandle(false, EventResetMode.AutoReset);
             _threadInterrupedEwh = new EventWaitHandle(false, EventResetMode.AutoReset);
-            _workerThread = new Thread(WorkerFunction);
 
             Aerodynamic = new Aerodynamic();
             Brake = new Brake();
@@ -84,16 +83,18 @@ namespace Simulator
             Steering = new Steering();
             Suspension = new Suspension();
             Wheel = new Wheel();
+
+            _workerThread = new Thread(WorkerFunction);
         }
 
         public static void Initialize()
         {
-            if (Instance._workerThread.ThreadState == ThreadState.Running)
+            if (Instance._workerThread.ThreadState == ThreadState.WaitSleepJoin) //if the Thread is interrupted
             {
                 Instance._interruptThread = false;
                 Instance._continueThreadEwh.Set();
             }
-            else
+            else //if the Thread is not started yet
             {
                 Instance._runThread = true;
                 Instance._interruptThread = false;
@@ -105,24 +106,32 @@ namespace Simulator
         {
             if (!Instance._isCalculating)
             {
-                InputData.UsedInputData = InputData.ActualInputData; //Use the actual InputData in the next calculation step
+                lock (InputData.ActualInputData)
+                {
+                    InputData.UsedInputData = InputData.ActualInputData;
+                        //Use the actual InputData in the next calculation step
+                }
                 Instance._calculationEwh.Set();
             }
         }
 
         public static void Interrupt()
         {
+            if (Instance._interruptThread) //if the thread is already interrupted
+                return;
             Instance._interruptThread = true;
-            Instance._calculationEwh.Set();
+            Instance._calculationEwh.Set(); //make sure the Thread is not waiting
             Instance._threadInterrupedEwh.WaitOne();
         }
 
         public static void Terminate()
         {
+            if (!Instance._interruptThread)
+            {
+                Interrupt();
+            }
             Instance._runThread = false;
-            Instance._interruptThread = true;
-            Instance._calculationEwh.Set(); //make sure the Thread is not waiting
-            Instance._threadInterrupedEwh.WaitOne();
+            Instance._continueThreadEwh.Set();
             Instance._threadEndedEwh.WaitOne();
         }
 
@@ -131,37 +140,54 @@ namespace Simulator
             int i = 0;
             int time = 0;
             Stopwatch performanceWatch = new Stopwatch();
+            Exception exception = null;
             while (_runThread)
             {
                 _continueThreadEwh.WaitOne(); //wait until the thread is no more interrupted
                 while (!_interruptThread)
                 {
-                    _isCalculating = true;
+                    _calculationEwh.WaitOne(); //wait until it is signaled
+                    if (_interruptThread || !_runThread) //return without calculating something
+                        break;
 
-                    //Performance mesurement
-                    performanceWatch.Start();
-                    i++; //Calculation Number
+                    _isCalculating = true;
                     try
                     {
-                        DoWork();
+                        //Performance mesurement
+                        performanceWatch.Start();
+                        i++; //Calculation Number
+                        try
+                        {
+                            DoWork();
+                        }
+                        catch (NotImplementedException ex)
+                        {
+                            Logging.Log("Not implemented Exception: " + ex.Message,
+                                Logging.Classification.CalculationResult);
+                        }
+                        //performance mesurement
+                        time = performanceWatch.Elapsed.Milliseconds;
+                        performanceWatch.Reset();
+                        if (LogPerformance)
+                            Logging.Log("Iteration: " + i.ToString() + " Time: " + time.ToString() + "ms",
+                                Logging.Classification.CalculationResult);
                     }
-                    catch (NotImplementedException ex)
+                    catch (Exception ex)
                     {
-                        Logging.Log("Not implemented Exception: " + ex.Message, Logging.Classification.CalculationResult);
+                        Logging.Log(ex.Message, Logging.Classification.CalculationResult,Message.MessageCode.FatalError);
+                        _interruptThread = true;
+                        _runThread = false;
+                        _calculationEwh.Set();
+                        _continueThreadEwh.Set();
+                        exception = ex;
                     }
-                    //performance mesurement
-                    time = performanceWatch.Elapsed.Milliseconds;
-                    performanceWatch.Reset();
-                    if (LogPerformance)
-                        Logging.Log("Iteration: " + i.ToString() + " Time: " + time.ToString() + "ms",
-                            Logging.Classification.CalculationResult);
                     _isCalculating = false;
-
-                    _calculationEwh.WaitOne(); //wait until it is signaled
                 }
                 _threadInterrupedEwh.Set();
             }
             _threadEndedEwh.Set();
+            if (exception != null)
+                throw exception;
         }
 
         private void DoWork()
