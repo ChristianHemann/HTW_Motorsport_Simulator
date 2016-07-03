@@ -79,6 +79,8 @@ namespace Simulator
 
         public static void Initialize()
         {
+            if(Instance._runThread)
+                Terminate();
             Instance._runThread = true;
             Instance._workerThread.Start();
         }
@@ -95,6 +97,8 @@ namespace Simulator
         public static void Terminate()
         {
             Instance._runThread = false;
+            Instance._ewh.Set(); //make sure the Thread is not waiting
+            //Instance._workerThread.Abort();
         }
 
         private void WorkerFunction()

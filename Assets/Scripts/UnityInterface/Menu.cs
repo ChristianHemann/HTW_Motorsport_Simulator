@@ -162,6 +162,8 @@ namespace UnityInterface
                 "Start Race"))
             {
                 SceneManager.LoadScene("Simulator");
+                //SceneManager.SetActiveScene(SceneManager.GetSceneByName("Simulator"));
+                //SceneManager.UnloadScene("MainMenu");
             }
 
             //Settings Button

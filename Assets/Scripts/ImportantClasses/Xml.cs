@@ -19,6 +19,9 @@ namespace ImportantClasses
         /// <param name="obj">the object that shall be saved</param>
         public static void WriteXml(string path, object obj)
         {
+            string extension = Path.GetExtension(path).ToLower();
+            if (extension != ".xml")
+                path += ".xml";
             FileStream stream = new FileStream(path,FileMode.Create);
             XmlSerializer serializer = new XmlSerializer(obj.GetType());
             serializer.Serialize(stream, obj);
