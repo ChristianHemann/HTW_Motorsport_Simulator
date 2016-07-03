@@ -9,15 +9,21 @@ namespace UnityInterface
 {
     public class RaceMenu : MonoBehaviour
     {
-        private bool _showMenu = false;
+        public static bool ShowMenu { get; set; }
+
+        private void Start()
+        {
+            ShowMenu = false;
+        }
+
         private void OnGUI()
         {
-            if (_showMenu)
+            if (ShowMenu)
             {
                 if (GUI.Button(new Rect(Screen.width/4, Screen.height/4, Screen.width/2, Screen.height/4),
                     "Continue Race"))
                 {
-                    _showMenu = false;
+                    ShowMenu = false;
                 }
                 if (GUI.Button(new Rect(Screen.width/4, Screen.height/2, Screen.width/2, Screen.height/4),
                     "To Main Menu"))
@@ -30,14 +36,14 @@ namespace UnityInterface
             else
             {
                 if (GUI.Button(new Rect(10, 10, Screen.width/5, Screen.height/15), "Menu"))
-                    _showMenu = true;
+                    ShowMenu = true;
             }
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
-                _showMenu = true;
+                ShowMenu = !ShowMenu;
         }
     }
 }

@@ -23,7 +23,8 @@ namespace UnityInterface
                 InputData.ActualInputData = new InputData(Input.GetAxis("AccelerationPedal"),
                     Input.GetAxis("BrakePedal"), Input.GetAxis("Steering"), InputData.ActualInputData.Gear);
             }
-            CalculationController.Calculate();
+            if(!RaceMenu.ShowMenu)
+                CalculationController.Calculate();
         }
 
         //called once per frame

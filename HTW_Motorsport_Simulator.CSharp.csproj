@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\CalculationComponents\Aerodynamics\Aerodynamic.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Brake\Brake.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Engine\Engine.cs" />
+    <Compile Include="Assets\Scripts\CalculationComponents\Enums.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\GearBox\GearBox.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\OverallCar\OverallCar.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\SecondaryDrive\SecondaryDrive.cs" />
@@ -81,10 +82,7 @@
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\Axis.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\BellCrank.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\Damper.cs" />
-    <Compile Include="Assets\Scripts\CalculationComponents\Suspension\FrontAxis.cs" />
-    <Compile Include="Assets\Scripts\CalculationComponents\Suspension\IModifyAxis.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\PushRod.cs" />
-    <Compile Include="Assets\Scripts\CalculationComponents\Suspension\RearAxis.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\Stabilisator.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\Suspension.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Suspension\WheelHub.cs" />
