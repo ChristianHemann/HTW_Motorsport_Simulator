@@ -176,6 +176,18 @@ namespace ImportantClasses
             return new Vector2(buffer[0], buffer[1]);
         }
 
+        /// <summary>
+        /// Turns a vector on the given angle
+        /// </summary>
+        /// <param name="angle">the angle to turn in radiant</param>
+        /// <returns>the turned vector</returns>
+        public Vector2 Turn(double angle)
+        {
+            float x = (float)(X * Math.Cos(angle) + Y * Math.Sin(angle));
+            float y = (float)(Y * Math.Cos(angle) + X * Math.Sin(angle));
+            return new Vector2(x, y);
+        }
+
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
         {
             return new Vector2(v1.X + v2.X, v1.Y + v2.Y);

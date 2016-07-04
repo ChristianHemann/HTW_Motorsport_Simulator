@@ -45,14 +45,22 @@ namespace UnitTests
             Assert.AreEqual(new Vector2(-1, 0), v3.GetIntersectionPoint(v1, v1, v2));
         }
 
+        [TestMethod]
         public void TestVectorNormalize()
         {
             Assert.AreEqual(1, v3.Normalize().Magnitude, 1e-6);
         }
 
+        [TestMethod]
         public void TestVectorNormal()
         {
             Assert.AreEqual(v1,v2.Normal());
+        }
+
+        [TestMethod]
+        public void TestVectorTurn()
+        {
+            Assert.IsTrue(v2.Equals(v1.Turn(Math.PI / 2),1e-5f));
         }
     }
 }

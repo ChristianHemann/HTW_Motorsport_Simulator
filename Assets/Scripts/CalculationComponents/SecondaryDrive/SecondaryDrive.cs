@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using ImportantClasses;
 using Output;
+using Simulator;
+using UnityEngine;
 
 namespace CalculationComponents
 {
@@ -41,7 +43,9 @@ namespace CalculationComponents
         /// </summary>
         public void Calculate()
         {
-            _actualCalculation.Torque = GearBoxOutput.LastCalculation.Torque*Transmission;
+            _actualCalculation.Torque = GearBoxOutput.LastCalculation.Torque * Transmission;
+            if (OnCalculationReady != null)
+                OnCalculationReady();
         }
 
         /// <summary>
@@ -58,6 +62,7 @@ namespace CalculationComponents
         public void StoreResult()
         {
             SecondaryDriveOutput.LastCalculation.Torque = _actualCalculation.Torque;
+            SecondaryDriveOutput.LastCalculation.Rpm = _actualCalculation.Rpm;
         }
 
         /// <summary>
@@ -65,7 +70,10 @@ namespace CalculationComponents
         /// </summary>
         public void CalculateBackwards()
         {
-            //calculate rpm when the car is calculated
+            _actualCalculation.Rpm = OverallCarOutput.LastCalculation.Speed * 60 /
+                                     (CalculationController.Instance.Wheels.Diameter * (float)Math.PI);
+            if (OnCalculationReady != null)
+                OnCalculationReady();
         }
 
         /// <summary>

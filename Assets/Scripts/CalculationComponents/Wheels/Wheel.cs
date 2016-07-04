@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ImportantClasses;
+﻿using ImportantClasses;
 using Output;
 using Simulator;
 
@@ -10,8 +6,7 @@ namespace CalculationComponents.WheelComponents
 {
     public class Wheel : ICalculationComponent
     {
-        public float DrivingRadius = 0;
-        private float _maxForce;
+        private float _drivingRadius;
         private readonly WheelOutput _actualCalculation;
         private readonly Enums.Wheels _wheel;
 
@@ -23,11 +18,38 @@ namespace CalculationComponents.WheelComponents
 
         public void Calculate()
         {
-            _maxForce = SuspensionOutput.GetLastCalculation(_wheel).WheelLoad * CalculationController.Instance.Wheels.FrictionCoefficient;
+            float halfTrackWidth = CalculationController.Instance.OverallCar.TrackWidth / 2;
+            SuspensionOutput suspensionCalculation = SuspensionOutput.GetLastCalculation(_wheel);
+            //force = torque/radius
+            _actualCalculation.LongitudinalForce = suspensionCalculation.Torque /
+                                                   (CalculationController.Instance.Wheels.Diameter / 2);
+            float angle = suspensionCalculation.WheelAngle;
+            if (angle < 0) //right
+            {
+                _drivingRadius = ((int)_wheel < 2
+                    ? SteeringOutput.LastCalculation.RadiusFrontAxis
+                    : SteeringOutput.LastCalculation.RadiusRearAxis) +
+                                (((int)_wheel) % 2 == 0 ? halfTrackWidth : -halfTrackWidth);
+                _actualCalculation.LateralAcceleration = OverallCarOutput.LastCalculation.Speed *
+                                                         OverallCarOutput.LastCalculation.Speed / _drivingRadius;
+            }
+            else if (angle > 0) //left
+            {
+                _drivingRadius = ((int)_wheel < 2
+                    ? SteeringOutput.LastCalculation.RadiusFrontAxis
+                    : SteeringOutput.LastCalculation.RadiusRearAxis) +
+                                (((int)_wheel) % 2 == 0 ? -halfTrackWidth : halfTrackWidth);
+                _actualCalculation.LateralAcceleration = -OverallCarOutput.LastCalculation.Speed *
+                                                         OverallCarOutput.LastCalculation.Speed / _drivingRadius;
+            }
+            else //straight
+            {
+                _drivingRadius = float.PositiveInfinity;
+                _actualCalculation.LateralAcceleration = 0;
+            }
+            _actualCalculation.Direction = new Vector2(0, 1f).Turn(angle);
 
-
-
-            _actualCalculation.Slip = 0;
+            _actualCalculation.Slip = 0; //actually the calculation is not ready and the slip is allways zero and the maximum force is infinity
             if (OnCalculationReady != null)
                 OnCalculationReady();
         }

@@ -117,7 +117,7 @@
     <Compile Include="Assets\Scripts\ImportantClasses\Xml.cs" />
     <Compile Include="Assets\Scripts\Output\AeroOutput.cs" />
     <Compile Include="Assets\Scripts\Output\BrakeOutput.cs" />
-    <Compile Include="Assets\Scripts\Output\CarOutput.cs" />
+    <Compile Include="Assets\Scripts\Output\OverallCarOutput.cs" />
     <Compile Include="Assets\Scripts\Output\EngineOutput.cs" />
     <Compile Include="Assets\Scripts\Output\GearBoxOutput.cs" />
     <Compile Include="Assets\Scripts\Output\SecondaryDriveOutput.cs" />
