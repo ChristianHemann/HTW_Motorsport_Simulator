@@ -48,7 +48,7 @@ namespace UnityInterface
         private float _contentHeight;
         private float _menuItemWidth;
         private float _menuSettingWidth;
-        
+
         /// <summary>
         /// called by unity before rendering the first frame
         /// </summary>
@@ -71,12 +71,12 @@ namespace UnityInterface
             _contentWidth = Screen.width * 0.98f;
             _contentHeight = Screen.height * 0.98f;
             _buttonHeight = GUI.skin.GetStyle("Button").CalcHeight(new GUIContent("some text"), _contentWidth); //get the height of a button with the text "some text"
-            _topBarHeight = _buttonHeight*1.5f;
-            _padding = _buttonHeight*0.15f;
+            _topBarHeight = _buttonHeight * 1.5f;
+            _padding = _buttonHeight * 0.15f;
             _topBarButtonWidth = _contentWidth / 8;
             _menuItemWidth = _contentWidth / 5 - 20; //20% of the width for the MenuItems; 20 is subtracted for the scrollBar
-            _menuSettingWidth = _contentWidth - _menuItemWidth - _padding*3 - 20; //80% minus the _padding for the Settings; 20 is subtracted for the scrollBar
-            SettingTemplate.SetInputHeight(GUI.skin.GetStyle("TextField").CalcHeight(new GUIContent("some text"),_contentWidth));
+            _menuSettingWidth = _contentWidth - _menuItemWidth - _padding * 3 - 20; //80% minus the _padding for the Settings; 20 is subtracted for the scrollBar
+            SettingTemplate.SetInputHeight(GUI.skin.GetStyle("TextField").CalcHeight(new GUIContent("some text"), _contentWidth));
             FileSelector.windowDimensions = new Rect(0, 0, _contentWidth * 0.5f, _contentHeight);
             _isSizeCalculated = true;
         }
@@ -86,12 +86,12 @@ namespace UnityInterface
         /// </summary>
         private void OnGUI()
         {
-            if(!_isSizeCalculated)
+            if (!_isSizeCalculated)
                 CalculateSize(); //Initialize
 
             if (_actualSection == MenuSection.MainMenu)
                 DrawMainMenu();
-            else if(_actualSection == MenuSection.Settings)
+            else if (_actualSection == MenuSection.Settings)
             {
                 //get the items and settings that are actually shown
                 _menuItems = Settings.GetMenuItems(_namesList.ToArray());
@@ -106,32 +106,32 @@ namespace UnityInterface
                         //the direct conversion (values = (object[]) oldValue) is not possible
                         object[] values = ((IEnumerable)keyValuePair.Value).Cast<object>().ToArray();
                         settingContentHeight += SettingTemplate.GetHeight(typeof(string)) +
-                                  values.Length * (SettingTemplate.GetHeight(values[0].GetType())+_padding);
+                                  values.Length * (SettingTemplate.GetHeight(values[0].GetType()) + _padding);
                     }
                     else
                         settingContentHeight += SettingTemplate.GetHeight(keyValuePair.Value.GetType());
                 }
-                settingContentHeight += _buttonHeight + _padding*4 + 20; //height of the buttons on the bottom + the _padding between button and settings + height of the scrollBar
+                settingContentHeight += _buttonHeight + _padding * 4 + 20; //height of the buttons on the bottom + the _padding between button and settings + height of the scrollBar
 
                 //Begin drawing of the menu
                 GUI.BeginGroup(new Rect(_padding, _padding, _contentWidth, _contentHeight)); //content; _padding to the edge
 
                 //Bar on the top
                 _topBarScrollPosition = GUI.BeginScrollView(new Rect(0, 0, _contentWidth, _topBarHeight),
-                    _topBarScrollPosition, new Rect(0, 0, _contentWidth, _topBarHeight)); 
+                    _topBarScrollPosition, new Rect(0, 0, _contentWidth, _topBarHeight));
                 DrawTopBar();
                 GUI.EndScrollView();
 
                 //MenuItems
                 _itemScrollPosition =
                     GUI.BeginScrollView(new Rect(0, _topBarHeight, _menuItemWidth + 20, _contentHeight - _topBarHeight),
-                        _itemScrollPosition, new Rect(0, 0, _menuItemWidth, _menuItems.Count*(_buttonHeight + _padding))); 
+                        _itemScrollPosition, new Rect(0, 0, _menuItemWidth, _menuItems.Count * (_buttonHeight + _padding)));
                 DrawMenuItems();
                 GUI.EndScrollView();//End MenuItems
-                
+
                 //Settings
                 _settingScrollPosition =
-                    GUI.BeginScrollView(new Rect(_menuItemWidth + 3*_padding, _topBarHeight, _menuSettingWidth+20,
+                    GUI.BeginScrollView(new Rect(_menuItemWidth + 3 * _padding, _topBarHeight, _menuSettingWidth + 20,
                         _contentHeight - _topBarHeight), _settingScrollPosition, new Rect(0, 0, _menuSettingWidth, settingContentHeight));
                 DrawSettings();
                 GUI.EndScrollView();//End Settings
@@ -158,7 +158,7 @@ namespace UnityInterface
         private void DrawMainMenu()
         {
             //Start Button
-            if (GUI.Button(new Rect(_menuItemWidth, _topBarHeight, _contentWidth - 2*_menuItemWidth, _buttonHeight*1.5f),
+            if (GUI.Button(new Rect(_menuItemWidth, _topBarHeight, _contentWidth - 2 * _menuItemWidth, _buttonHeight * 1.5f),
                 "Start Race"))
             {
                 SceneManager.LoadScene("Simulator");
@@ -167,9 +167,9 @@ namespace UnityInterface
             }
 
             //Settings Button
-            if ( GUI.Button(
-                    new Rect(_menuItemWidth, _topBarHeight + _buttonHeight*1.5f + _padding, _contentWidth - 2*_menuItemWidth,
-                        _buttonHeight*1.5f), "Settings"))
+            if (GUI.Button(
+                    new Rect(_menuItemWidth, _topBarHeight + _buttonHeight * 1.5f + _padding, _contentWidth - 2 * _menuItemWidth,
+                        _buttonHeight * 1.5f), "Settings"))
             {
                 _actualSection = MenuSection.Settings;
             }
@@ -177,9 +177,9 @@ namespace UnityInterface
             //Logging Button
             if (
                 GUI.Button(
-                    new Rect(_menuItemWidth, _topBarHeight + (_buttonHeight*1.5f + _padding)*2,
-                        _contentWidth - 2*_menuItemWidth,
-                        _buttonHeight*1.5f), "View Log"))
+                    new Rect(_menuItemWidth, _topBarHeight + (_buttonHeight * 1.5f + _padding) * 2,
+                        _contentWidth - 2 * _menuItemWidth,
+                        _buttonHeight * 1.5f), "View Log"))
             {
                 _actualSection = MenuSection.Logging;
             }
@@ -187,9 +187,9 @@ namespace UnityInterface
             //Quit Application
             if (
                 GUI.Button(
-                    new Rect(_menuItemWidth, _topBarHeight + (_buttonHeight*1.5f + _padding)*3.7f,
-                        _contentWidth - 2*_menuItemWidth,
-                        _buttonHeight*1.5f), "Quit"))
+                    new Rect(_menuItemWidth, _topBarHeight + (_buttonHeight * 1.5f + _padding) * 3.7f,
+                        _contentWidth - 2 * _menuItemWidth,
+                        _buttonHeight * 1.5f), "Quit"))
             {
                 Application.Quit();
             }
@@ -218,7 +218,7 @@ namespace UnityInterface
                 {
                     if (
                         GUI.Button(
-                            new Rect((i + 2)*(_topBarButtonWidth + _padding), 0, _topBarButtonWidth, _buttonHeight),
+                            new Rect((i + 2) * (_topBarButtonWidth + _padding), 0, _topBarButtonWidth, _buttonHeight),
                             _namesList.ElementAt(i)))
                     {
                         _namesList = _namesList.GetRange(0, i + 1);
@@ -262,9 +262,9 @@ namespace UnityInterface
                 if (keyValuePair.Value.GetType().IsArray) //Draw an array
                 {
                     //the direct conversion (values = (object[]) oldValue) is not possible
-                    object[] values = ((IEnumerable) keyValuePair.Value).Cast<object>().ToArray();
+                    object[] values = ((IEnumerable)keyValuePair.Value).Cast<object>().ToArray();
                     height = SettingTemplate.GetHeight(typeof(string)) +
-                              values.Length*(SettingTemplate.GetHeight(values[0].GetType())+_padding);
+                              values.Length * (SettingTemplate.GetHeight(values[0].GetType()) + _padding);
                     if (values.Length > 0)
                         newValue = SettingTemplate.DrawArray(values, keyValuePair.Key,
                             new Rect(0, posY, _menuSettingWidth, height));
@@ -281,7 +281,7 @@ namespace UnityInterface
                         valueChanged = true;
                 }
 
-                if(valueChanged)//if the value was changed: store it temporary
+                if (valueChanged)//if the value was changed: store it temporary
                 {
                     List<string> tempList = new List<string>(_namesList); //this list is to add a Value temporary to _namesList
                     tempList.Add(keyValuePair.Key);
@@ -300,17 +300,17 @@ namespace UnityInterface
         /// <param name="posY">the position of the buttons in Y-Direction so that they are not collide with other controls</param>
         private void DrawSettingButtons(float posY)
         {
-            posY += 3*_padding; //little space between settings and buttons
+            posY += 3 * _padding; //little space between settings and buttons
             if (Settings.HasTemporaryChanges()) //show the buttons just if there are changes
             {
-                if (GUI.Button(new Rect(0, posY, _menuSettingWidth*0.24f, _buttonHeight),
+                if (GUI.Button(new Rect(0, posY, _menuSettingWidth * 0.24f, _buttonHeight),
                     "Save all Settings"))
                 {
                     _showOverwriteFileDialog = true;
                 }
 
                 //Draw the Discard changes Button just if there are changes
-                if ( GUI.Button(new Rect(_menuSettingWidth*0.25f, posY, _menuSettingWidth*0.25f, _buttonHeight),
+                if (GUI.Button(new Rect(_menuSettingWidth * 0.25f, posY, _menuSettingWidth * 0.25f, _buttonHeight),
                         "Discard changes"))
                     Settings.DiscardTemporaryChanges();
             }
@@ -337,7 +337,7 @@ namespace UnityInterface
             {
                 DialogBoxResult result = DialogBox.Show("create new Files?",
                     "Do you want to crate new Files or do you want to overwrite the last-used files", "new Files",
-                    "overwrite"); 
+                    "overwrite");
                 if (result == DialogBoxResult.Cancel) //Cancel = overwrite
                 {
                     Settings.SaveTemporaryChanges();
@@ -380,18 +380,22 @@ namespace UnityInterface
         /// <param name="path">the selected Path</param>
         private void GotFileToSave(FileSelector.Status status, string path)
         {
-            if (status == FileSelector.Status.Cancelled)
+            if (status == FileSelector.Status.Cancelled || String.IsNullOrEmpty(path))
             {
                 _outstandingObjectsToSave.Remove(_outstandingObjectsToSave.First());
-            }else if (status == FileSelector.Status.Successful)
+            }
+            else if (status == FileSelector.Status.Successful)
             {
+                string extension = Path.GetExtension(path).ToLower();
+                if (extension != ".xml")
+                    path += ".xml";
                 _lastUsedDirectory = Path.GetDirectoryName(path);
                 Settings.SaveSetting(_outstandingObjectsToSave.First(), path);
                 _outstandingObjectsToSave.Remove(_outstandingObjectsToSave.First());
             }
             _fileSelectorIsShowed = false;
         }
-        
+
         /// <summary>
         /// Callback function which is called when a path was selected in the FileSelector. used for files to load
         /// </summary>
@@ -429,12 +433,12 @@ namespace UnityInterface
             //TODO: Add filter functions
             float logPosY = 0;
             _logs = Logging.GetLogs(count: _numOfLogs);
-            float logHeight = _buttonHeight*3 + _padding*3;
-            float height = _logs.Length*logHeight;
+            float logHeight = _buttonHeight * 3 + _padding * 3;
+            float height = _logs.Length * logHeight;
 
             _loggingScrollPosition = GUI.BeginScrollView(
                 new Rect(0, _topBarHeight, _contentWidth, _contentHeight - _topBarHeight),
-                _loggingScrollPosition, new Rect(0, 0, _contentWidth - 20, height + 2*_padding));
+                _loggingScrollPosition, new Rect(0, 0, _contentWidth - 20, height + 2 * _padding));
             foreach (Logging log in _logs)
             {
                 DrawLog(log, new Rect(0, logPosY, _contentWidth, logHeight));
@@ -452,10 +456,10 @@ namespace UnityInterface
         {
             GUI.Label(new Rect(position.x, position.y, position.width, _buttonHeight), log.Value.ToString());
             GUI.Label(
-                new Rect(position.x + position.width*0.1f, position.y + _buttonHeight + _padding, position.width*0.9f,
+                new Rect(position.x + position.width * 0.1f, position.y + _buttonHeight + _padding, position.width * 0.9f,
                     _buttonHeight), "Classification: " + log.classification.ToString());
             GUI.Label(
-                new Rect(position.x + position.width * 0.1f, position.y + 2*(_buttonHeight + _padding), position.width * 0.9f,
+                new Rect(position.x + position.width * 0.1f, position.y + 2 * (_buttonHeight + _padding), position.width * 0.9f,
                     _buttonHeight), "MessageCode: " + log.Code.ToString());
         }
     }
