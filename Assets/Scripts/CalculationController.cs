@@ -11,7 +11,8 @@ namespace Simulator
 {
     public class CalculationController
     {
-        public DateTime LastCalculationTime;
+        public float Duration { get; set; } //time in seconds that the actual calculation is taking
+        private float _lastDuration; //time in seconds that the last calculation took
         private readonly Thread _workerThread; //The Thread which is calculating the behavior of the car
         private volatile bool _runThread = false; //determines wheather the workerThread shall continue running
         private volatile bool _interruptThread = true; //determines wheather the workerThread shall be interrupted
@@ -107,6 +108,8 @@ namespace Simulator
         {
             if (!Instance._isCalculating)
             {
+                Instance._lastDuration = Instance.Duration;
+                Instance.Duration = 0;
                 lock (InputData.ActualInputData)
                 {
                     InputData.UsedInputData = InputData.ActualInputData;

@@ -38,6 +38,10 @@ namespace Output
         /// <summary>
         /// the movement direction of the car
         /// </summary>
-        public Vector3 Direction;
+        public Vector3 Direction { get; set; }
+        /// <summary>
+        /// the calculated position of the car
+        /// </summary>
+        public Vector3 Position { get; set; }
     }
 }

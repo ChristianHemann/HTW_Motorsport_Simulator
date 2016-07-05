@@ -17,6 +17,7 @@ namespace UnityInterface
         //called periodically
         private void FixedUpdate()
         {
+            CalculationController.Instance.Duration += Time.fixedDeltaTime;
             // Get Input Data
             lock (InputData.ActualInputData)
             {
