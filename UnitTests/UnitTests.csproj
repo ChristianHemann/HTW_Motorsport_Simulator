@@ -79,6 +79,7 @@
     <Compile Include="TrackTest.cs" />
     <Compile Include="SteeringTest.cs" />
     <Compile Include="SecondaryDriveTest.cs" />
+    <Compile Include="Vector3Test.cs" />
     <Compile Include="Vector2Test.cs" />
   </ItemGroup>
   <ItemGroup>

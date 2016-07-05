@@ -17,7 +17,7 @@ namespace Output
                 return _lastCalculations;
             }
         }
-        private static SuspensionOutput[] _lastCalculations;
+        private static volatile SuspensionOutput[] _lastCalculations;
 
         public float Torque { get; set; }
         public float WheelLoad { get; set; }

@@ -25,12 +25,12 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
-        private static OverallCarOutput _lastCalculation;
+        private static volatile OverallCarOutput _lastCalculation;
 
         /// <summary>
         /// the acceleration with its direction of the car in m/s^2
         /// </summary>
-        public Vector2 Acceleration { get; set; }
+        public Vector3 Acceleration { get; set; }
         /// <summary>
         /// the speed of the car in m/s
         /// </summary>
@@ -38,6 +38,6 @@ namespace Output
         /// <summary>
         /// the movement direction of the car
         /// </summary>
-        public Vector2 Direction;
+        public Vector3 Direction;
     }
 }

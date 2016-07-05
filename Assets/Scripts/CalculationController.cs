@@ -11,6 +11,7 @@ namespace Simulator
 {
     public class CalculationController
     {
+        public DateTime LastCalculationTime;
         private readonly Thread _workerThread; //The Thread which is calculating the behavior of the car
         private volatile bool _runThread = false; //determines wheather the workerThread shall continue running
         private volatile bool _interruptThread = true; //determines wheather the workerThread shall be interrupted

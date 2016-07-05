@@ -24,7 +24,7 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
-        private static GearBoxOutput _lastCalculation;
+        private static volatile GearBoxOutput _lastCalculation;
 
         /// <summary>
         /// the output torque of the gearbox

@@ -114,6 +114,7 @@
     <Compile Include="Assets\Scripts\ImportantClasses\Settings\Settings.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Spline.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Vector2.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Vector3.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Xml.cs" />
     <Compile Include="Assets\Scripts\Output\AeroOutput.cs" />
     <Compile Include="Assets\Scripts\Output\BrakeOutput.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Assets\Scripts\UnityInterface\Templates\FileSelector\FileSelectorStyles.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Templates\SettingTemplate.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\TrackDrawer.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\VectorUnityExtension.cs" />
     <Compile Include="Assets\Scripts\User.cs" />
   </ItemGroup>
   <ItemGroup>

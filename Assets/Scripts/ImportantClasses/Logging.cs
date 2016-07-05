@@ -122,8 +122,8 @@ namespace ImportantClasses
                             && (i++ >= startAt))
                         {
                             logs.Add(new Logging(element.ChildNodes[0].InnerText,
-                                (Classification) Enum.Parse(typeof(Classification), element.ChildNodes[1].InnerText),
-                                (Message.MessageCode) Enum.Parse(typeof(Message.MessageCode), element.ChildNodes[2].InnerText)));
+                                (Classification)Enum.Parse(typeof(Classification), element.ChildNodes[1].InnerText),
+                                (Message.MessageCode)Enum.Parse(typeof(Message.MessageCode), element.ChildNodes[2].InnerText)));
                         }
                     }
                 }
@@ -137,7 +137,7 @@ namespace ImportantClasses
                     if ((classification == Classification.None ||
                          element.ChildNodes[1].InnerText == classification.ToString()) &&
                         (code == Message.MessageCode.None || element.ChildNodes[2].InnerText == code.ToString()) &&
-                        i++>=startAt)
+                        i++ >= startAt)
                     {
                         logs.Add(new Logging(element.ChildNodes[0].InnerText,
                             (Classification)Enum.Parse(typeof(Classification), element.ChildNodes[1].InnerText),
@@ -155,29 +155,35 @@ namespace ImportantClasses
         private static void Write(Logging log)
         {
             //TODO: Write the logs async to improve the performance
-            if (!Directory.Exists(SavingPath))
-                Directory.CreateDirectory(SavingPath);
-            if (!File.Exists(_logFile))
+            lock (_logFile)
             {
-                FileStream stream = new FileStream(_logFile, FileMode.Create);
-                byte[] content = enc.GetBytes(_logFileContent);
-                stream.Write(content, 0, content.Length);
-                stream.Close();
+                lock (_logContentFile)
+                {
+                    if (!Directory.Exists(SavingPath))
+                        Directory.CreateDirectory(SavingPath);
+                    if (!File.Exists(_logFile))
+                    {
+                        FileStream stream = new FileStream(_logFile, FileMode.Create);
+                        byte[] content = enc.GetBytes(_logFileContent);
+                        stream.Write(content, 0, content.Length);
+                        stream.Close();
+                    }
+                    if (!File.Exists(_logContentFile))
+                        File.Create(_logContentFile).Close();
+                    StreamWriter sw = File.AppendText(_logContentFile);
+                    XmlTextWriter xtw = new XmlTextWriter(sw);
+
+                    xtw.WriteStartElement("Logging");
+                    xtw.WriteElementString("Value", log.Value.ToString());
+                    xtw.WriteElementString("classification", log.classification.ToString());
+                    xtw.WriteElementString("Code", log.Code.ToString());
+                    xtw.WriteElementString("date", DateTime.Now.ToString(DateTimeFormatInfo.InvariantInfo));
+                    xtw.WriteEndElement();
+
+                    xtw.Close();
+                    sw.Close();
+                }
             }
-            if (!File.Exists(_logContentFile))
-                File.Create(_logContentFile).Close();
-            StreamWriter sw = File.AppendText(_logContentFile);
-            XmlTextWriter xtw = new XmlTextWriter(sw);
-
-            xtw.WriteStartElement("Logging");
-            xtw.WriteElementString("Value", log.Value.ToString());
-            xtw.WriteElementString("classification", log.classification.ToString());
-            xtw.WriteElementString("Code", log.Code.ToString());
-            xtw.WriteElementString("date", DateTime.Now.ToString(DateTimeFormatInfo.InvariantInfo));
-            xtw.WriteEndElement();
-
-            xtw.Close();
-            sw.Close();
         }
 
         /// <summary>

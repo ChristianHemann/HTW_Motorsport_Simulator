@@ -3,8 +3,6 @@ namespace Output
 {
     public class BrakeOutput
     {
-        private static BrakeOutput _lastCalculation;
-
         public static BrakeOutput LastCalculation
         {
             get
@@ -15,6 +13,7 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
+        private static volatile BrakeOutput _lastCalculation;
 
         public float BrakeMomentFront { get; set; }
         public float BrakeMomentRear { get; set; }

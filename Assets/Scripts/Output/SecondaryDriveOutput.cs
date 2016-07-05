@@ -24,7 +24,7 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
-        private static SecondaryDriveOutput _lastCalculation;
+        private static volatile SecondaryDriveOutput _lastCalculation;
 
         /// <summary>
         /// the output torque of the secondary drive

@@ -8,7 +8,6 @@ namespace Output
 {
    public class AeroOutput
     {
-        private static AeroOutput _lastCalculation;
         public static AeroOutput LastCalculation
         {
             get
@@ -19,6 +18,7 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
+        private static volatile AeroOutput _lastCalculation;
 
         public float Downforce { get; set; }
         public float Drag { get; set; }

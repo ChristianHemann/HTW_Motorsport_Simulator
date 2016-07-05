@@ -7,7 +7,6 @@ namespace Output
 {
   public  class SteeringOutput
     {
-        private static SteeringOutput _lastCalculation;
         public static SteeringOutput LastCalculation
         {
             get
@@ -18,6 +17,7 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
+        private static volatile SteeringOutput _lastCalculation;
 
         public float WheelAngleLeft { get; set; }
         public float WheelAngleRight { get; set; }

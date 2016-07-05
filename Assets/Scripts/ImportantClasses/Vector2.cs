@@ -188,6 +188,20 @@ namespace ImportantClasses
             return new Vector2(x, y);
         }
 
+        /// <summary>
+        /// Converts the Vecotr2 into a Vector3 with the Z-coordinate 0
+        /// </summary>
+        /// <returns>the new Vector3</returns>
+        public Vector3 ToVector3()
+        {
+            return new Vector3(X, Y, 0f);
+        }
+
+        public static explicit operator Vector2(Vector3 vector)
+        {
+            return new Vector2(vector.X, vector.Y);
+        }
+
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
         {
             return new Vector2(v1.X + v2.X, v1.Y + v2.Y);

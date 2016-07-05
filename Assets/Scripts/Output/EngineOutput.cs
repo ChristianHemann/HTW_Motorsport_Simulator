@@ -18,7 +18,7 @@ namespace Output
             }
             set { _lastCalculation = value; }
         }
-        private static EngineOutput _lastCalculation;
+        private static volatile EngineOutput _lastCalculation;
 
         /// <summary>
         /// the output torque of the engine

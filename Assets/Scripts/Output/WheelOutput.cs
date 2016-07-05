@@ -19,7 +19,7 @@ namespace Output
             }
         }
 
-        private static WheelOutput[] _lastCalculations;
+        private static volatile WheelOutput[] _lastCalculations;
 
         public Vector2 Direction { get; set; }
         public float LongitudinalForce { get; set; }
@@ -28,15 +28,15 @@ namespace Output
 
         public static WheelOutput GetWheelOutput(Wheels wheel)
         {
-            return _lastCalculations[(int) wheel];
+            return LastCalculations[(int) wheel];
         }
 
         public static void SetWheelOutput(Wheels wheel, WheelOutput output)
         {
             int index = (int) wheel;
-            _lastCalculations[index].LongitudinalForce = output.LongitudinalForce;
-            _lastCalculations[index].LateralAcceleration = output.LateralAcceleration;
-            _lastCalculations[index].Slip = output.Slip;
+            LastCalculations[index].LongitudinalForce = output.LongitudinalForce;
+            LastCalculations[index].LateralAcceleration = output.LateralAcceleration;
+            LastCalculations[index].Slip = output.Slip;
         }
     }
 }
