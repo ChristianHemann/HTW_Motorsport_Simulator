@@ -67,11 +67,14 @@ namespace UnitTests
         public void Testbrake()
         {
             Brake br = new Brake();
-            InputData.UsedInputData.BrakePedal = 12;
+            br.NormalBrakeMoment = 100;
+            br.BrakeBalance = new MathHelper.Ratio(0.5f, 0.5f);
+            InputData.UsedInputData = new InputData(0, 0, 0, 0);
+            InputData.UsedInputData.BrakePedal = 0.5f;
             br.Calculate();
             br.StoreResult();
-            Assert.AreEqual(BrakeOutput.LastCalculation.BrakeMomentFront, 1200);
-           Assert.AreEqual(BrakeOutput.LastCalculation.BrakeMomentRear, 1200);
+            Assert.AreEqual(50,BrakeOutput.LastCalculation.BrakeMomentFront);
+           Assert.AreEqual(50,BrakeOutput.LastCalculation.BrakeMomentRear);
 
 
 

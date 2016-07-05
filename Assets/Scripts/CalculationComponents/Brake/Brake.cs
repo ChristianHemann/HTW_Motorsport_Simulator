@@ -41,9 +41,9 @@ namespace CalculationComponents
         {
             _actualCalculation = new BrakeOutput();
             _actualCalculation.BrakeMomentFront = (float) (NormalBrakeMoment*InputData.UsedInputData.BrakePedal*
-                                                          BrakeBalance.FirstValue);
+                                                          BrakeBalance.FirstValue*2);
             _actualCalculation.BrakeMomentRear = (float) (NormalBrakeMoment*InputData.UsedInputData.BrakePedal*
-                                                         BrakeBalance.SecondValue);
+                                                         BrakeBalance.SecondValue*2);
             if (OnCalculationReady != null)
                 OnCalculationReady();
         }

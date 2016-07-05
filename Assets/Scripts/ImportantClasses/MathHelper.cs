@@ -63,7 +63,7 @@ namespace ImportantClasses
             /// <returns>the new normalized ratio</returns>
             public Ratio ReCalculate(double firstValue, double secondValue)
             {
-                double divisor = firstValue + secondValue*0.5;
+                double divisor = firstValue + secondValue;
                 if (!divisor.Equals(0))
                 {
                     _firstValue = firstValue/divisor;
