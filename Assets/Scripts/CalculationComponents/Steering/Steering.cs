@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ImportantClasses;
 using Output;
 using Simulator;
@@ -39,7 +36,7 @@ namespace CalculationComponents
                 Convert.ToSingle(RightWheelAngle.Interpolate(InputData.UsedInputData.Steering * MaxSteeringAngle));
 
             float wheelAngleMid = (_actualCalculation.WheelAngleLeft + _actualCalculation.WheelAngleRight)/2;
-            if (wheelAngleMid == 0)
+            if (wheelAngleMid.Equals(0f))
             {
                 _actualCalculation.RadiusFrontAxis = float.PositiveInfinity;
                 _actualCalculation.RadiusRearAxis = float.PositiveInfinity;

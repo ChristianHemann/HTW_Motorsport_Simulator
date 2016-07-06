@@ -1,5 +1,4 @@
-﻿using System;
-using ImportantClasses;
+﻿using ImportantClasses;
 using Output;
 using Simulator;
 

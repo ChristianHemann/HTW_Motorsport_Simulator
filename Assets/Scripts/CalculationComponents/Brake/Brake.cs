@@ -1,6 +1,4 @@
-﻿
-using System;
-using ImportantClasses;
+﻿using ImportantClasses;
 using Output;
 
 namespace CalculationComponents
@@ -66,7 +64,7 @@ namespace CalculationComponents
 
         public void CalculateBackwards()
         {
-            throw new NotImplementedException();
+            //here is nothing to calculate
         }
 
         /// <summary>

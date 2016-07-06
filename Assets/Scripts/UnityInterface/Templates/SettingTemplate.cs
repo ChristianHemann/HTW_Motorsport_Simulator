@@ -97,7 +97,7 @@ namespace UnityInterface.SettingTemplates
             }
 
             //if there is no function defined for that Type: show a Text
-            GUI.Label(position, "For the Type " + oldValue.GetType().Name + " is no Control Defined");
+            GUI.Label(position, "For the type " + oldValue.GetType().Name + " is no control defined");
             return null;
         }
 

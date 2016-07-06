@@ -27,20 +27,18 @@ namespace Output
         }
         private static volatile OverallCarOutput _lastCalculation;
 
-        /// <summary>
-        /// the acceleration with its direction of the car in m/s^2
-        /// </summary>
-        public Vector3 Acceleration { get; set; }
+        public OverallCarOutput()
+        {
+            Speed = new Vector3();
+            Position = new Vector3();
+        }
+        
         /// <summary>
         /// the speed of the car in m/s
         /// </summary>
-        public float Speed { get; set; }
+        public Vector3 Speed { get; set; }
         /// <summary>
         /// the movement direction of the car
-        /// </summary>
-        public Vector3 Direction { get; set; }
-        /// <summary>
-        /// the calculated position of the car
         /// </summary>
         public Vector3 Position { get; set; }
     }

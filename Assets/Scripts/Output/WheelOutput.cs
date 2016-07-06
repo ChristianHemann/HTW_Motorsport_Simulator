@@ -26,6 +26,14 @@ namespace Output
         public float LateralAcceleration { get; set; }
         public int Slip { get; set; }
 
+        public WheelOutput()
+        {
+            Direction = new Vector2(0, 0);
+            LongitudinalForce = 0;
+            LateralAcceleration = 0;
+            Slip = 0;
+        }
+
         public static WheelOutput GetWheelOutput(Wheels wheel)
         {
             return LastCalculations[(int) wheel];

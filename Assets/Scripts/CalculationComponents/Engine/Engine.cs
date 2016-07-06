@@ -1,5 +1,4 @@
-﻿using System;
-using ImportantClasses;
+﻿using ImportantClasses;
 using Output;
 using Simulator;
 
@@ -22,6 +21,12 @@ namespace CalculationComponents
         [Setting("Maximum revolustion speed (rpm)")]
         public int MaxRpm { get; set; }
 
+        /// <summary>
+        /// the revolution speed of the engine when no gas is pressed
+        /// </summary>
+        [Setting("Engine idle (rpm)")]
+        public int EngineIdleRpm { get; set; }
+
         private EngineOutput _actualCalculation; //the result of the actual done calculation
 
         /// <summary>
@@ -29,10 +34,12 @@ namespace CalculationComponents
         /// </summary>
         public Engine()
         {
-            CharacteristicLine = new Spline(new[] {0.0, 10000.0}, new[] {0.0, 100.0});
+            CharacteristicLine = new Spline(new[] { 0.0, 10000.0 }, new[] { 0.0, 100.0 });
             CharacteristicLine.NameX = "rounds per minute";
             CharacteristicLine.NameY = "torque (Nm)";
             _actualCalculation = new EngineOutput();
+            MaxRpm = 10000;
+            EngineIdleRpm = 1000;
         }
 
         /// <summary>
@@ -40,8 +47,8 @@ namespace CalculationComponents
         /// </summary>
         public void Calculate()
         {
-            _actualCalculation.Torque = (float) CharacteristicLine.Interpolate(EngineOutput.LastCalculation.Rpm) * InputData.UsedInputData.AccelerationPedal;
-            if(OnCalculationReady != null)
+            _actualCalculation.Torque = (float)CharacteristicLine.Interpolate(EngineOutput.LastCalculation.Rpm) * InputData.UsedInputData.AccelerationPedal;
+            if (OnCalculationReady != null)
                 OnCalculationReady();
         }
 
@@ -67,9 +74,14 @@ namespace CalculationComponents
         /// </summary>
         public void CalculateBackwards()
         {
-            _actualCalculation.Rpm = GearBoxOutput.LastCalculation.Rpm/
-                                     CalculationController.Instance.GearBox.Transmissions[
-                                         CalculationController.Instance.GearBox.Gear - 1];
+            if (CalculationController.Instance.GearBox.Gear.Equals(0))
+                _actualCalculation.Rpm = EngineIdleRpm +
+                                         InputData.UsedInputData.AccelerationPedal*(MaxRpm - EngineIdleRpm);
+            else
+                _actualCalculation.Rpm = GearBoxOutput.LastCalculation.Rpm /
+                                         CalculationController.Instance.GearBox.Transmissions[
+                                             CalculationController.Instance.GearBox.Gear - 1];
+
         }
 
         /// <summary>

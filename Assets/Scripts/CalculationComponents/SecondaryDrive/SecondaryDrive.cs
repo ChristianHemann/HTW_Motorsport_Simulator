@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ImportantClasses;
 using Output;
 using Simulator;
-using UnityEngine;
 
 namespace CalculationComponents
 {
@@ -70,7 +66,7 @@ namespace CalculationComponents
         /// </summary>
         public void CalculateBackwards()
         {
-            _actualCalculation.Rpm = OverallCarOutput.LastCalculation.Speed * 60 /
+            _actualCalculation.Rpm = OverallCarOutput.LastCalculation.Speed.Magnitude * 60 /
                                      (CalculationController.Instance.Wheels.Diameter * (float)Math.PI);
             if (OnCalculationReady != null)
                 OnCalculationReady();

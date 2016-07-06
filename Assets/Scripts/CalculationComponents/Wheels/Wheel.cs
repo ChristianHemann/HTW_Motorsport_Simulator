@@ -30,8 +30,8 @@ namespace CalculationComponents.WheelComponents
                     ? SteeringOutput.LastCalculation.RadiusFrontAxis
                     : SteeringOutput.LastCalculation.RadiusRearAxis) +
                                 (((int)_wheel) % 2 == 0 ? halfTrackWidth : -halfTrackWidth);
-                _actualCalculation.LateralAcceleration = OverallCarOutput.LastCalculation.Speed *
-                                                         OverallCarOutput.LastCalculation.Speed / _drivingRadius;
+                _actualCalculation.LateralAcceleration = OverallCarOutput.LastCalculation.Speed.Magnitude *
+                                                         OverallCarOutput.LastCalculation.Speed.Magnitude / _drivingRadius;
             }
             else if (angle > 0) //left
             {
@@ -39,8 +39,8 @@ namespace CalculationComponents.WheelComponents
                     ? SteeringOutput.LastCalculation.RadiusFrontAxis
                     : SteeringOutput.LastCalculation.RadiusRearAxis) +
                                 (((int)_wheel) % 2 == 0 ? -halfTrackWidth : halfTrackWidth);
-                _actualCalculation.LateralAcceleration = -OverallCarOutput.LastCalculation.Speed *
-                                                         OverallCarOutput.LastCalculation.Speed / _drivingRadius;
+                _actualCalculation.LateralAcceleration = -OverallCarOutput.LastCalculation.Speed.Magnitude *
+                                                         OverallCarOutput.LastCalculation.Speed.Magnitude / _drivingRadius;
             }
             else //straight
             {

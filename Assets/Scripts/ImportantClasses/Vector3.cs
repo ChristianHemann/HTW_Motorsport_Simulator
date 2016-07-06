@@ -142,6 +142,16 @@ namespace ImportantClasses
             return new Vector3(v.X * factor, v.Y * factor, v.Z * factor);
         }
 
+        public static Vector3 operator *(double factor, Vector3 v)
+        {
+            return v * (float)factor;
+        }
+
+        public static Vector3 operator *(Vector3 v, double factor)
+        {
+            return v * (float)factor;
+        }
+
         public static Vector3 operator /(Vector3 v, float divisor)
         {
             return new Vector3(v.X / divisor, v.Y / divisor, v.Z / divisor);

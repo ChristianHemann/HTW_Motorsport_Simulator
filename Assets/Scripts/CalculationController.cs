@@ -238,12 +238,12 @@ namespace Simulator
             //iterate as long as the result is not exact enough
             Track.Instance.Calculate();
             Track.Instance.StoreResult();
+            Suspension.Calculate();
+            Suspension.StoreResult();
             Wheels.Calculate();
             Wheels.StoreResult();
             OverallCar.Calculate();
             OverallCar.StoreResult();
-            Suspension.Calculate();
-            Suspension.StoreResult();
         }
     }
 }
