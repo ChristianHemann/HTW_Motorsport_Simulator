@@ -9,7 +9,7 @@ namespace ImportantClasses
     public class Vector3
     {
         /// <summary>
-        /// the x-coordinate of the vector
+        /// the x-coordinate of the vector (horizontal; left/right)
         /// </summary>
         public float X
         {
@@ -18,7 +18,7 @@ namespace ImportantClasses
         }
 
         /// <summary>
-        /// the y-coordinate of the vector
+        /// the y-coordinate of the vector (horizontal; forwards/backwards)
         /// </summary>
         public float Y
         {
@@ -27,7 +27,7 @@ namespace ImportantClasses
         }
 
         /// <summary>
-        /// the x-coordinate of the vector
+        /// the x-coordinate of the vector (vertical; up/down)
         /// </summary>
         public float Z
         {

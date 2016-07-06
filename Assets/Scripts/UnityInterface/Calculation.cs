@@ -10,21 +10,20 @@ namespace UnityInterface
         // Initialization
         private void Start()
         {
-            CalculationController.Initialize();
+            CalculationController.Initialize(Time.fixedDeltaTime);
             InputData.ActualInputData = new InputData(0, 0, 0, 0);
         }
 
         //called periodically
         private void FixedUpdate()
         {
-            CalculationController.Instance.Duration += Time.fixedDeltaTime;
             // Get Input Data
             lock (InputData.ActualInputData)
             {
                 InputData.ActualInputData = new InputData(Input.GetAxis("AccelerationPedal"),
                     Input.GetAxis("BrakePedal"), Input.GetAxis("Steering"), InputData.ActualInputData.Gear);
             }
-            if(!RaceMenu.ShowMenu)
+            if (!RaceMenu.ShowMenu)
                 CalculationController.Calculate();
         }
 

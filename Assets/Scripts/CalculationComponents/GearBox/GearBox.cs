@@ -45,12 +45,6 @@ namespace CalculationComponents
         [Setting("Transmission for each gear (rpmIn/rpmOut)")]
         public float[] Transmissions { get; set; }
 
-        /// <summary>
-        /// sets the gear in which the car is
-        /// </summary>
-        [XmlIgnore]
-        public sbyte Gear { get; set; }
-
         private byte _gears;
 
         private GearBoxOutput _actualCalculation; //the result of the actual done calculation
@@ -64,6 +58,10 @@ namespace CalculationComponents
             Efficency = 0.9f;
             _actualCalculation = new GearBoxOutput();
             Transmissions = new float[Gears];
+            for (int i = 0; i < Transmissions.Length; i++)
+            {
+                Transmissions[i] = Transmissions.Length + 1 - i;
+            }
         }
 
         /// <summary>
@@ -71,10 +69,10 @@ namespace CalculationComponents
         /// </summary>
         public void Calculate()
         {
-            if (Gear == 0)
+            if (InputData.UsedInputData.Gear == 0)
                 _actualCalculation.Torque = 0;
             else
-                _actualCalculation.Torque = EngineOutput.LastCalculation.Torque*Efficency*Transmissions[Gear-1];
+                _actualCalculation.Torque = EngineOutput.LastCalculation.Torque*Efficency*Transmissions[InputData.UsedInputData.Gear-1];
 
             if (OnCalculationReady != null)
                 OnCalculationReady();

@@ -152,7 +152,6 @@ public class FileSelector : MonoBehaviour
 	private string path = "";
 	private string file = "";
 	
-	private int selection;
 	private Vector2 scrollPosition;
 	
 	#endregion

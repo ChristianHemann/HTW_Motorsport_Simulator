@@ -15,7 +15,7 @@ namespace UnityInterface
         /// <returns>The UnityEngine.Vector3</returns>
         public static Vector3 ToUnityVector3(this ImportantClasses.Vector3 vector)
         {
-            return new Vector3(vector.X, vector.Y, vector.Z);
+            return new Vector3(vector.X, vector.Z, vector.Y);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace UnityInterface
         /// <returns>The ImportantClasses.Vector3</returns>
         public static ImportantClasses.Vector3 ToImportantClassesVector3(this Vector3 vector)
         {
-            return new ImportantClasses.Vector3(vector.x, vector.y, vector.z);
+            return new ImportantClasses.Vector3(vector.x, vector.z, vector.y);
         }
     }
 }

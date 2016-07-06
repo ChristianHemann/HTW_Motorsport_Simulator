@@ -74,14 +74,17 @@ namespace CalculationComponents
         /// </summary>
         public void CalculateBackwards()
         {
-            if (CalculationController.Instance.GearBox.Gear.Equals(0))
+            if (InputData.UsedInputData.Gear.Equals(0))
                 _actualCalculation.Rpm = EngineIdleRpm +
                                          InputData.UsedInputData.AccelerationPedal*(MaxRpm - EngineIdleRpm);
             else
                 _actualCalculation.Rpm = GearBoxOutput.LastCalculation.Rpm /
                                          CalculationController.Instance.GearBox.Transmissions[
-                                             CalculationController.Instance.GearBox.Gear - 1];
-
+                                             InputData.UsedInputData.Gear - 1];
+            if (_actualCalculation.Rpm < EngineIdleRpm)
+                _actualCalculation.Rpm = EngineIdleRpm;
+            if (OnCalculationReady != null)
+                OnCalculationReady();
         }
 
         /// <summary>

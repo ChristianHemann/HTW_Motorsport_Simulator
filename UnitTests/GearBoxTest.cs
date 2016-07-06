@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CalculationComponents;
+using ImportantClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Output;
 using Simulator;
@@ -21,7 +22,6 @@ namespace UnitTests
             _gearBox = new GearBox();
             _gearBox.Efficency = 0.9f;
             _gearBox.Gears = 3;
-            _gearBox.Gear = 0;
             _gearBox.Transmissions[0] = 10;
             _gearBox.Transmissions[1] = 5;
             _gearBox.Transmissions[2] = 1;
@@ -30,6 +30,7 @@ namespace UnitTests
             _expectedValues = new[] {0, 900f, 450f, 90f};
             SecondaryDriveOutput.LastCalculation.Rpm = 1000;
             CalculationController.Instance.SecondaryDrive.Transmission = 10;
+            InputData.UsedInputData = new InputData(0, 0, 0, 0);
         }
 
         [TestMethod]
@@ -37,7 +38,7 @@ namespace UnitTests
         {
             for (int i = 0; i < _expectedValues.Length; i++)
             {
-                _gearBox.Gear = (sbyte)i;
+                InputData.UsedInputData.Gear = (byte)i;
                 _gearBox.Calculate();
                 _gearBox.StoreResult();
                 Assert.AreEqual(GearBoxOutput.LastCalculation.Torque, _expectedValues[i], 1e-6);

@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Xml.Serialization;
 using ImportantClasses;
 using CalculationComponents;
+using Output;
 using ThreadState = System.Threading.ThreadState;
 
 namespace Simulator
 {
     public class CalculationController
     {
-        public float Duration { get; set; } //time in seconds that the actual calculation is taking
-        private float _lastDuration; //time in seconds that the last calculation took
+        public float Duration { get { return _duration;} }
+        private float _calculationInterval; //time in seconds between 2 calls of Calculation
+        private float _duration; //time in seconds that the actual calculation is taking
         private readonly Thread _workerThread; //The Thread which is calculating the behavior of the car
         private volatile bool _runThread = false; //determines wheather the workerThread shall continue running
         private volatile bool _interruptThread = true; //determines wheather the workerThread shall be interrupted
@@ -89,8 +90,13 @@ namespace Simulator
             _workerThread = new Thread(WorkerFunction);
         }
 
-        public static void Initialize()
+        /// <summary>
+        /// Initialize the Instance of the CalculationControler
+        /// </summary>
+        /// <param name="calculationInterval">the Interval between two calls of the Calculate-function</param>
+        public static void Initialize(float calculationInterval)
         {
+            Instance._calculationInterval = calculationInterval;
             if (Instance._workerThread.ThreadState == ThreadState.WaitSleepJoin) //if the Thread is interrupted
             {
                 Instance._interruptThread = false;
@@ -108,14 +114,21 @@ namespace Simulator
         {
             if (!Instance._isCalculating)
             {
-                Instance._lastDuration = Instance.Duration;
-                Instance.Duration = 0;
+                Instance._duration = Instance._calculationInterval;
                 lock (InputData.ActualInputData)
                 {
                     InputData.UsedInputData = InputData.ActualInputData;
-                        //Use the actual InputData in the next calculation step
+                    //Use the actual InputData in the next calculation step
                 }
+                //Logging.Log(InputData.UsedInputData.AccelerationPedal, Logging.Classification.Message);
+                //Logging.Log(InputData.UsedInputData.BrakePedal, Logging.Classification.Message);
+                //Logging.Log(InputData.UsedInputData.Steering, Logging.Classification.Message);
+                Logging.Log(OverallCarOutput.LastCalculation.Position.ToString(), Logging.Classification.Message);
                 Instance._calculationEwh.Set();
+            }
+            else
+            {
+                Instance._duration += Instance._calculationInterval;
             }
         }
 
@@ -142,7 +155,7 @@ namespace Simulator
         private void WorkerFunction()
         {
             int i = 0;
-            int time = 0;
+            int time;
             Stopwatch performanceWatch = new Stopwatch();
             Exception exception = null;
             while (_runThread)

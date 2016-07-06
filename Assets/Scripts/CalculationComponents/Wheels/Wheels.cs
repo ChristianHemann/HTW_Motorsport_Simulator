@@ -23,6 +23,10 @@ namespace CalculationComponents
             {
                 _wheels[i] = new Wheel((Enums.Wheels)i);
             }
+            Weight = 1;
+            Diameter = 0.5f;
+            InertiaTorque = 1;
+            FrictionCoefficient = 0.9f;
         }
 
         public void Calculate()

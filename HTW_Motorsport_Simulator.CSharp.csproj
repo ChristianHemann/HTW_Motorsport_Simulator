@@ -129,6 +129,7 @@
     <Compile Include="Assets\Scripts\UnityInterface\Calculation.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Cone.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Menu.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\MoveCar.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\RaceMenu.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Templates\DialogBox.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Templates\FileSelector\FileSelector.cs" />

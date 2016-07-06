@@ -45,6 +45,7 @@ namespace Output
             LastCalculations[index].LongitudinalForce = output.LongitudinalForce;
             LastCalculations[index].LateralAcceleration = output.LateralAcceleration;
             LastCalculations[index].Slip = output.Slip;
+            LastCalculations[index].Direction = output.Direction;
         }
     }
 }

@@ -33,9 +33,9 @@ namespace CalculationComponents
             for (int i = 0; i < 4; i++)
             {
                 WheelOutput wheelOutput = WheelOutput.GetWheelOutput((Enums.Wheels)i);
-                if(float.IsNaN(wheelOutput.LongitudinalForce))
+                if(!float.IsNaN(wheelOutput.LongitudinalForce))
                     totalLongitudinalForce += wheelOutput.LongitudinalForce * wheelOutput.Direction;
-                if(float.IsNaN(wheelOutput.LateralAcceleration))
+                if(!float.IsNaN(wheelOutput.LateralAcceleration))
                     totalLateralAcceleration += wheelOutput.LateralAcceleration * wheelOutput.Direction;
             }
             Vector3 totalAcceleration = totalLongitudinalForce/Weight + totalLateralAcceleration -
