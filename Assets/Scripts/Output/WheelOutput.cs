@@ -3,8 +3,14 @@ using ImportantClasses;
 
 namespace Output
 {
+    /// <summary>
+    /// Stores calculation results of the wheels
+    /// </summary>
     public class WheelOutput
     {
+        /// <summary>
+        /// the calculation results of the last calculation step
+        /// </summary>
         public static WheelOutput[] LastCalculations
         {
             get
@@ -18,15 +24,32 @@ namespace Output
                 return _lastCalculations;
             }
         }
-
         private static volatile WheelOutput[] _lastCalculations;
 
+        /// <summary>
+        /// The direction in which the wheel wants to drive in absolute coordinates
+        /// </summary>
         public Vector2 Direction { get; set; }
+        /// <summary>
+        /// the longitudinal force which accelerates the wheel
+        /// </summary>
         public float LongitudinalAccelerationForce { get; set; }
+        /// <summary>
+        /// the longitudinal force which decelerates the wheel
+        /// </summary>
         public float LongitudinalDecelerationForce { get; set; }
+        /// <summary>
+        /// the lateral force which the wheel perform on the car
+        /// </summary>
         public float LateralAcceleration { get; set; }
+        /// <summary>
+        /// the slip factor of the wheel
+        /// </summary>
         public int Slip { get; set; }
 
+        /// <summary>
+        /// Stores calculation results of the wheels
+        /// </summary>
         public WheelOutput()
         {
             Direction = new Vector2(0, 0);
@@ -36,11 +59,21 @@ namespace Output
             Slip = 0;
         }
 
+        /// <summary>
+        /// gets the last calculation results of the specified wheel
+        /// </summary>
+        /// <param name="wheel">the destinated wheel</param>
+        /// <returns>the last calculation result</returns>
         public static WheelOutput GetWheelOutput(Wheels wheel)
         {
             return LastCalculations[(int) wheel];
         }
 
+        /// <summary>
+        /// sets the last calculation results of the specified wheel
+        /// </summary>
+        /// <param name="wheel">the destinated wheel</param>
+        /// <param name="output">the calculation result to set</param>
         public static void SetWheelOutput(Wheels wheel, WheelOutput output)
         {
             int index = (int) wheel;

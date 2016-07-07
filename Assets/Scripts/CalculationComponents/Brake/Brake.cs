@@ -68,6 +68,8 @@ namespace CalculationComponents
         public void CalculateBackwards()
         {
             //here is nothing to calculate
+            if (OnCalculationReady != null)
+                OnCalculationReady();
         }
 
         /// <summary>

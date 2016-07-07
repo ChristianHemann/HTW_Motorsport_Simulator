@@ -101,6 +101,9 @@ namespace CalculationComponents
             //calculates the new position of the car
             _actualCalculation.Position = OverallCarOutput.LastCalculation.Position +
                                           _actualCalculation.Speed * CalculationController.Instance.Duration * _actualCalculation.Direction;
+
+            if (OnCalculationReady != null)
+                OnCalculationReady();
         }
 
         /// <summary>
@@ -127,6 +130,8 @@ namespace CalculationComponents
         public void CalculateBackwards()
         {
             //actually here is nothing to do
+            if (OnCalculationReady != null)
+                OnCalculationReady();
         }
 
         /// <summary>

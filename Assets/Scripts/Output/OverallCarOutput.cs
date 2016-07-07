@@ -27,6 +27,9 @@ namespace Output
         }
         private static volatile OverallCarOutput _lastCalculation;
 
+        /// <summary>
+        /// saves the calculation results of the overall car
+        /// </summary>
         public OverallCarOutput()
         {
             Speed = 0;

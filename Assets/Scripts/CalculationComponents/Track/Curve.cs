@@ -60,6 +60,9 @@ namespace CalculationComponents.TrackComponents
             }
         }
 
+        /// <summary>
+        /// the previous segment of the track
+        /// </summary>
         public override TrackSegment PreviousTrackSegment
         {
             get { return _previousTrackSegment; }

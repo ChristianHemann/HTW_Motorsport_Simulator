@@ -4,13 +4,18 @@ using System.Threading;
 using System.Xml.Serialization;
 using ImportantClasses;
 using CalculationComponents;
-using Output;
 using ThreadState = System.Threading.ThreadState;
 
 namespace Simulator
 {
+    /// <summary>
+    /// controls the calculation process
+    /// </summary>
     public class CalculationController
     {
+        /// <summary>
+        /// The duration of the actual calculation; updated when calculate is called
+        /// </summary>
         public float Duration { get { return _duration;} }
         private float _calculationInterval; //time in seconds between 2 calls of Calculation
         private float _duration; //time in seconds that the actual calculation is taking
@@ -23,9 +28,9 @@ namespace Simulator
         private volatile EventWaitHandle _threadEndedEwh; //says when the workerThread has ended
         private volatile EventWaitHandle _continueThreadEwh; //says when to continue the interrupted workerThread
         
-        [XmlIgnore]
-        public InputData InputDataBuffer { get; set; } 
-
+        /// <summary>
+        /// the used Instance of the calculation controller. Please do not set. The setter is just intended for saving
+        /// </summary>
         [ContainSettings("Car")]
         public static CalculationController Instance
         {
@@ -37,39 +42,71 @@ namespace Simulator
             }
             set { _instance = value; } //The setter is just to load a value via reflection
         }
-        
         private static CalculationController _instance;
 
+        /// <summary>
+        /// shall performance values be logged?
+        /// </summary>
         [Setting("Log performance")]
         public bool LogPerformance = false;
 
+        /// <summary>
+        /// calculates the areodynamic of the car
+        /// </summary>
         [SettingMenuItem("Aerodynamic")]
         public Aerodynamic Aerodynamic;
 
+        /// <summary>
+        /// calculates the brake system of the car
+        /// </summary>
         [SettingMenuItem("Brake")]
         public Brake Brake;
 
+        /// <summary>
+        /// calculates the engine of the car
+        /// </summary>
         [SettingMenuItem("Engine")]
         public Engine Engine;
 
+        /// <summary>
+        /// calculates the gearbox of the car
+        /// </summary>
         [SettingMenuItem("Gearbox")]
         public GearBox GearBox;
 
+        /// <summary>
+        /// calculstes the chassis and the general properties of the car
+        /// </summary>
         [SettingMenuItem("Overall car and chassis")]
         public OverallCar OverallCar;
 
+        /// <summary>
+        /// calculates the secondary drive of the car
+        /// </summary>
         [SettingMenuItem("Secondary Drive")]
         public SecondaryDrive SecondaryDrive;
 
+        /// <summary>
+        /// calculates the steering of the car
+        /// </summary>
         [SettingMenuItem("Steering")]
         public Steering Steering;
 
+        /// <summary>
+        /// calculates the suspension of the car
+        /// </summary>
         [SettingMenuItem("Suspension")]
         public Suspension Suspension;
 
+        /// <summary>
+        /// calculates the wheels of the car
+        /// </summary>
         [SettingMenuItem("Wheels")]
         public Wheels Wheels;
 
+        /// <summary>
+        /// controls the calculation process
+        /// </summary>
         private CalculationController()
         {
             _calculationEwh = new EventWaitHandle(false, EventResetMode.AutoReset);
@@ -110,6 +147,9 @@ namespace Simulator
             }
         }
 
+        /// <summary>
+        /// starts a calculation process if it is not running
+        /// </summary>
         public static void Calculate()
         {
             if (!Instance._isCalculating)
@@ -128,6 +168,9 @@ namespace Simulator
             }
         }
 
+        /// <summary>
+        /// interrupt the calculations after the actual calculation. Continue with Initialize()
+        /// </summary>
         public static void Interrupt()
         {
             if (Instance._interruptThread) //if the thread is already interrupted
@@ -137,6 +180,9 @@ namespace Simulator
             Instance._threadInterrupedEwh.WaitOne();
         }
 
+        /// <summary>
+        /// terminates the calculation controller. Must be called when quitting the application.
+        /// </summary>
         public static void Terminate()
         {
             if (!Instance._interruptThread)
@@ -148,6 +194,9 @@ namespace Simulator
             Instance._threadEndedEwh.WaitOne();
         }
 
+        /// <summary>
+        /// this function handle all the calculations in a new Thread
+        /// </summary>
         private void WorkerFunction()
         {
             int i = 0;
@@ -187,7 +236,8 @@ namespace Simulator
                     }
                     catch (Exception ex)
                     {
-                        Logging.Log(ex.Message, Logging.Classification.CalculationResult,Message.MessageCode.FatalError);
+                        //if an exception has occured: log the exception and quit the calculation process
+                        Logging.Log(ex.Message+ "\nStackTrace: "+ex.StackTrace, Logging.Classification.CalculationResult,Message.MessageCode.FatalError);
                         _interruptThread = true;
                         _runThread = false;
                         _calculationEwh.Set();
@@ -199,10 +249,13 @@ namespace Simulator
                 _threadInterrupedEwh.Set();
             }
             _threadEndedEwh.Set();
-            if (exception != null)
+            if (exception != null) //rethrow the exception to make debugging easier
                 throw exception;
         }
 
+        /// <summary>
+        /// this function is used to call all the calculate functions which runs once
+        /// </summary>
         private void DoWork()
         {
             Aerodynamic.Calculate();
@@ -220,6 +273,7 @@ namespace Simulator
 
             DoIterativeWork();
 
+            //call the CalculateBackwards functions
             Aerodynamic.CalculateBackwards();
             Aerodynamic.StoreResult();
             Brake.CalculateBackwards();
@@ -242,6 +296,9 @@ namespace Simulator
             Suspension.StoreResult();
         }
 
+        /// <summary>
+        /// this function is used to call the calculation functions which are calles more than one time
+        /// </summary>
         private void DoIterativeWork()
         {
             //iterate as long as the result is not exact enough

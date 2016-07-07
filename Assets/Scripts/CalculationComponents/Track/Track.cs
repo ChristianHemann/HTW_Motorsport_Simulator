@@ -98,7 +98,7 @@ namespace CalculationComponents
             foreach (TrackSegment trackSegment in TrackSegments)
             {
                 Type segmentType = trackSegment.GetType();
-                if (segmentType == typeof(Straight))
+                if (segmentType == typeof(Straight)) //gets the cone positions for a straight
                 {
                     Vector2 widthVector = trackSegment.EndDirection.Normal().Normalize() *
                                                 trackSegment.TrackWidthEnd / 2;
@@ -114,7 +114,7 @@ namespace CalculationComponents
                     }
                     distanceWithoutCones = straight.Length - distance + ConeDistance;
                 }
-                else if (segmentType == typeof(Curve))
+                else if (segmentType == typeof(Curve)) //get the cone positions of a curve
                 {
                     Curve curve = (Curve)trackSegment;
                     float distance = -distanceWithoutCones + ConeDistance;
@@ -127,7 +127,7 @@ namespace CalculationComponents
                     }
                     distanceWithoutCones = lenght - distance + ConeDistance;
                 }
-                else if (segmentType == typeof(StartLine))
+                else if (segmentType == typeof(StartLine)) //get the cone positions of a start line
                 {
                     Vector2 widthVector = trackSegment.EndDirection.Normal().Normalize() * trackSegment.TrackWidthEnd / 2;
                     positionList.Add(trackSegment.EndPoint + widthVector);
@@ -138,6 +138,9 @@ namespace CalculationComponents
             return positionList.ToArray();
         }
 
+        /// <summary>
+        /// calculates the change of the height of the track
+        /// </summary>
         public void Calculate()
         {
             //since there are no bumps on the track jet here is nothing to calculate
@@ -145,14 +148,30 @@ namespace CalculationComponents
                 OnCalculationReady();
         }
 
+        /// <summary>
+        /// stops the calculation if running
+        /// </summary>
         public void StopCalculation()
         {
             //since there are no bumps on the track jet here is nothing to calculate
         }
 
+        /// <summary>
+        /// stores the calculation results of the track to the TrackOutput class
+        /// </summary>
         public void StoreResult()
         {
-            //since there are no bumps on the track jet here is nothing to calculate
+            //since there are no bumps on the track, here is nothing to calculate
+        }
+
+        /// <summary>
+        /// this function is not neede for the Track
+        /// </summary>
+        public void CalculateBackwards()
+        {
+            //here is nothing to do
+            if (OnCalculationReady != null)
+                OnCalculationReady();
         }
 
         /// <summary>
@@ -173,11 +192,9 @@ namespace CalculationComponents
             }
         }
 
-        public void CalculateBackwards()
-        {
-            //here is nothing to do
-        }
-
+        /// <summary>
+        /// will be triggered when the calculation is done
+        /// </summary>
         public event CalculationReadyDelegate OnCalculationReady;
     }
 }

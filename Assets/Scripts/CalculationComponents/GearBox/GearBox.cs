@@ -100,6 +100,9 @@ namespace CalculationComponents
         {
             _actualCalculation.Rpm = SecondaryDriveOutput.LastCalculation.Rpm*
                                      CalculationController.Instance.SecondaryDrive.Transmission;
+
+            if (OnCalculationReady != null)
+                OnCalculationReady();
         }
 
         /// <summary>
