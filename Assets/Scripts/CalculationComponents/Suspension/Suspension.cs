@@ -13,8 +13,8 @@ namespace CalculationComponents
 
         public Suspension()
         {
-            FrontAxis = new SuspensionComponents.Axis(Enums.Axis.Front);
-            RearAxis = new SuspensionComponents.Axis(Enums.Axis.Rear);
+            FrontAxis = new SuspensionComponents.Axis(ImportantClasses.Enums.Axis.Front);
+            RearAxis = new SuspensionComponents.Axis(ImportantClasses.Enums.Axis.Rear);
             FrontAxis.RightWheel.OnCalculationReady += WheelCalculationReady;
             FrontAxis.LeftWheel.OnCalculationReady += WheelCalculationReady;
             RearAxis.RightWheel.OnCalculationReady += WheelCalculationReady;

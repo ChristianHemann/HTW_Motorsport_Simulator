@@ -181,11 +181,31 @@ namespace ImportantClasses
         /// </summary>
         /// <param name="angle">the angle to turn in radiant</param>
         /// <returns>the turned vector</returns>
-        public Vector2 Turn(double angle)
+        public Vector2 Rotate(double angle)
         {
-            float x = (float)(X * Math.Cos(angle) + Y * Math.Sin(angle));
-            float y = (float)(Y * Math.Cos(angle) + X * Math.Sin(angle));
+            float x = (float)(X * Math.Cos(angle) - Y * Math.Sin(angle));
+            float y = (float)(X * Math.Sin(angle) + Y * Math.Cos(angle));
             return new Vector2(x, y);
+        }
+
+        /// <summary>
+        /// projects another vector on this vector. The other vector is the vector to project on
+        /// </summary>
+        /// <param name="other">the vector to project on</param>
+        /// <returns>the projection of this vector onto the other vector</returns>
+        public Vector2 Projection(Vector2 other)
+        {
+            return this.ScalarProduct(other)/(other.Magnitude*other.Magnitude)*other;
+        }
+
+        /// <summary>
+        /// calculates the scalar product of two vectors
+        /// </summary>
+        /// <param name="other">the second vector</param>
+        /// <returns>the result of the scalar product</returns>
+        public float ScalarProduct(Vector2 other)
+        {
+            return X*other.X + Y*other.Y;
         }
 
         /// <summary>

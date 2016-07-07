@@ -60,7 +60,20 @@ namespace UnitTests
         [TestMethod]
         public void TestVectorTurn()
         {
-            Assert.IsTrue(v2.Equals(v1.Turn(Math.PI / 2),1e-5f));
+            Assert.IsTrue(v2.Equals(v1.Rotate(Math.PI / 2),1e-5f));
+        }
+
+        [TestMethod]
+        public void TestVectorProjection()
+        {
+            Vector2 projected = v1.Projection(v3);
+            Assert.IsTrue((v3/2).Equals(projected,1e-2f));
+        }
+
+        [TestMethod]
+        public void TestVectorScalarProduct()
+        {
+            Assert.AreEqual(2, v3.ScalarProduct(v3), 1e-5);
         }
     }
 }

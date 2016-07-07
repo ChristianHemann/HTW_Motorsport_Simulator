@@ -120,10 +120,6 @@ namespace Simulator
                     InputData.UsedInputData = InputData.ActualInputData;
                     //Use the actual InputData in the next calculation step
                 }
-                //Logging.Log(InputData.UsedInputData.AccelerationPedal, Logging.Classification.Message);
-                //Logging.Log(InputData.UsedInputData.BrakePedal, Logging.Classification.Message);
-                //Logging.Log(InputData.UsedInputData.Steering, Logging.Classification.Message);
-                Logging.Log(OverallCarOutput.LastCalculation.Position.ToString(), Logging.Classification.Message);
                 Instance._calculationEwh.Set();
             }
             else
@@ -249,6 +245,7 @@ namespace Simulator
         private void DoIterativeWork()
         {
             //iterate as long as the result is not exact enough
+            //ToDo: Add loop for iterations
             Track.Instance.Calculate();
             Track.Instance.StoreResult();
             Suspension.Calculate();

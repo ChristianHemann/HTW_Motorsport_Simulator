@@ -11,14 +11,11 @@ namespace CalculationComponents.SuspensionComponents
         [SettingMenuItem("Right wheel")]
         public WheelSuspension RightWheel { get; set; }
 
-        private Enums.Axis _axis;
-
-        public Axis(Enums.Axis axis)
+        public Axis(ImportantClasses.Enums.Axis axis)
         {
             Stabilisator = new Stabilisator();
-            LeftWheel = new WheelSuspension((Enums.Wheels)(2 * (int)axis));
-            RightWheel = new WheelSuspension((Enums.Wheels)(2 * (int)axis + 1));
-            _axis = axis;
+            LeftWheel = new WheelSuspension((ImportantClasses.Enums.Wheels)(2 * (int)axis));
+            RightWheel = new WheelSuspension((ImportantClasses.Enums.Wheels)(2 * (int)axis + 1));
         }
 
         public event CalculationReadyDelegate OnCalculationReady;

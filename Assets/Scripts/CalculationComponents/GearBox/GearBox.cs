@@ -1,5 +1,4 @@
-﻿using System.Xml.Serialization;
-using ImportantClasses;
+﻿using ImportantClasses;
 using Output;
 using Simulator;
 
@@ -38,16 +37,15 @@ namespace CalculationComponents
                 }
             }
         }
+        private byte _gears;
 
         /// <summary>
         /// the transmission of each gear (rpmIn/rpmOut)
         /// </summary>
         [Setting("Transmission for each gear (rpmIn/rpmOut)")]
         public float[] Transmissions { get; set; }
-
-        private byte _gears;
-
-        private GearBoxOutput _actualCalculation; //the result of the actual done calculation
+        
+        private readonly GearBoxOutput _actualCalculation; //the result of the actual done calculation
 
         /// <summary>
         /// calculates an gearBox. Will be initialized with the standard values
@@ -79,7 +77,7 @@ namespace CalculationComponents
         }
 
         /// <summary>
-        /// stops the calculation if it necessary to abort it
+        /// stops the calculation if running
         /// </summary>
         public void StopCalculation()
         {

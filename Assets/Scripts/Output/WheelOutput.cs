@@ -1,4 +1,4 @@
-﻿using CalculationComponents.Enums;
+﻿using ImportantClasses.Enums;
 using ImportantClasses;
 
 namespace Output
@@ -22,14 +22,16 @@ namespace Output
         private static volatile WheelOutput[] _lastCalculations;
 
         public Vector2 Direction { get; set; }
-        public float LongitudinalForce { get; set; }
+        public float LongitudinalAccelerationForce { get; set; }
+        public float LongitudinalDecelerationForce { get; set; }
         public float LateralAcceleration { get; set; }
         public int Slip { get; set; }
 
         public WheelOutput()
         {
             Direction = new Vector2(0, 0);
-            LongitudinalForce = 0;
+            LongitudinalAccelerationForce = 0;
+            LongitudinalDecelerationForce = 0;
             LateralAcceleration = 0;
             Slip = 0;
         }
@@ -42,7 +44,8 @@ namespace Output
         public static void SetWheelOutput(Wheels wheel, WheelOutput output)
         {
             int index = (int) wheel;
-            LastCalculations[index].LongitudinalForce = output.LongitudinalForce;
+            LastCalculations[index].LongitudinalAccelerationForce = output.LongitudinalAccelerationForce;
+            LastCalculations[index].LongitudinalDecelerationForce = output.LongitudinalDecelerationForce;
             LastCalculations[index].LateralAcceleration = output.LateralAcceleration;
             LastCalculations[index].Slip = output.Slip;
             LastCalculations[index].Direction = output.Direction;

@@ -74,7 +74,7 @@
     <Compile Include="Assets\Scripts\CalculationComponents\Aerodynamics\Aerodynamic.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Brake\Brake.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\Engine\Engine.cs" />
-    <Compile Include="Assets\Scripts\CalculationComponents\Enums.cs" />
+    <Compile Include="Assets\Scripts\ImportantClasses\Enums.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\GearBox\GearBox.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\OverallCar\OverallCar.cs" />
     <Compile Include="Assets\Scripts\CalculationComponents\SecondaryDrive\SecondaryDrive.cs" />

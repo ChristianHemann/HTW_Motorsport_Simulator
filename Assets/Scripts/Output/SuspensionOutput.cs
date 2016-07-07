@@ -1,4 +1,4 @@
-﻿using CalculationComponents.Enums;
+﻿using ImportantClasses.Enums;
 
 namespace Output
 {

@@ -14,7 +14,7 @@ namespace CalculationComponents
         [Setting("Maximum steeringangle +- (radiant)")]
         public float MaxSteeringAngle { get; set; }
         
-        private SteeringOutput _actualCalculation;
+        private readonly SteeringOutput _actualCalculation;
 
         public Steering()
         {

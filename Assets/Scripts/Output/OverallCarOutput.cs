@@ -29,14 +29,18 @@ namespace Output
 
         public OverallCarOutput()
         {
-            Speed = new Vector3();
+            Speed = 0;
+            Direction = new Vector3(1, 0, 0);
             Position = new Vector3();
         }
-        
+        /// <summary>
+        /// the driving Direction of the car
+        /// </summary>
+        public Vector3 Direction { get; set; }
         /// <summary>
         /// the speed of the car in m/s
         /// </summary>
-        public Vector3 Speed { get; set; }
+        public float Speed { get; set; }
         /// <summary>
         /// the movement direction of the car
         /// </summary>

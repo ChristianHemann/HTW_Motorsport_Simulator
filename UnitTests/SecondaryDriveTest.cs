@@ -17,7 +17,7 @@ namespace UnitTests
             secondaryDrive = new SecondaryDrive();
             secondaryDrive.Transmission = 2; // rpmIn/prmOut
             GearBoxOutput.LastCalculation.Torque = 100; // 1/min
-            OverallCarOutput.LastCalculation.Speed = new Vector3(20f, 0, 0); // m/s
+            OverallCarOutput.LastCalculation.Speed = 20f; // m/s
             CalculationController.Instance.Wheels.Diameter = 0.3f; //m
         }
 

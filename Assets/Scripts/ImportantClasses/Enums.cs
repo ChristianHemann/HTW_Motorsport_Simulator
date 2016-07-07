@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace CalculationComponents.Enums
+﻿
+namespace ImportantClasses.Enums
 {
     public enum Axis
     {

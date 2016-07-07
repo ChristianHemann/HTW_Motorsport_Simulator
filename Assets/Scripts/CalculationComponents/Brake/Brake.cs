@@ -9,7 +9,7 @@ namespace CalculationComponents
     public class Brake : ICalculationComponent
     {
         /// <summary>
-        /// The normal Brakemoment per Wheels, when the Brakebalance is 50:50
+        /// The normal Brakemoment per Wheels (Nm), when the Brakebalance is 50:50
         /// </summary>
         [Setting("Brakemoment per Wheels (Nm) (Balance 50:50)")]
         public int NormalBrakeMoment { get; set; }
@@ -20,7 +20,7 @@ namespace CalculationComponents
         [Setting("Brakebalance front:rear (0:100 to 100:0)")]
         public MathHelper.Ratio BrakeBalance { get; set; }
 
-        private BrakeOutput _actualCalculation;
+        private readonly BrakeOutput _actualCalculation;
 
         /// <summary>
         /// calculates the brake
@@ -33,11 +33,10 @@ namespace CalculationComponents
         }
 
         /// <summary>
-        /// calculates the brakemoment according to the brakebalance and the actual positon of the brakepedal
+        /// calculates the brakemoment according to the actual positon of the brakepedal
         /// </summary>
         public void Calculate()
         {
-            _actualCalculation = new BrakeOutput();
             _actualCalculation.BrakeMomentFront = (float) (NormalBrakeMoment*InputData.UsedInputData.BrakePedal*
                                                           BrakeBalance.FirstValue*2);
             _actualCalculation.BrakeMomentRear = (float) (NormalBrakeMoment*InputData.UsedInputData.BrakePedal*
@@ -47,7 +46,7 @@ namespace CalculationComponents
         }
 
         /// <summary>
-        /// stops executing the Calculate function
+        /// stops the calculation if running
         /// </summary>
         public void StopCalculation()
         {
@@ -55,20 +54,24 @@ namespace CalculationComponents
         }
 
         /// <summary>
-        /// stores the calculation results to the BrakeOutPut class
+        /// stores the calculation results to the BrakeOutput class
         /// </summary>
         public void StoreResult()
         {
-            BrakeOutput.LastCalculation = _actualCalculation;
+            BrakeOutput.LastCalculation.BrakeMomentFront = _actualCalculation.BrakeMomentFront;
+            BrakeOutput.LastCalculation.BrakeMomentRear = _actualCalculation.BrakeMomentRear;
         }
 
+        /// <summary>
+        /// this function is not necessary for the brake
+        /// </summary>
         public void CalculateBackwards()
         {
             //here is nothing to calculate
         }
 
         /// <summary>
-        /// triggered when the calculation function is ending
+        /// will be triggered when the calculation is done
         /// </summary>
         public event CalculationReadyDelegate OnCalculationReady;
     }

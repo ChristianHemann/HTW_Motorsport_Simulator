@@ -21,7 +21,7 @@ namespace CalculationComponents
             _wheels = new Wheel[4];
             for(int i = 0; i < 4; i++)
             {
-                _wheels[i] = new Wheel((Enums.Wheels)i);
+                _wheels[i] = new Wheel((ImportantClasses.Enums.Wheels)i);
             }
             Weight = 1;
             Diameter = 0.5f;

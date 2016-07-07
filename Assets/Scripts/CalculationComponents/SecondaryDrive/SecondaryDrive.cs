@@ -6,7 +6,7 @@ using Simulator;
 namespace CalculationComponents
 {
     /// <summary>
-    /// The Seconrady Drive of the vehicle
+    /// The secondary drive of the vehicle
     /// </summary>
     public class SecondaryDrive : ICalculationComponent
     {
@@ -25,7 +25,7 @@ namespace CalculationComponents
         private readonly SecondaryDriveOutput _actualCalculation;
 
         /// <summary>
-        /// The Seconrady Drive of the vehicle
+        /// The secondary drive of the vehicle
         /// </summary>
         public SecondaryDrive()
         {
@@ -45,7 +45,7 @@ namespace CalculationComponents
         }
 
         /// <summary>
-        /// stops the actual running calculation
+        /// stops the calculation if running
         /// </summary>
         public void StopCalculation()
         {
@@ -53,7 +53,7 @@ namespace CalculationComponents
         }
 
         /// <summary>
-        /// stores the results of the Calculate-function
+        /// stores the results of the Calculate-function to the SecondaryDriveOutput class
         /// </summary>
         public void StoreResult()
         {
@@ -66,7 +66,7 @@ namespace CalculationComponents
         /// </summary>
         public void CalculateBackwards()
         {
-            _actualCalculation.Rpm = OverallCarOutput.LastCalculation.Speed.Magnitude * 60 /
+            _actualCalculation.Rpm = OverallCarOutput.LastCalculation.Speed * 60 /
                                      (CalculationController.Instance.Wheels.Diameter * (float)Math.PI);
             if (OnCalculationReady != null)
                 OnCalculationReady();

@@ -27,7 +27,7 @@ namespace CalculationComponents
         [Setting("Engine idle (rpm)")]
         public int EngineIdleRpm { get; set; }
 
-        private EngineOutput _actualCalculation; //the result of the actual done calculation
+        private readonly EngineOutput _actualCalculation; //the result of the actual done calculation
 
         /// <summary>
         /// calculates an engine. Will be initialized with the standard values
@@ -53,7 +53,7 @@ namespace CalculationComponents
         }
 
         /// <summary>
-        /// stops the calculation if it necessary to abort it
+        /// stops the calculation if running
         /// </summary>
         public void StopCalculation()
         {
@@ -70,7 +70,7 @@ namespace CalculationComponents
         }
 
         /// <summary>
-        /// invoked after the calculation of the car is ready to calculate the input parameters fof the next calculation step
+        /// invoke after the calculation of the car is ready to calculate the input parameters fof the next calculation step
         /// </summary>
         public void CalculateBackwards()
         {
