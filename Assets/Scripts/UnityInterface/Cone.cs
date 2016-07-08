@@ -28,7 +28,6 @@ namespace UnityInterface
 
         
         //der code ist zum position des autos setzen; löschen sobald benutzt
-            //this.transform.position = OverallCarOutput.LastCalculation.Position.ToUnityVector3();
-            //this.transform.rotation = Quaternion.Euler(OverallCarOutput.LastCalculation.Direction.ToUnityVector3());
+          
     }
 }
