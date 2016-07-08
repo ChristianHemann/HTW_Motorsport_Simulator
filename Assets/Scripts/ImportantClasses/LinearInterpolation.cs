@@ -12,6 +12,9 @@ namespace ImportantClasses
     /// </summary>
     public class LinearInterpolation
     {
+        /// <summary>
+        /// the x-values of the points to interpolate between
+        /// </summary>
         [XmlArray]
         public double[] X {
             get { return _x; }
@@ -22,6 +25,10 @@ namespace ImportantClasses
                 }
             }
         }
+
+        /// <summary>
+        /// the y-values of the points to interpolate betweeen
+        /// </summary>
         [XmlArray]
         public double[] Y
         {

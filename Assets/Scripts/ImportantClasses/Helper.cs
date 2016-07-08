@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ImportantClasses
 {
@@ -36,7 +34,7 @@ namespace ImportantClasses
         /// Checks if the application is running as a unittest
         /// </summary>
         /// <returns>true if a unittest is running</returns>
-        public static bool isUnitTest()
+        public static bool IsUnitTest()
         {
             if (!_checkedForUnitTest)
             {

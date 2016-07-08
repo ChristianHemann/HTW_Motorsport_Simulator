@@ -8,7 +8,12 @@ using System.Xml.Serialization;
 
 namespace ImportantClasses
 {
-    //found this class at: http://stackoverflow.com/questions/1299071/serializing-net-dictionary
+    /// <summary>
+    /// creates a new dictionatry. Differs from the System.Collections.Gereric.Dictionary in the ability to be serialized binary or as xml
+    /// found this class at: http://stackoverflow.com/questions/1299071/serializing-net-dictionary
+    /// </summary>
+    /// <typeparam name="TKey">the Type of the keys</typeparam>
+    /// <typeparam name="TVal">The Type of the values</typeparam>
     [Serializable()]
     public class SerializableDictionary<TKey, TVal> : Dictionary<TKey, TVal>, IXmlSerializable, ISerializable
     {

@@ -95,7 +95,6 @@
     <Compile Include="Assets\Scripts\CalculationComponents\Wheels\Wheels.cs" />
     <Compile Include="Assets\Scripts\CalculationController.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\CharacteristicMap.cs" />
-    <Compile Include="Assets\Scripts\ImportantClasses\ClassExtender.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Enums.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\Helper.cs" />
     <Compile Include="Assets\Scripts\ImportantClasses\ICalculationComponent.cs" />
@@ -125,6 +124,7 @@
     <Compile Include="Assets\Scripts\Output\TrackOutput.cs" />
     <Compile Include="Assets\Scripts\Output\WheelOutput.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Calculation.cs" />
+    <Compile Include="Assets\Scripts\UnityInterface\CameraFollowCar.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Cone.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\Menu.cs" />
     <Compile Include="Assets\Scripts\UnityInterface\RaceMenu.cs" />

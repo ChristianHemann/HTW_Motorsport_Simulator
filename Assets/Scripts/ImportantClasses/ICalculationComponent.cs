@@ -11,17 +11,17 @@ namespace ImportantClasses
     public interface ICalculationComponent
     {
         /// <summary>
-        /// used to Calculate the outputs needed for the next calculation component
+        /// used to Calculate the outputs of the class
         /// </summary>
         void Calculate();
 
         /// <summary>
-        /// calles when all calculation are ready to calculate the outputs used in the next frame
+        /// calles when all calculation are ready to calculate the outputs used in the next call of calculation
         /// </summary>
         void CalculateBackwards();
 
         /// <summary>
-        /// stops the calculation if it is actually running
+        /// stops the calculation if running
         /// </summary>
         void StopCalculation();
 
@@ -31,7 +31,7 @@ namespace ImportantClasses
         void StoreResult();
 
         /// <summary>
-        /// called when the actual Calculation Step is ready
+        /// will be triggered when the calculation is done
         /// </summary>
         event CalculationReadyDelegate OnCalculationReady;
     }

@@ -142,7 +142,7 @@ namespace ImportantClasses
                                 bool containsKey = false; //saves whether the key was found
                                 foreach (KeyValuePair<string[], object> valuePair in _changeBufferDictionary) //If the value was changed: show the changed value
                                 {
-                                    if (Helper.ArrayValueEqual<string>(valuePair.Key, changeNameArray)) //The Method _changeBufferDictionary.ContainsKey() is not suitable, because it return false if the array is not the same but has the same content
+                                    if (Helper.ArrayValueEqual(valuePair.Key, changeNameArray)) //The Method _changeBufferDictionary.ContainsKey() is not suitable, because it return false if the array is not the same but has the same content
                                     {
                                         containsKey = true;
                                         //If the value was changed: show the changed value
@@ -169,7 +169,7 @@ namespace ImportantClasses
                                 bool containsKey = false; //saves whether the key was found
                                 foreach (KeyValuePair<string[], object> valuePair in _changeBufferDictionary) //If the value was changed: show the changed value
                                 {
-                                    if (Helper.ArrayValueEqual<string>(valuePair.Key, changeNameArray)) //The Method _changeBufferDictionary.ContainsKey() is not suitable, because it return false if the array is not the same but has the same content
+                                    if (Helper.ArrayValueEqual(valuePair.Key, changeNameArray)) //The Method _changeBufferDictionary.ContainsKey() is not suitable, because it return false if the array is not the same but has the same content
                                     {
                                         containsKey = true;
                                         //If the value was changed: show the changed value
@@ -234,22 +234,11 @@ namespace ImportantClasses
             string[] key = null;
             foreach (KeyValuePair<string[], object> keyValuePair in _changeBufferDictionary)
             {
-                if (Helper.ArrayValueEqual<string>(keyValuePair.Key, names)) //The Method _changeBufferDictionary.ContainsKey() is not suitable, because it return false if the array is not the same but has the same content
+                if (Helper.ArrayValueEqual(keyValuePair.Key, names)) //The Method _changeBufferDictionary.ContainsKey() is not suitable, because it return false if the array is not the same but has the same content
                 {
                     key = keyValuePair.Key;
                     break;
                 }
-                //bool allValuesFound = true;
-                //for (int i = 0; i < keyValuePair.Key.Length && i < names.Length; ++i)
-                //{
-                //    if (keyValuePair.Key[i] != names[i])
-                //    {
-                //        allValuesFound = false;
-                //        break;
-                //    }
-                //}
-                //if (allValuesFound)
-                //    key = keyValuePair.Key;
             }
             if (key != null)
                 _changeBufferDictionary.Remove(key);
@@ -331,7 +320,7 @@ namespace ImportantClasses
                         {
                             object[] values = ((IEnumerable)keyValuePair.Value).Cast<object>().ToArray(); //cannot cast directly from object to object[]
                             //convert object[] to an array of the correct type to avoid contravariance
-                            System.Type type = fieldInfo.FieldType.GetElementType();
+                            Type type = fieldInfo.FieldType.GetElementType();
                             Array typeSpecificArray = Array.CreateInstance(type, values.Length);
                             Array.Copy(values, typeSpecificArray, values.Length);
                             value = typeSpecificArray;
@@ -356,7 +345,7 @@ namespace ImportantClasses
                         {
                             object[] values = ((IEnumerable)keyValuePair.Value).Cast<object>().ToArray(); //cannot cast directly from object to object[]
                             //convert object[] to an array of the correct type to avoid contravariance
-                            System.Type type = propertyInfo.PropertyType.GetElementType();
+                            Type type = propertyInfo.PropertyType.GetElementType();
                             Array typeSpecificArray = Array.CreateInstance(type, values.Length);
                             Array.Copy(values, typeSpecificArray, values.Length);
                             value = typeSpecificArray;

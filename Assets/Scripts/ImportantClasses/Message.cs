@@ -2,6 +2,9 @@
 
 namespace ImportantClasses
 {
+    /// <summary>
+    /// Sends messages to be shown in the GUI
+    /// </summary>
     public class Message
     {
         /// <summary>
@@ -34,6 +37,11 @@ namespace ImportantClasses
             }
         }
 
+        /// <summary>
+        /// sends a message to show it
+        /// </summary>
+        /// <param name="messageText"></param>
+        /// <param name="code"></param>
         public static void Send(string messageText, MessageCode code = MessageCode.Notification)
         {
             Message message = new Message(messageText,code);
@@ -44,8 +52,15 @@ namespace ImportantClasses
 #endregion
 #region oop part
 
+        /// <summary>
+        /// the content of the message
+        /// </summary>
         public readonly string MessageText;
+        /// <summary>
+        /// how the message is classificated
+        /// </summary>
         public readonly MessageCode Code;
+
 
         private Message(string message, MessageCode code = MessageCode.Notification)
         {

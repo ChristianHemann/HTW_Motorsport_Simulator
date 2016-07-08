@@ -13,6 +13,9 @@ namespace ImportantClasses
     /// </summary>
     public class Spline
     {
+        /// <summary>
+        /// the x-values of the points to interpolate between. Please do not set. The setter is just to provide xml-functions
+        /// </summary>
         [XmlArray]
         public double[] X
         {
@@ -25,6 +28,10 @@ namespace ImportantClasses
                 }
             }
         }
+
+        /// <summary>
+        /// the y-values of the points to interpolate between . Please do not set. The setter is just to provide xml-functions
+        /// </summary>
         [XmlArray]
         public double[] Y
         {
@@ -38,7 +45,13 @@ namespace ImportantClasses
                 }
             }
         }
+        /// <summary>
+        /// the name which will be shown on the x-axis in the menu
+        /// </summary>
         public string NameX { get; set; }
+        /// <summary>
+        /// the name which will be shown on the y-axis in the menu
+        /// </summary>
         public string NameY { get; set; }
 
         [XmlIgnore]

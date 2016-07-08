@@ -8,6 +8,9 @@ namespace ImportantClasses
     /// </summary>
     public class CharacteristicMap
     {
+        /// <summary>
+        /// The keys on the x-axis
+        /// </summary>
         [XmlArray]
         public double[] X
         {
@@ -18,6 +21,9 @@ namespace ImportantClasses
             }
         }
 
+        /// <summary>
+        /// the keys on the y-axis
+        /// </summary>
         [XmlArray]
         public double[] Y
         {
@@ -28,6 +34,9 @@ namespace ImportantClasses
             }
         }
 
+        /// <summary>
+        /// the values to each key of the x and y axis
+        /// </summary>
         [XmlArray]
         public double[][] Values
         {

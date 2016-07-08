@@ -35,8 +35,8 @@ namespace ImportantClasses
         /// </summary>
         public static readonly string SavingPath = Path.Combine(Settings.SettingsPath, "Log");
 
-        private static string _logContentFile = Path.Combine(SavingPath, "LogContent.txt");
-        private static string _logFile = Path.Combine(SavingPath, "Log.xml"); //the current used LogFile
+        private static readonly string _logContentFile = Path.Combine(SavingPath, "LogContent.txt");
+        private static readonly string _logFile = Path.Combine(SavingPath, "Log.xml"); //the current used LogFile
         private static System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
 
         private static string _logFileContent
@@ -83,11 +83,21 @@ namespace ImportantClasses
             if (OnNewLog != null)
                 OnNewLog(log);
 #if UNITY_EDITOR
-            if (!Helper.isUnitTest())
+            if (!Helper.IsUnitTest())
                 UnityEngine.Debug.Log(log.ToString()); //Show in Console when in Unity Editor
 #endif
         }
 
+        /// <summary>
+        /// gets all the logs which fits the parameters
+        /// </summary>
+        /// <param name="classification">return just logs with this classification; none = no filter</param>
+        /// <param name="code">return just logs with this messageCode; none = no filter</param>
+        /// <param name="from">The date of the logs must be from this date or later; works just in combination with interval</param>
+        /// <param name="interval">the time interval to get the logs; just works in combination with from</param>
+        /// <param name="count">the maximum number of logs to return</param>
+        /// <param name="startAt">ignore the first 'startAt' logs</param>
+        /// <returns>all logs which fits the set parameters</returns>
         public static Logging[] GetLogs(Classification classification = Classification.None,
             Message.MessageCode code = Message.MessageCode.None,
             DateTime from = default(DateTime), TimeSpan interval = default(TimeSpan), uint count = 20, uint startAt = 0)
@@ -98,7 +108,7 @@ namespace ImportantClasses
             XmlReaderSettings readerSettings = new XmlReaderSettings();
             readerSettings.ProhibitDtd = false; //dtd is used
             readerSettings.ValidationType = ValidationType.None;
-            System.Xml.XmlReader reader = XmlReader.Create(tr, readerSettings);
+            XmlReader reader = XmlReader.Create(tr, readerSettings);
 
             XmlDocument doc = new XmlDocument();
             doc.Load(reader);
@@ -106,7 +116,7 @@ namespace ImportantClasses
             if (list == null)
                 return logs.ToArray();
             uint i = 0;
-            if (from != default(DateTime) || interval != default(TimeSpan))
+            if (from != default(DateTime) && interval != default(TimeSpan))
             {
                 foreach (XmlElement element in list)
                 {
