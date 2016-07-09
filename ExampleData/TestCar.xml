@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <CalculationController xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <LogPerformance>true</LogPerformance>
+  <LogPerformance>false</LogPerformance>
   <Aerodynamic />
   <Brake>
     <NormalBrakeMoment>100</NormalBrakeMoment>
@@ -79,7 +79,7 @@
       <NameX>Steeringangle (rad)</NameX>
       <NameY>wheelangle left (rad)</NameY>
     </LeftWheelAngle>
-    <MaxSteeringAngle>3.1415926535897931</MaxSteeringAngle>
+    <MaxSteeringAngle>3.14159274</MaxSteeringAngle>
   </Steering>
   <Suspension>
     <FrontAxis>

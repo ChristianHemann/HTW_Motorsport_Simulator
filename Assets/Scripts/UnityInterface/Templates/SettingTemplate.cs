@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 
 namespace UnityInterface.SettingTemplates
@@ -11,7 +10,7 @@ namespace UnityInterface.SettingTemplates
     /// </summary>
     public class SettingTemplate
     {
-        private static readonly Dictionary<Type, float> heightDictionary = new Dictionary<Type, float>(); //defines the relative heigth to _inputHeigth for each Types control
+        private static readonly Dictionary<Type, float> _heightDictionary = new Dictionary<Type, float>(); //defines the relative heigth to _inputHeigth for each Types control
         private static SettingTemplate _instance; //just to make sure, that the static Draw method won't find itself, but all the other methods
         private static float _inputHeight = 30;
         private static float _padding = 2;
@@ -35,14 +34,14 @@ namespace UnityInterface.SettingTemplates
         private static void Initialize()
         {
             _instance = new SettingTemplate();
-            heightDictionary.Add(typeof(string), 1f);
-            heightDictionary.Add(typeof(bool), 1f);
-            heightDictionary.Add(typeof(int), 1f);
-            heightDictionary.Add(typeof(byte), 1f);
-            heightDictionary.Add(typeof(sbyte), 1f);
-            heightDictionary.Add(typeof(uint), 1f);
-            heightDictionary.Add(typeof(float), 1f);
-            heightDictionary.Add(typeof(double), 1f);
+            _heightDictionary.Add(typeof(string), 1f);
+            _heightDictionary.Add(typeof(bool), 1f);
+            _heightDictionary.Add(typeof(int), 1f);
+            _heightDictionary.Add(typeof(byte), 1f);
+            _heightDictionary.Add(typeof(sbyte), 1f);
+            _heightDictionary.Add(typeof(uint), 1f);
+            _heightDictionary.Add(typeof(float), 1f);
+            _heightDictionary.Add(typeof(double), 1f);
         }
 
         /// <summary>
@@ -70,8 +69,8 @@ namespace UnityInterface.SettingTemplates
         /// <returns>The relative height of the control</returns>
         public static float GetHeight(Type type)
         {
-            float height = 0;
-            if (heightDictionary.TryGetValue(type, out height))
+            float height;
+            if (_heightDictionary.TryGetValue(type, out height))
                 return height*_inputHeight;
             else
                 return _inputHeight;
@@ -89,7 +88,7 @@ namespace UnityInterface.SettingTemplates
             //search for functions in this class with the same return parameter Type as the oldValues type
             //calling Draw directly will not work -> reflection is used
             MethodInfo info = typeof(SettingTemplate).GetMethod("Draw", 
-                new Type[] { oldValue.GetType(), typeof(string), typeof(Rect) });
+                new [] { oldValue.GetType(), typeof(string), typeof(Rect) });
             if (info != null && !info.IsStatic) //no static function so that this function do not call itself
             {
                 object[] parameter = new[] { oldValue, name, position };
