@@ -14,9 +14,12 @@ namespace UnityInterface
             _normalPosition = transform.position;
         }
 
-        void OnCollisionEnter() //nachschauen ob die function wirklich so heißt
+        void OnCollisionEnter() 
         {
-            //setze timer und rufe function ResetCone nach x sekunden auf
+            //call function Resetcone
+            Time time = new Time();
+            ResetCone();
+            
         }
 
         void ResetCone()
@@ -27,7 +30,6 @@ namespace UnityInterface
 
 
         
-        //der code ist zum position des autos setzen; löschen sobald benutzt
-          
+        
     }
 }
