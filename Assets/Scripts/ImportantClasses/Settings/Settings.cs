@@ -497,6 +497,7 @@ namespace ImportantClasses
                 catch (Exception ex)
                 {
                     Message.Send("The File " + name + " could not be loaded. Possibly the file do not contain an object of the correct Type. ErrorMessage: " + ex.Message, Message.MessageCode.Warning);
+                    throw ex;
                 }
             }
         }

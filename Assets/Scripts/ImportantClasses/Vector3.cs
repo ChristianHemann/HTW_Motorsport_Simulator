@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace ImportantClasses
 {
+    /// <summary>
+    /// a vector in 3-dimensional space
+    /// </summary>
     public class Vector3
     {
         /// <summary>
@@ -43,10 +44,19 @@ namespace ImportantClasses
         /// <summary>
         /// the vector which is wrapped by this class
         /// </summary>
-        private Vector<float> _vector;
+        private readonly Vector<float> _vector;
 
+        /// <summary>
+        /// a vector in 3-dimensional space
+        /// </summary>
         public Vector3() : this(0f, 0f, 0f) { }
 
+        /// <summary>
+        /// a vector in 3-dimensional space
+        /// </summary>
+        /// <param name="x">the x-coordinate of the vector</param>
+        /// <param name="y">the y-coordinate of the vector</param>
+        /// <param name="z">the z-coordinate of the vector</param>
         public Vector3(float x, float y, float z)
         {
             _vector = Vector<float>.Build.DenseOfArray(new[] { x, y, z });
@@ -55,8 +65,8 @@ namespace ImportantClasses
         public override string ToString()
         {
             return
-                new StringBuilder().Append("X: ").Append(X.ToString()).Append("\nY: ").Append(Y.ToString())
-                .Append("\nZ: ").Append(Z.ToString()).ToString();
+                new StringBuilder().Append("X: ").Append(X).Append("\nY: ").Append(Y)
+                .Append("\nZ: ").Append(Z).ToString();
         }
 
         /// <summary>

@@ -58,6 +58,11 @@ namespace CalculationComponents.SuspensionComponents
         }
 
         /// <summary>
+        /// this constructor is only to provide xml-functions
+        /// </summary>
+        private WheelSuspension() : this(ImportantClasses.Enums.Wheels.FrontLeft) { }
+
+        /// <summary>
         /// Calculates the WheelSuspension
         /// </summary>
         public void Calculate()

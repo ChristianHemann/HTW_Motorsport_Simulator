@@ -39,6 +39,11 @@ namespace CalculationComponents.SuspensionComponents
         }
 
         /// <summary>
+        /// this constructor is just to provide xml-functions
+        /// </summary>
+        private Axis() { }
+
+        /// <summary>
         /// calls the Calculate function of each Wheel of the axis
         /// </summary>
         public virtual void Calculate()

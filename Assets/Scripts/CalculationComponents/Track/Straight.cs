@@ -2,7 +2,6 @@
 using System;
 using System.Xml.Serialization;
 using ImportantClasses;
-using MathNet.Numerics.LinearAlgebra;
 
 namespace CalculationComponents.TrackComponents
 {

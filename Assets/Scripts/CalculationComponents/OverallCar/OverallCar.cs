@@ -62,7 +62,7 @@ namespace CalculationComponents
                 totalLongitudinalDeForce += wheelOutput.LongitudinalDecelerationForce * wheelOutput.Direction;
                 if (!float.IsNaN(wheelOutput.LateralAcceleration))
                     totalLateralAcceleration += wheelOutput.LateralAcceleration*
-                                                ((Vector2) wheelOutput.Direction).Rotate(-Math.PI/2);
+                                                wheelOutput.Direction.Rotate(-Math.PI/2);
             }
             //calculate the change of the speed due to the acceleration, the air drag and the deceleration from the brake
             Vector3 velocityChangeAc = (totalLongitudinalAcForce / Weight + totalLateralAcceleration) * CalculationController.Instance.Duration;

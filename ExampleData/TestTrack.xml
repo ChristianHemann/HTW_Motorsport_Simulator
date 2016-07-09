@@ -33,14 +33,6 @@
         <X>10</X>
         <Y>20</Y>
       </EndPoint>
-      <PreviousTrackSegment xsi:type="Straight">
-        <TrackWidthEnd>5</TrackWidthEnd>
-        <Length>10</Length>
-        <EndPoint>
-          <X>0</X>
-          <Y>10</Y>
-        </EndPoint>
-      </PreviousTrackSegment>
     </TrackSegment>
     <TrackSegment xsi:type="Straight">
       <TrackWidthEnd>5</TrackWidthEnd>

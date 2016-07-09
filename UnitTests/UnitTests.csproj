@@ -43,6 +43,10 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assets\Libs\net35\TaskParallelLibrary\System.Threading.dll</HintPath>
+    </Reference>
     <Reference Include="System.XML" />
     <Reference Include="UnityEngine">
       <HintPath>..\Library\UnityAssemblies\UnityEngine.dll</HintPath>

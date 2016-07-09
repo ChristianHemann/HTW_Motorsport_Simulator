@@ -1,5 +1,4 @@
 ﻿
-using CalculationComponents;
 
 namespace ImportantClasses
 {
@@ -36,12 +35,7 @@ namespace ImportantClasses
         /// <summary>
         /// determines in which gear the car is
         /// </summary>
-        public byte Gear
-        {
-            get { return _gear; }
-            set { _gear = value; }
-        }
-        private byte _gear;
+        public byte Gear { get; set; }
 
         /// <summary>
         /// saves the current input data to have the same inputs during the calculation procedure

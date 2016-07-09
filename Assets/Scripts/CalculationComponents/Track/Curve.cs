@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Xml.Serialization;
 using ImportantClasses;
 using JetBrains.Annotations;
@@ -63,6 +64,7 @@ namespace CalculationComponents.TrackComponents
         /// <summary>
         /// the previous segment of the track
         /// </summary>
+        [XmlIgnore] //it is not saved to avoid endless loops
         public override TrackSegment PreviousTrackSegment
         {
             get { return _previousTrackSegment; }

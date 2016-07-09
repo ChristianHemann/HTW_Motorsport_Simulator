@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using JetBrains.Annotations;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace ImportantClasses
@@ -15,7 +12,7 @@ namespace ImportantClasses
         /// <summary>
         /// the vector which is wrapped by this class
         /// </summary>
-        private Vector<float> _vector;
+        private readonly Vector<float> _vector;
 
         /// <summary>
         /// the x-coordinate of the vector
@@ -50,14 +47,14 @@ namespace ImportantClasses
         }
 
         /// <summary>
-        /// vector in two dimensional space with a length of 0
+        /// vector in two dimensional space
         /// </summary>
         public Vector2() : this(0f, 0f) { }
 
         public override string ToString()
         {
             return
-                new StringBuilder().Append("X: ").Append(X.ToString()).Append("\nY: ").Append(Y.ToString()).ToString();
+                new StringBuilder().Append("X: ").Append(X).Append("\nY: ").Append(Y).ToString();
         }
 
         /// <summary>
@@ -195,7 +192,7 @@ namespace ImportantClasses
         /// <returns>the projection of this vector onto the other vector</returns>
         public Vector2 Projection(Vector2 other)
         {
-            return this.ScalarProduct(other)/(other.Magnitude*other.Magnitude)*other;
+            return ScalarProduct(other)/(other.Magnitude*other.Magnitude)*other;
         }
 
         /// <summary>

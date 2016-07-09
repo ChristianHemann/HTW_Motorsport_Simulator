@@ -133,6 +133,7 @@ namespace Simulator
         /// <param name="calculationInterval">the Interval between two calls of the Calculate-function</param>
         public static void Initialize(float calculationInterval)
         {
+            Instance._duration = calculationInterval; //to be able to set this value in unittests
             Instance._calculationInterval = calculationInterval;
             if (Instance._workerThread.ThreadState == ThreadState.WaitSleepJoin) //if the Thread is interrupted
             {

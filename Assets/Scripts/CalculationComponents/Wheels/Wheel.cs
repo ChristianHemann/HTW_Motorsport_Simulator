@@ -61,7 +61,6 @@ namespace CalculationComponents.WheelComponents
             }
             else //drive straight ahead
             {
-                drivingRadius = float.PositiveInfinity;
                 _actualCalculation.LateralAcceleration = 0;
             }
             //calculate the direction in which the wheel would like to drive
