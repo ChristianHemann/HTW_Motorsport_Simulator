@@ -47,6 +47,10 @@ namespace CalculationComponents
         /// </summary>
         public void Calculate()
         {
+            if (InputData.UsedInputData.AccelerationPedal > 0.8)
+            {
+                float degub = 0;
+            }
             _actualCalculation.Torque = (float)CharacteristicLine.Interpolate(EngineOutput.LastCalculation.Rpm) * InputData.UsedInputData.AccelerationPedal;
             if (OnCalculationReady != null)
                 OnCalculationReady();

@@ -14,6 +14,7 @@ namespace UnityInterface
         private void Start()
         {
             ShowMenu = false;
+            Time.timeScale = 1;
         }
 
         private void OnGUI()
