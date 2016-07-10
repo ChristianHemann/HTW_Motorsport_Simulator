@@ -1,4 +1,5 @@
-﻿using ImportantClasses;
+﻿using System.Xml.Serialization;
+using ImportantClasses;
 using Output;
 using Simulator;
 
@@ -38,7 +39,8 @@ namespace CalculationComponents.SuspensionComponents
         /// <summary>
         /// for which wheel is the actual WheelSuspension?
         /// </summary>
-        private readonly ImportantClasses.Enums.Wheels _wheel;
+        [XmlElement]
+        public ImportantClasses.Enums.Wheels Wheel;
         private readonly SuspensionOutput _actualCalculation;
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace CalculationComponents.SuspensionComponents
             WheelHub = new WheelHub();
             Wishbone = new Wishbone();
 
-            _wheel = wheel;
+            Wheel = wheel;
             _actualCalculation = new SuspensionOutput();
         }
 
@@ -67,10 +69,10 @@ namespace CalculationComponents.SuspensionComponents
         /// </summary>
         public void Calculate()
         {
-            if ((int)_wheel < 2) //front axis
+            if ((int)Wheel < 2) //front axis
             {
                 _actualCalculation.AccelerationTorque = 0;
-                if ((int)_wheel % 2 == 0) //left wheel
+                if ((int)Wheel % 2 == 0) //left wheel
                     _actualCalculation.WheelAngle = SteeringOutput.LastCalculation.WheelAngleLeft;
                 else
                     _actualCalculation.WheelAngle = SteeringOutput.LastCalculation.WheelAngleRight;
@@ -91,7 +93,7 @@ namespace CalculationComponents.SuspensionComponents
         /// </summary>
         public void StoreResult()
         {
-            SuspensionOutput.SetLastCalculation(_wheel, _actualCalculation);
+            SuspensionOutput.SetLastCalculation(Wheel, _actualCalculation);
         }
 
         /// <summary>

@@ -13,11 +13,13 @@
     <CharacteristicLine>
       <X>
         <double>0</double>
+        <double>5000</double>
         <double>10000</double>
       </X>
       <Y>
         <double>0</double>
         <double>100</double>
+        <double>0</double>
       </Y>
       <NameX>rounds per minute</NameX>
       <NameY>torque (Nm)</NameY>
@@ -79,12 +81,13 @@
       <NameX>Steeringangle (rad)</NameX>
       <NameY>wheelangle left (rad)</NameY>
     </LeftWheelAngle>
-    <MaxSteeringAngle>3.14159274</MaxSteeringAngle>
+    <MaxSteeringAngle>1</MaxSteeringAngle>
   </Steering>
   <Suspension>
     <FrontAxis>
       <Stabilisator />
       <LeftWheel>
+        <Wheel>FrontLeft</Wheel>
         <BellCrank />
         <Damper />
         <PushRod />
@@ -92,6 +95,7 @@
         <Wishbone />
       </LeftWheel>
       <RightWheel>
+        <Wheel>FrontRight</Wheel>
         <BellCrank />
         <Damper />
         <PushRod />
@@ -102,6 +106,7 @@
     <RearAxis>
       <Stabilisator />
       <LeftWheel>
+        <Wheel>RearLeft</Wheel>
         <BellCrank />
         <Damper />
         <PushRod />
@@ -109,6 +114,7 @@
         <Wishbone />
       </LeftWheel>
       <RightWheel>
+        <Wheel>RearRight</Wheel>
         <BellCrank />
         <Damper />
         <PushRod />

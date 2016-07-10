@@ -14,6 +14,7 @@ namespace UnityInterface
         private void Start()
         {
             ShowMenu = false;
+            Time.timeScale = 1;
         }
 
         private void OnGUI()
@@ -24,6 +25,7 @@ namespace UnityInterface
                     "Continue Race"))
                 {
                     ShowMenu = false;
+                    Time.timeScale = 1;
                 }
                 if (GUI.Button(new Rect(Screen.width/4, Screen.height/2, Screen.width/2, Screen.height/4),
                     "To Main Menu"))
@@ -36,7 +38,10 @@ namespace UnityInterface
             else
             {
                 if (GUI.Button(new Rect(10, 10, Screen.width/5, Screen.height/15), "Menu"))
+                {
                     ShowMenu = true;
+                    Time.timeScale = 0;
+                }
             }
         }
 
