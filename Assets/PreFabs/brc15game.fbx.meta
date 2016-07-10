@@ -1,0 +1,551 @@
+fileFormatVersion: 2
+guid: 1378ccaf4aaf15b40ba75319ccec483d
+timeCreated: 1468135372
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: BRC15
+    100002: //RootNode
+    100004: Bremsscheiben_bremse
+    100006: Bremsscheiben_bremse_vorn_l
+    100008: Bremsscheiben_bremse_vorn_r
+    100010: Bremsscheiben_rest
+    100012: Bremsscheiben_rest_vorn_l
+    100014: Bremsscheiben_rest_vorn_r
+    100016: Bremsscheiben_scheiben
+    100018: Bremsscheiben_scheiben_vorn_l
+    100020: Bremsscheiben_scheiben_vorn_r
+    100022: Clutch Shift System
+    100024: Cooler Channel0
+    100026: Cooler Channel1
+    100028: Cooler Channel2
+    100030: Cooler Channel3
+    100032: Cooler Channel3.001
+    100034: Cooling System
+    100036: Crashbox0
+    100038: Crashbox0_schrauben
+    100040: Dash
+    100042: Dash_display
+    100044: Electrics
+    100046: Engine Mounts
+    100048: Estarter
+    100050: federn
+    100052: Felgen
+    100054: Felgen Innen
+    100056: Felgen Innen_schrauben
+    100058: Felgen Innen_schrauben_vorn_l
+    100060: Felgen Innen_schrauben_vorn_r
+    100062: Felgen Innen_vorn_l
+    100064: Felgen Innen_vorn_r
+    100066: Felgen_vorn_l
+    100068: Felgen_vorn_r
+    100070: Firewall
+    100072: Fronthoop
+    100074: Frontwing
+    100076: Frontwing Strebe0
+    100078: Frontwing Strebe1
+    100080: Harness
+    100082: Hauptschalter
+    100084: Headres
+    100086: Headres Schaum
+    100088: Headres Streben
+    100090: Headres Streben Gelenke
+    100092: Headres Streben Gelenke_MeshPart0
+    100094: Headres Streben Gelenke_MeshPart1
+    100096: Heckfluegel
+    100098: Heckfluegel Anbindung
+    100100: Hinterwagen
+    100102: Hydraulic
+    100104: Jacking Bar
+    100106: Kinematic
+    100108: Kinematic_MeshPart0
+    100110: Kinematic_MeshPart1
+    100112: Kinematic_oehlins
+    100114: Klappe
+    100116: Ktm450Sxf
+    100118: Kuehl0
+    100120: Kuehlschlauch
+    100122: Kuehlschlauch_MeshPart0
+    100124: Kuehlschlauch_MeshPart1
+    100126: Laminat
+    100128: Laminat_inner
+    100130: Mono0
+    100132: Nase
+    100134: Not Rod
+    100136: Padding0
+    100138: Pedale
+    100140: reifen_fl
+    100142: reifen_fr
+    100144: reifen_rl
+    100146: reifen_rr
+    100148: Rod0
+    100150: Rod1
+    100152: Sdrive Chain
+    100154: Sdrive Diff Carrier
+    100156: Sdrive Drexler0
+    100158: Sdrive Drexler0_MeshPart0
+    100160: Sdrive Drexler0_MeshPart1
+    100162: Sdrive Drexler1
+    100164: Sdrive Drexler2
+    100166: Sdrive Driveshaft Left
+    100168: Sdrive Driveshaft Right
+    100170: Sdrive Kettenrad
+    100172: Sdrive Ritzel
+    100174: Sdrive Scatter Shield
+    100176: Seitenfluegel Strebe1
+    100178: Seitenfluegel Strebe2
+    100180: Seitenfluegel Strebe2_halterung
+    100182: Seitenfluegel Strebe3
+    100184: Seitenfluegel0
+    100186: Seitenfluegel1
+    100188: Steering Column
+    100190: Steering Gear
+    100192: Steering Wheel
+    100194: Turbo Charge
+    100196: WHEEL_FR
+    100198: WHEEL_LF
+    100200: WHEEL_LR
+    100202: WHEEL_RR
+    400000: BRC15
+    400002: //RootNode
+    400004: Bremsscheiben_bremse
+    400006: Bremsscheiben_bremse_vorn_l
+    400008: Bremsscheiben_bremse_vorn_r
+    400010: Bremsscheiben_rest
+    400012: Bremsscheiben_rest_vorn_l
+    400014: Bremsscheiben_rest_vorn_r
+    400016: Bremsscheiben_scheiben
+    400018: Bremsscheiben_scheiben_vorn_l
+    400020: Bremsscheiben_scheiben_vorn_r
+    400022: Clutch Shift System
+    400024: Cooler Channel0
+    400026: Cooler Channel1
+    400028: Cooler Channel2
+    400030: Cooler Channel3
+    400032: Cooler Channel3.001
+    400034: Cooling System
+    400036: Crashbox0
+    400038: Crashbox0_schrauben
+    400040: Dash
+    400042: Dash_display
+    400044: Electrics
+    400046: Engine Mounts
+    400048: Estarter
+    400050: federn
+    400052: Felgen
+    400054: Felgen Innen
+    400056: Felgen Innen_schrauben
+    400058: Felgen Innen_schrauben_vorn_l
+    400060: Felgen Innen_schrauben_vorn_r
+    400062: Felgen Innen_vorn_l
+    400064: Felgen Innen_vorn_r
+    400066: Felgen_vorn_l
+    400068: Felgen_vorn_r
+    400070: Firewall
+    400072: Fronthoop
+    400074: Frontwing
+    400076: Frontwing Strebe0
+    400078: Frontwing Strebe1
+    400080: Harness
+    400082: Hauptschalter
+    400084: Headres
+    400086: Headres Schaum
+    400088: Headres Streben
+    400090: Headres Streben Gelenke
+    400092: Headres Streben Gelenke_MeshPart0
+    400094: Headres Streben Gelenke_MeshPart1
+    400096: Heckfluegel
+    400098: Heckfluegel Anbindung
+    400100: Hinterwagen
+    400102: Hydraulic
+    400104: Jacking Bar
+    400106: Kinematic
+    400108: Kinematic_MeshPart0
+    400110: Kinematic_MeshPart1
+    400112: Kinematic_oehlins
+    400114: Klappe
+    400116: Ktm450Sxf
+    400118: Kuehl0
+    400120: Kuehlschlauch
+    400122: Kuehlschlauch_MeshPart0
+    400124: Kuehlschlauch_MeshPart1
+    400126: Laminat
+    400128: Laminat_inner
+    400130: Mono0
+    400132: Nase
+    400134: Not Rod
+    400136: Padding0
+    400138: Pedale
+    400140: reifen_fl
+    400142: reifen_fr
+    400144: reifen_rl
+    400146: reifen_rr
+    400148: Rod0
+    400150: Rod1
+    400152: Sdrive Chain
+    400154: Sdrive Diff Carrier
+    400156: Sdrive Drexler0
+    400158: Sdrive Drexler0_MeshPart0
+    400160: Sdrive Drexler0_MeshPart1
+    400162: Sdrive Drexler1
+    400164: Sdrive Drexler2
+    400166: Sdrive Driveshaft Left
+    400168: Sdrive Driveshaft Right
+    400170: Sdrive Kettenrad
+    400172: Sdrive Ritzel
+    400174: Sdrive Scatter Shield
+    400176: Seitenfluegel Strebe1
+    400178: Seitenfluegel Strebe2
+    400180: Seitenfluegel Strebe2_halterung
+    400182: Seitenfluegel Strebe3
+    400184: Seitenfluegel0
+    400186: Seitenfluegel1
+    400188: Steering Column
+    400190: Steering Gear
+    400192: Steering Wheel
+    400194: Turbo Charge
+    400196: WHEEL_FR
+    400198: WHEEL_LF
+    400200: WHEEL_LR
+    400202: WHEEL_RR
+    2300000: Bremsscheiben_bremse
+    2300002: Bremsscheiben_bremse_vorn_l
+    2300004: Bremsscheiben_bremse_vorn_r
+    2300006: Bremsscheiben_rest
+    2300008: Bremsscheiben_rest_vorn_l
+    2300010: Bremsscheiben_rest_vorn_r
+    2300012: Bremsscheiben_scheiben
+    2300014: Bremsscheiben_scheiben_vorn_l
+    2300016: Bremsscheiben_scheiben_vorn_r
+    2300018: Clutch Shift System
+    2300020: Cooler Channel0
+    2300022: Cooler Channel1
+    2300024: Cooler Channel2
+    2300026: Cooler Channel3
+    2300028: Cooler Channel3.001
+    2300030: Cooling System
+    2300032: Crashbox0
+    2300034: Crashbox0_schrauben
+    2300036: Dash
+    2300038: Dash_display
+    2300040: Electrics
+    2300042: Engine Mounts
+    2300044: Estarter
+    2300046: federn
+    2300048: Felgen
+    2300050: Felgen Innen
+    2300052: Felgen Innen_schrauben
+    2300054: Felgen Innen_schrauben_vorn_l
+    2300056: Felgen Innen_schrauben_vorn_r
+    2300058: Felgen Innen_vorn_l
+    2300060: Felgen Innen_vorn_r
+    2300062: Felgen_vorn_l
+    2300064: Felgen_vorn_r
+    2300066: Firewall
+    2300068: Fronthoop
+    2300070: Frontwing
+    2300072: Frontwing Strebe0
+    2300074: Frontwing Strebe1
+    2300076: Harness
+    2300078: Hauptschalter
+    2300080: Headres
+    2300082: Headres Schaum
+    2300084: Headres Streben
+    2300086: Headres Streben Gelenke_MeshPart0
+    2300088: Headres Streben Gelenke_MeshPart1
+    2300090: Heckfluegel
+    2300092: Heckfluegel Anbindung
+    2300094: Hinterwagen
+    2300096: Hydraulic
+    2300098: Jacking Bar
+    2300100: Kinematic_MeshPart0
+    2300102: Kinematic_MeshPart1
+    2300104: Kinematic_oehlins
+    2300106: Klappe
+    2300108: Ktm450Sxf
+    2300110: Kuehl0
+    2300112: Kuehlschlauch_MeshPart0
+    2300114: Kuehlschlauch_MeshPart1
+    2300116: Laminat
+    2300118: Laminat_inner
+    2300120: Mono0
+    2300122: Nase
+    2300124: Not Rod
+    2300126: Padding0
+    2300128: Pedale
+    2300130: reifen_fl
+    2300132: reifen_fr
+    2300134: reifen_rl
+    2300136: reifen_rr
+    2300138: Rod0
+    2300140: Rod1
+    2300142: Sdrive Chain
+    2300144: Sdrive Diff Carrier
+    2300146: Sdrive Drexler0_MeshPart0
+    2300148: Sdrive Drexler0_MeshPart1
+    2300150: Sdrive Drexler1
+    2300152: Sdrive Drexler2
+    2300154: Sdrive Driveshaft Left
+    2300156: Sdrive Driveshaft Right
+    2300158: Sdrive Kettenrad
+    2300160: Sdrive Ritzel
+    2300162: Sdrive Scatter Shield
+    2300164: Seitenfluegel Strebe1
+    2300166: Seitenfluegel Strebe2
+    2300168: Seitenfluegel Strebe2_halterung
+    2300170: Seitenfluegel Strebe3
+    2300172: Seitenfluegel0
+    2300174: Seitenfluegel1
+    2300176: Steering Column
+    2300178: Steering Gear
+    2300180: Steering Wheel
+    2300182: Turbo Charge
+    3300000: Bremsscheiben_bremse
+    3300002: Bremsscheiben_bremse_vorn_l
+    3300004: Bremsscheiben_bremse_vorn_r
+    3300006: Bremsscheiben_rest
+    3300008: Bremsscheiben_rest_vorn_l
+    3300010: Bremsscheiben_rest_vorn_r
+    3300012: Bremsscheiben_scheiben
+    3300014: Bremsscheiben_scheiben_vorn_l
+    3300016: Bremsscheiben_scheiben_vorn_r
+    3300018: Clutch Shift System
+    3300020: Cooler Channel0
+    3300022: Cooler Channel1
+    3300024: Cooler Channel2
+    3300026: Cooler Channel3
+    3300028: Cooler Channel3.001
+    3300030: Cooling System
+    3300032: Crashbox0
+    3300034: Crashbox0_schrauben
+    3300036: Dash
+    3300038: Dash_display
+    3300040: Electrics
+    3300042: Engine Mounts
+    3300044: Estarter
+    3300046: federn
+    3300048: Felgen
+    3300050: Felgen Innen
+    3300052: Felgen Innen_schrauben
+    3300054: Felgen Innen_schrauben_vorn_l
+    3300056: Felgen Innen_schrauben_vorn_r
+    3300058: Felgen Innen_vorn_l
+    3300060: Felgen Innen_vorn_r
+    3300062: Felgen_vorn_l
+    3300064: Felgen_vorn_r
+    3300066: Firewall
+    3300068: Fronthoop
+    3300070: Frontwing
+    3300072: Frontwing Strebe0
+    3300074: Frontwing Strebe1
+    3300076: Harness
+    3300078: Hauptschalter
+    3300080: Headres
+    3300082: Headres Schaum
+    3300084: Headres Streben
+    3300086: Headres Streben Gelenke_MeshPart0
+    3300088: Headres Streben Gelenke_MeshPart1
+    3300090: Heckfluegel
+    3300092: Heckfluegel Anbindung
+    3300094: Hinterwagen
+    3300096: Hydraulic
+    3300098: Jacking Bar
+    3300100: Kinematic_MeshPart0
+    3300102: Kinematic_MeshPart1
+    3300104: Kinematic_oehlins
+    3300106: Klappe
+    3300108: Ktm450Sxf
+    3300110: Kuehl0
+    3300112: Kuehlschlauch_MeshPart0
+    3300114: Kuehlschlauch_MeshPart1
+    3300116: Laminat
+    3300118: Laminat_inner
+    3300120: Mono0
+    3300122: Nase
+    3300124: Not Rod
+    3300126: Padding0
+    3300128: Pedale
+    3300130: reifen_fl
+    3300132: reifen_fr
+    3300134: reifen_rl
+    3300136: reifen_rr
+    3300138: Rod0
+    3300140: Rod1
+    3300142: Sdrive Chain
+    3300144: Sdrive Diff Carrier
+    3300146: Sdrive Drexler0_MeshPart0
+    3300148: Sdrive Drexler0_MeshPart1
+    3300150: Sdrive Drexler1
+    3300152: Sdrive Drexler2
+    3300154: Sdrive Driveshaft Left
+    3300156: Sdrive Driveshaft Right
+    3300158: Sdrive Kettenrad
+    3300160: Sdrive Ritzel
+    3300162: Sdrive Scatter Shield
+    3300164: Seitenfluegel Strebe1
+    3300166: Seitenfluegel Strebe2
+    3300168: Seitenfluegel Strebe2_halterung
+    3300170: Seitenfluegel Strebe3
+    3300172: Seitenfluegel0
+    3300174: Seitenfluegel1
+    3300176: Steering Column
+    3300178: Steering Gear
+    3300180: Steering Wheel
+    3300182: Turbo Charge
+    4300000: reifen_rr
+    4300002: reifen_rl
+    4300004: reifen_fr
+    4300006: reifen_fl
+    4300008: Bremsscheiben_scheiben_vorn_r
+    4300010: Bremsscheiben_scheiben_vorn_l
+    4300012: Bremsscheiben_rest_vorn_r
+    4300014: Bremsscheiben_rest_vorn_l
+    4300016: Bremsscheiben_bremse_vorn_r
+    4300018: Bremsscheiben_bremse_vorn_l
+    4300020: Felgen Innen_schrauben_vorn_r
+    4300022: Felgen Innen_schrauben_vorn_l
+    4300024: Felgen Innen_vorn_r
+    4300026: Felgen Innen_vorn_l
+    4300028: Felgen_vorn_r
+    4300030: Felgen_vorn_l
+    4300032: Cooler Channel3.001
+    4300034: Klappe
+    4300036: federn
+    4300038: Kinematic_oehlins
+    4300040: Seitenfluegel Strebe2_halterung
+    4300042: Laminat_inner
+    4300044: Dash_display
+    4300046: Felgen Innen_schrauben
+    4300048: Bremsscheiben_bremse
+    4300050: Bremsscheiben_scheiben
+    4300052: Crashbox0_schrauben
+    4300054: Turbo Charge
+    4300056: Steering Wheel
+    4300058: Steering Gear
+    4300060: Steering Column
+    4300062: Seitenfluegel Strebe3
+    4300064: Seitenfluegel Strebe2
+    4300066: Seitenfluegel Strebe1
+    4300068: Seitenfluegel1
+    4300070: Seitenfluegel0
+    4300072: Sdrive Scatter Shield
+    4300074: Sdrive Ritzel
+    4300076: Sdrive Kettenrad
+    4300078: Sdrive Driveshaft Right
+    4300080: Sdrive Driveshaft Left
+    4300082: Sdrive Drexler2
+    4300084: Sdrive Drexler1
+    4300086: Sdrive Drexler0_MeshPart0
+    4300088: Sdrive Drexler0_MeshPart1
+    4300090: Sdrive Diff Carrier
+    4300092: Sdrive Chain
+    4300094: Rod1
+    4300096: Rod0
+    4300098: Pedale
+    4300100: Padding0
+    4300102: Not Rod
+    4300104: Nase
+    4300106: Mono0
+    4300108: Laminat
+    4300110: Kuehlschlauch_MeshPart0
+    4300112: Kuehlschlauch_MeshPart1
+    4300114: Kuehl0
+    4300116: Ktm450Sxf
+    4300118: Kinematic_MeshPart0
+    4300120: Kinematic_MeshPart1
+    4300122: Jacking Bar
+    4300124: Hydraulic
+    4300126: Hinterwagen
+    4300128: Heckfluegel Anbindung
+    4300130: Heckfluegel
+    4300132: Headres Streben Gelenke_MeshPart0
+    4300134: Headres Streben Gelenke_MeshPart1
+    4300136: Headres Streben
+    4300138: Headres Schaum
+    4300140: Headres
+    4300142: Hauptschalter
+    4300144: Harness
+    4300146: Frontwing Strebe1
+    4300148: Frontwing Strebe0
+    4300150: Frontwing
+    4300152: Fronthoop
+    4300154: Firewall
+    4300156: Felgen Innen
+    4300158: Felgen
+    4300160: Estarter
+    4300162: Engine Mounts
+    4300164: Electrics_MeshPart0
+    4300166: Dash
+    4300168: Crashbox0
+    4300170: Cooling System
+    4300172: Cooler Channel3
+    4300174: Cooler Channel2
+    4300176: Cooler Channel1
+    4300178: Cooler Channel0
+    4300180: Clutch Shift System
+    4300182: Bremsscheiben_rest
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
