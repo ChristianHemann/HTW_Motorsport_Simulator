@@ -14,10 +14,12 @@
       <X>
         <double>0</double>
         <double>10000</double>
+        <double>0</double>
       </X>
       <Y>
         <double>0</double>
         <double>100</double>
+        <double>0</double>
       </Y>
       <NameX>rounds per minute</NameX>
       <NameY>torque (Nm)</NameY>

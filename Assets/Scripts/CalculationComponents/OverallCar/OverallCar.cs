@@ -81,8 +81,11 @@ namespace CalculationComponents
             Vector3 directionBuffer = 
                 (OverallCarOutput.LastCalculation.Speed*OverallCarOutput.LastCalculation.Direction + velocityChangeAc -
                  velocityChangeDrag);
-            if(directionBuffer.Magnitude>1e-3f) //change the direction just if the car is moving. Otherwise the direction can get lost.
+            if (directionBuffer.Magnitude > 1e-3f)
+                //change the direction just if the car is moving. Otherwise the direction can get lost.
                 _actualCalculation.Direction = directionBuffer.Normalize();
+            else
+                _actualCalculation.Direction = OverallCarOutput.LastCalculation.Direction;
 
             //add the deceleration of the brake and make sure that it cannot accelerate the car backwards
             if (velocityChangeDe.Magnitude > Math.Abs(_actualCalculation.Speed))
