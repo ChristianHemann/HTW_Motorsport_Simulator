@@ -14,7 +14,7 @@ namespace UnityInterface
     {
         void LateUpdate()
         {
-            this.transform.position = new ImportantClasses.Vector3();
+            //this.transform.position = new ImportantClasses.Vector3();
             this.transform.position = OverallCarOutput.LastCalculation.Position.ToUnityVector3();
              this.transform.rotation = Quaternion.Euler(OverallCarOutput.LastCalculation.Direction.ToUnityVector3());
 

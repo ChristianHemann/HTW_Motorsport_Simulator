@@ -56,7 +56,7 @@ namespace UnitTests
             Assert.AreEqual(_secondObject.ToString(), logs[0].Value);
 
             //test Filter date
-            logs = Logging.GetLogs(from: DateTime.Now);
+            logs = Logging.GetLogs(from: DateTime.Now, interval:TimeSpan.FromMinutes(1));
             Assert.AreEqual(0, logs.Length);
         }
     }
